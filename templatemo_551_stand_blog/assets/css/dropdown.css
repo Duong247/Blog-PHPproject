@@ -1,0 +1,34 @@
+.dropdown .dropdown-menu{
+    display: none;
+}
+
+.dropend{
+    margin: 0 !important;
+    padding: 0 15px;
+}
+
+.dropdown:hover > .dropdown-menu,
+.dropend:hover >.dropdown-menu{
+    display: block;
+    /* margin-top: .125em; */
+}
+
+
+.dropend-styles {
+    font-weight: normal !important;
+    text-transform: capitalize !important;
+}
+
+.ml-auto, .mx-auto{
+    margin-left: 0 !important;
+}
+
+
+@media (min-width:912px) {
+    .dropend:hover .dropdown-menu{
+        position: absolute;
+        top: 0;
+        left: 100%;
+        /* margin-left: .125em; */
+    }
+}
