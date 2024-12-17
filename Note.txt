@@ -1,0 +1,9 @@
+Func:
+Actor : user, admin 
+ + Login/ Logout
+ + Resister
+ + CRUD Post
+ + CRUD Comment
+ + Search(author, categories, namepost)
+ + Profile	
+ 
