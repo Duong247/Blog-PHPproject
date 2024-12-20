@@ -6,4 +6,9 @@ Actor : user, admin
  + CRUD Comment
  + Search(author, categories, namepost)
  + Profile	
+
+Nhi: sửa UI home
+Minh: login/ register
+Dương : User UI
+An: Admin UI
  
