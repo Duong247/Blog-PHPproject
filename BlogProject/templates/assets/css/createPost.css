@@ -6,6 +6,7 @@ html{
 }
 
 
+
 *{
     padding: 0;
     margin: 0;
@@ -38,7 +39,6 @@ html{
     font-size: 15px;
     line-height: 32px;
     padding: 0 5px;   
-    background-color: #ddd;
 }
 
 #header #nav {
@@ -192,6 +192,13 @@ html{
 }
 
 
+.replied-btn{
+    color:#F48840;
+}
+
+.reply-form{
+    width:100%;
+}
 
 @media (min-width:1024px){
     .site-container{

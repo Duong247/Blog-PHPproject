@@ -397,9 +397,6 @@ header .navbar {
 
 /* Blog Posts */
 
-.blog-posts {
-	margin-top: 100px;
-}
 
 .blog-posts .blog-post {
 	margin-bottom: 30px;
@@ -653,7 +650,7 @@ ul.page-numbers li a:hover {
 	color: #aaa;
 }
 
-.blog-posts .submit-comment button {
+.blog-posts .submit-comment button,.reply-submit-btn {
 	display: inline-block;
 	background-color: #f48840;
 	color: #fff;
