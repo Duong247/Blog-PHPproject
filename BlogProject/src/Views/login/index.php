@@ -63,6 +63,22 @@
     .footer a:hover {
         text-decoration: underline;
     }
+
+    .forgot-password {
+        text-align: right;
+        margin-bottom: 15px;
+    }
+
+    .forgot-password a {
+        color: red;
+        /* Đổi màu chữ thành đỏ */
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .forgot-password a:hover {
+        text-decoration: underline;
+    }
 </style>
 
 <div class="login-container">
@@ -78,6 +94,9 @@
             <label for="password" class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" id="password" name="password"
                 placeholder="Nhập mật khẩu của bạn" required>
+        </div>
+        <div class="forgot-password">
+            <a href="/forgot-password">Quên mật khẩu?</a>
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
