@@ -1,4 +1,5 @@
 <?php ob_start(); ?>
+
 <style>
     body {
         background-color: #f4f4f4;
