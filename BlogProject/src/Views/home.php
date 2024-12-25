@@ -1,4 +1,14 @@
 <?php ob_start(); ?>
+<<<<<<< HEAD
+=======
+
+<style>
+    body {
+        background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+>>>>>>> 66e77054e2a2733513c8c9ce93cd8919c5a1d07d
 
 <!-- Page Content -->
     <section class="blog-posts">
@@ -179,7 +189,11 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <?php $content = ob_get_clean(); ?>
+<<<<<<< HEAD
 <?php 
 define('BASE_PATH', dirname(__DIR__, 2));
 include(BASE_PATH . '/templates/layout.php');
 ?>
+=======
+<?php include (__DIR__ . '/../../templates/layout.php'); ?>
+>>>>>>> 66e77054e2a2733513c8c9ce93cd8919c5a1d07d
