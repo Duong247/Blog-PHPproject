@@ -1,5 +1,4 @@
 <!-- /templates/layout.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
 
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="../../templates/assets/css/createPost.css">
-  <link rel="stylesheet" href="../../templates/assets/css/templatemo-stand-blog.css">
+  <link rel="stylesheet" href="../../templates/assets/css/templatemo-stand-blog.css" />
   <link rel="stylesheet" href="../../templates/assets/css/owl.css">
 
 </head>
