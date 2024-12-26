@@ -23,16 +23,29 @@ class Post
         }
     }
 
+
+
     public function getAllPosts()
     {
         $result = $this->connection->query("SELECT * FROM posts");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getPostById($postId)
+    public function getRecentPosts()
+    {
+        $result = $this->connection->query("SELECT * 
+                                                    FROM posts 
+                                                    ORDER BY uploadTime DESC
+                                                    LIMIT 3;
+                                                    ");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
+    public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query("SELECT * FROM posts WHERE id = $postId");
+        $result = $this->connection->query("SELECT * FROM posts WHERE postId = $postId");
 
         return $result->fetch_assoc();
     }

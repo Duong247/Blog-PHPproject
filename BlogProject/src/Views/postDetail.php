@@ -13,7 +13,7 @@
                     </div>
                     <div class="down-content">
                       <span>Lifestyle</span>
-                      <a href="post-details.html"><h4>Aenean pulvinar gravida sem nec</h4></a>
+                      <a href="postDetail.php"><h4>Aenean pulvinar gravida sem nec</h4></a>
                       <ul class="post-info">
                         <li><a href="#">Admin</a></li>
                         <li><a href="#">May 12, 2020</a></li>
@@ -59,7 +59,7 @@
                             <a href="#" class="replied-btn">Trả lời</a>
                           </div>
                         </li>
-                        <li class="replied reply-form">
+                        <li class="replied reply-form " style="display: none;">
                             <div class="content">
                                 <form id="comment" class="reply-form" action="#" method="post">
                                     <div class="row">
@@ -152,15 +152,15 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="post-details.html">
+                        <li><a href="postDetail.php">
                           <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
                           <span>May 31, 2020</span>
                         </a></li>
-                        <li><a href="post-details.html">
+                        <li><a href="postDetail.php">
                           <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
                           <span>May 28, 2020</span>
                         </a></li>
-                        <li><a href="post-details.html">
+                        <li><a href="postDetail.php">
                           <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
                           <span>May 14, 2020</span>
                         </a></li>
@@ -181,24 +181,6 @@
                         <li><a href="#">- Responsive Templates</a></li>
                         <li><a href="#">- HTML5 / CSS3 Templates</a></li>
                         <li><a href="#">- Creative &amp; Unique</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="sidebar-item tags">
-                    <div class="sidebar-heading">
-                      <h2>Tag Clouds</h2>
-                    </div>
-                    <div class="content">
-                      <ul>
-                        <li><a href="#">Lifestyle</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">HTML5</a></li>
-                        <li><a href="#">Inspiration</a></li>
-                        <li><a href="#">Motivation</a></li>
-                        <li><a href="#">PSD</a></li>
-                        <li><a href="#">Responsive</a></li>
                       </ul>
                     </div>
                   </div>

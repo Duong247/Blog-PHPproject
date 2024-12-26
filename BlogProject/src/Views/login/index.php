@@ -1,4 +1,10 @@
 <?php ob_start(); ?>
+<?php
+session_start(); // Khởi động session nếu chưa có
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : null;
+unset($_SESSION['message']); // Xóa message sau khi hiển thị để tránh lặp lại
+?>
+
 <style>
     body {
         background-color: #f4f4f4;
@@ -101,13 +107,19 @@
         <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
     <div class="footer">
-        <p>Đăng kí tài khoản ngay! <a href="../register/index.php">Đăng kí</a></p>
+        <p>Đăng kí tài khoản ngay! <a href="/register/index">Đăng kí</a></p>
     </div>
 </div>
+<script>
+    <?php if ($message != null): ?>
+        if (confirm("<?php echo addslashes($message); ?>")) {
+            // Xử lý nếu người dùng bấm "OK"
+            window.location.href = "/some-action"; // Chuyển hướng nếu cần
+        }
+    <?php endif; ?>
+</script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <?php $content = ob_get_clean(); ?>
-<?php 
-define('BASE_PATH', dirname(__DIR__, 2));
-include(BASE_PATH . '/templates/layout.php');
-?>
+<?php include(__DIR__ . '/../../../templates/layout.php'); ?>

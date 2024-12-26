@@ -15,29 +15,37 @@ class PostController extends Controller
     }
 
     public function index(){
-
-        $this->render('users\index', []);
+        $posts = $this->postModel->getRecentPosts();
+        $categories = $this->postModel->getRecentPosts();
+        $this->render('home', ['posts' => $posts,'categories' => $categories]);
     }
 
     public function postList()
     {
-        session_start();
-        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
-            header('Location: /user/signin');
-        }
+        // session_start();
+        // if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+        //     header('Location: /user/signin');
+        // }
         // Fetch all users and display them in a view
         $posts = $this->postModel->getAllPosts();
         
-        $this->render('posts\post-list', ['posts' => $posts]);
+        $this->render('home', ['posts' => $posts]);
+    }
+
+    public function getRecentPost(){
+        $posts = $this->postModel->getRecentPosts();
+        
+        $this->render('home', ['posts' => $posts]);
+
     }
 
     public function show($postId)
     {
 
-        session_start();
-        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
-            header('Location: /user/signin');
-        }
+        // session_start();
+        // if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+        //     header('Location: /user/signin');
+        // }
         // Fetch a single post by ID and display in a view
         $post = $this->postModel->getPostById($postId);
 
