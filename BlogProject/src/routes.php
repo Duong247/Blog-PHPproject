@@ -5,6 +5,7 @@ use App\Controllers\PostController;
 use App\Controllers\RegisterController;
 use App\Router;
 use App\Controllers\UserController;
+use App\Controllers\LoginController;
 
 
 // Usage:
@@ -44,3 +45,5 @@ $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 $router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
 $router->addRoute('/\/register/', [new RegisterController(), 'register']);
 $router->addRoute('/\/register\/verify/', [new RegisterController(), 'verifyEmailForm']);
+
+$router->addRoute('/\/login\/index/', [new LoginController(), 'index']);
