@@ -12,7 +12,6 @@ use App\Controllers\LoginController;
 $router = new Router();
 
 // Add routes
-$router->addRoute('/\//', [new UserController(), 'index']);
 $router->addRoute('/\/user/', [new UserController(), 'userList']);
 $router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
 //$router->addRoute('/\/user/', [new UserController(), 'index']);
@@ -26,7 +25,6 @@ $router->addRoute('/\/user\/logout/', [new UserController(), 'logout']);
 $router->addRoute('/\/user\/verify/', [new UserController(), 'verifyEmail']);
 
 
-$router->addRoute('/\//', [new PostController(), 'index']);
 // $router->addRoute('/\/user/', [new PostController(), 'userList']);
 $router->addRoute('/\/posts\/post-list/', [new PostController(), 'postList']);
 //$router->addRoute('/\/user/', [new PostController(), 'index']);
@@ -42,6 +40,10 @@ $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 
 // $router->addRoute('/\/home/', [new PostController(), 'home']);
 
+// ITC route
+
+//Home
+$router->addRoute('/\//', [new PostController(), 'index']);
 $router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
 $router->addRoute('/\/register/', [new RegisterController(), 'register']);
 $router->addRoute('/\/register\/verify/', [new RegisterController(), 'verifyEmailForm']);
