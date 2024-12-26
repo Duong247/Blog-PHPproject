@@ -23,8 +23,6 @@ class Post
         }
     }
 
-
-
     public function getAllPosts()
     {
         $result = $this->connection->query("SELECT * FROM posts");
@@ -33,8 +31,11 @@ class Post
 
     public function getRecentPosts()
     {
-        $result = $this->connection->query("SELECT * 
-                                                    FROM posts 
+        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName
+                                                    FROM blog_schema.posts 
+                                                        Inner join blog_schema.users on posts.userId = users.id
+                                                        inner join blog_schema.categories on categories.categoryId = posts.categoryId
+                                                    Where status =1
                                                     ORDER BY uploadTime DESC
                                                     LIMIT 3;
                                                     ");
@@ -45,7 +46,11 @@ class Post
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query("SELECT * FROM posts WHERE postId = $postId");
+        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName
+                                                    FROM blog_schema.posts 
+                                                        Inner join blog_schema.users on posts.userId = users.id
+                                                        inner join blog_schema.categories on categories.categoryId = posts.categoryId
+                                                    Where postId = $postId");
 
         return $result->fetch_assoc();
     }

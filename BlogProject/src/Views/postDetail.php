@@ -9,18 +9,25 @@
                 <div class="col-lg-12">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="https://saigontimestravel.com/wp-content/uploads/2024/06/nui-phu-si-1.jpg" alt="">
+                      <img src="/templates/assets/images/<?=$post['photo'] ?>" alt="ảnh">
                     </div>
                     <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Aenean pulvinar gravida sem nec</h4></a>
+                      <span><?=$post['categoryName']?></span>
+                      <a href="postDetail.php"><h4><?=$post['postName']?></h4></a>
                       <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 12, 2020</a></li>
+                        <li><a href="#"><?=$post['last_name'].' '.$post['first_name']?></a></li>
+                        <li>
+                          <a href="#">
+                            <?php $uploadTime = new DateTime($post['uploadTime']);
+                              echo $uploadTime->format('M d, Y'); 
+                            ?>
+                          </a>
+                        </li>
                         <li><a href="#">10 Comments</a></li>
                       </ul>
-                      <p>You can browse different tags such as <a rel="nofollow" href="https://templatemo.com/tag/multi-page" target="_parent">multi-page</a>, <a rel="nofollow" href="https://templatemo.com/tag/resume" target="_parent">resume</a>, <a rel="nofollow" href="https://templatemo.com/tag/video" target="_parent">video</a>, etc. to see more CSS templates. Sed hendrerit rutrum arcu, non malesuada nisi. Sed id facilisis turpis. Donec justo elit, dapibus vel ultricies in, molestie sit amet risus. In nunc augue, rhoncus sed libero et, tincidunt tempor nisl. Donec egestas, quam eu rutrum ultrices, sapien ante posuere nisl, ac eleifend eros orci vel ante. Pellentesque vitae eleifend velit. Etiam blandit felis sollicitudin vestibulum feugiat.
-                      <br><br>Donec tincidunt leo nec magna gravida varius. Suspendisse felis orci, egestas ac sodales quis, venenatis et neque. Vivamus facilisis dignissim arcu et blandit. Maecenas finibus dui non pulvinar lacinia. Ut lacinia finibus lorem vel porttitor. Suspendisse et metus nec libero ultrices varius eget in risus. Cras id nibh at erat pulvinar malesuada et non ipsum. Suspendisse id ipsum leo.</p>
+                      <p>
+                      <?=$post['content']?>
+                      </p>
                       <div class="post-options">
                         <div class="row">
                           <div class="col-6">
@@ -152,18 +159,17 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="postDetail.php">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
+                        <?php 
+                            foreach ($postsRecents as $postRc):?>
+                              <li>
+                                <a href="postDetail/<?=$postRc['postId']?>">
+                                  <h5><?=$postRc['postName'] ?></h5>
+                                  <span><?php $uploadTime = new DateTime($postRc['uploadTime']);
+                                    echo $uploadTime->format('M d, Y'); ?>
+                                  </span>
+                                </a>
+                              </li>
+                          <?php endforeach; ?>
                       </ul>
                     </div>
                   </div>
@@ -175,12 +181,9 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
+                        <?php foreach ($categories as $category):?>
+                          <li><a href="#">- <?=$category['categoryName'] ?></a></li>
+                        <?php endforeach; ?>
                       </ul>
                     </div>
                   </div>

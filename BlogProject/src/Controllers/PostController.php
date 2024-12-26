@@ -4,19 +4,22 @@ namespace App\Controllers;
 
 use App\Models\Post;
 use App\Controller;
+use App\Models\Category;
 
 class PostController extends Controller
 {
     private $postModel;
+    private $categoryModel;
 
     public function __construct()
     {
         $this->postModel = new Post();
+        $this->categoryModel = new Category();
     }
 
     public function index(){
         $posts = $this->postModel->getRecentPosts();
-        $categories = $this->postModel->getRecentPosts();
+        $categories = $this->categoryModel->getAllCategory();
         $this->render('home', ['posts' => $posts,'categories' => $categories]);
     }
 
@@ -48,8 +51,10 @@ class PostController extends Controller
         // }
         // Fetch a single post by ID and display in a view
         $post = $this->postModel->getPostById($postId);
+        $postsRecents = $this->postModel->getRecentPosts();
+        $categories = $this->categoryModel->getAllCategory();
 
-        $this->render('posts\post-form', ['post' => $post]);
+        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories]);
 
     }
 

@@ -12,6 +12,7 @@ use App\Controllers\LoginController;
 $router = new Router();
 
 // Add routes
+$router->addRoute('/\//', [new UserController(), 'index']);
 $router->addRoute('/\/user/', [new UserController(), 'userList']);
 $router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
 //$router->addRoute('/\/user/', [new UserController(), 'index']);
@@ -37,6 +38,8 @@ $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 // $router->addRoute('/\/post\/logout/', [new PostController(), 'logout']);
 
 $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
+$router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
+
 
 // $router->addRoute('/\/home/', [new PostController(), 'home']);
 
