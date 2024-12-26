@@ -25,8 +25,12 @@ class UserController extends Controller
 
             // Kiểm tra kết quả xác thực
             if ($isVerified) {
+                session_start();
                 // Nếu xác thực thành công, thông báo và chuyển hướng người dùng
                 $_SESSION['message'] = 'Email đã được xác thực thành công!';
+                if (!isset($_SESSION['email'])) {
+                    unset($_SESSION['email']);
+                }
                 header('Location: /login/index');
                 exit();
             } else {

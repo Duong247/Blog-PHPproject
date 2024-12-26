@@ -99,6 +99,37 @@ class User
         $stmt->bind_param("ss", $verificationToken, $email);
         return $stmt->execute();
     }
+    public function isEmailVerified(string $email): bool
+    {
+        // Truy vấn trạng thái xác thực email từ cơ sở dữ liệu
+        $stmt = $this->mysqli->prepare("SELECT is_email_verified FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // Kiểm tra nếu email tồn tại và đã xác thực
+        return $user && $user['is_email_verified'] == 1;
+    }
+
+    public function checkLogin(string $email, string $password): ?string
+    {
+        // Truy vấn người dùng bằng email
+        $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        // Kiểm tra xem người dùng có tồn tại và mật khẩu có khớp không
+        if ($user && password_verify($password, $user['password_hash'])) {
+            return $user['email']; // Trả về thông tin người dùng nếu đăng nhập thành công
+        }
+
+        // Nếu không khớp, trả về null
+        return null;
+    }
+
 
     public function closeConnection(): void
     {

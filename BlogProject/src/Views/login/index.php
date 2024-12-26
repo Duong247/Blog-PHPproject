@@ -1,10 +1,4 @@
 <?php ob_start(); ?>
-<?php
-session_start(); // Khởi động session nếu chưa có
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : null;
-unset($_SESSION['message']); // Xóa message sau khi hiển thị để tránh lặp lại
-?>
-
 <style>
     body {
         background-color: #f4f4f4;
@@ -85,6 +79,12 @@ unset($_SESSION['message']); // Xóa message sau khi hiển thị để tránh l
     .forgot-password a:hover {
         text-decoration: underline;
     }
+
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="login-container">
@@ -94,13 +94,22 @@ unset($_SESSION['message']); // Xóa message sau khi hiển thị để tránh l
     <form action="/login" method="POST">
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email của bạn"
+                value="<?php echo isset($_SESSION['form_data']['email']) ? $_SESSION['form_data']['email'] : ''; ?>"
+                required>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Mật khẩu</label>
             <input type="password" class="form-control" id="password" name="password"
+                value="<?php echo isset($_SESSION['form_data']['password']) ? $_SESSION['form_data']['password'] : ''; ?>"
                 placeholder="Nhập mật khẩu của bạn" required>
         </div>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="error-message">
+                <?php echo $_SESSION['error'];
+                unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
         <div class="forgot-password">
             <a href="/forgot-password">Quên mật khẩu?</a>
         </div>
@@ -110,14 +119,18 @@ unset($_SESSION['message']); // Xóa message sau khi hiển thị để tránh l
         <p>Đăng kí tài khoản ngay! <a href="/register/index">Đăng kí</a></p>
     </div>
 </div>
-<script>
-    <?php if ($message != null): ?>
-        if (confirm("<?php echo addslashes($message); ?>")) {
-            // Xử lý nếu người dùng bấm "OK"
-            window.location.href = "/some-action"; // Chuyển hướng nếu cần
-        }
-    <?php endif; ?>
-</script>
+<?php
+// Kiểm tra nếu có thông báo trong session
+if (isset($_SESSION['message'])):
+?>
+    <script>
+        // Hiển thị thông báo từ session bằng alert trong JavaScript
+        alert("<?php echo $_SESSION['message']; ?>");
+        <?php unset($_SESSION['message']); // Xóa thông báo sau khi hiển thị 
+        ?>
+    </script>
+<?php endif; ?>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

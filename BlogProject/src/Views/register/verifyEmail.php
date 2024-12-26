@@ -91,7 +91,7 @@ body {
         <button type="submit" class="btn btn-primary w-100">Xác thực</button>
     </form>
     <div class="footer">
-        <p>Chưa nhận được mã? <a href="/resend-verification">Gửi lại mã xác thực</a></p>
+        <p>Chưa nhận được mã? <a href="/register/verifyagain">Gửi lại mã xác thực</a></p>
     </div>
 </div>
 
