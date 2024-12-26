@@ -27,7 +27,8 @@ class UserController extends Controller
             if ($isVerified) {
                 // Nếu xác thực thành công, thông báo và chuyển hướng người dùng
                 $_SESSION['message'] = 'Email đã được xác thực thành công!';
-                $this->render('register\verifyEmail');
+                header('Location: /login/index');
+                exit();
             } else {
                 // Nếu mã không hợp lệ hoặc hết hạn, hiển thị lỗi
                 $_SESSION['error'] = 'Mã xác thực không hợp lệ hoặc đã hết hạn!';
