@@ -1,14 +1,4 @@
 <?php ob_start(); ?>
-<<<<<<< HEAD
-=======
-
-<style>
-    body {
-        background-color: #f4f4f4;
-        font-family: Arial, sans-serif;
-        color: #333;
-    }
->>>>>>> 66e77054e2a2733513c8c9ce93cd8919c5a1d07d
 
 <!-- Page Content -->
     <section class="blog-posts">
@@ -17,6 +7,7 @@
           <div class="col-lg-8">
             <div class="all-blog-posts">
               <div class="row">
+                <?php  ?>
                 <div class="col-lg-12">
                   <div class="blog-post">
                     <div class="blog-thumb">
@@ -140,6 +131,7 @@
                     </form>
                   </div>
                 </div>
+                <!-- start recent post -->
                 <div class="col-lg-12">
                   <div class="sidebar-item recent-posts">
                     <div class="sidebar-heading">
@@ -147,22 +139,39 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="postDetail.php">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
+                        <?php 
+                          foreach ($posts as $post):?>
+                            <li>
+                              <a href="postDetail.php">
+                                <h5><?=$post['postName'] ?></h5>
+                                <span>May 31, 2020</span>
+                              </a>
+                            </li>
+                        <?php endforeach; ?>
+
+                        
+                        <li>
+                          <a href="postDetail.php">
+                            <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
+                            <span>May 31, 2020</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="postDetail.php">
+                            <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
+                            <span>May 28, 2020</span>
+                          </a></li>
+                        <li>
+                          <a href="postDetail.php">
+                            <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
+                            <span>May 14, 2020</span>
+                          </a>
+                      </li>
                       </ul>
                     </div>
                   </div>
                 </div>
+                <!-- end recent post -->
                 <div class="col-lg-12">
                   <div class="sidebar-item categories">
                     <div class="sidebar-heading">
@@ -189,11 +198,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <?php $content = ob_get_clean(); ?>
-<<<<<<< HEAD
 <?php 
 define('BASE_PATH', dirname(__DIR__, 2));
 include(BASE_PATH . '/templates/layout.php');
 ?>
-=======
-<?php include (__DIR__ . '/../../templates/layout.php'); ?>
->>>>>>> 66e77054e2a2733513c8c9ce93cd8919c5a1d07d

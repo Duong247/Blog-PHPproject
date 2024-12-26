@@ -34,3 +34,8 @@ $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 // $router->addRoute('/\/post\/signin/', [new PostController(), 'signin']);
 // $router->addRoute('/\/auth\/validate/', [new AuthenticationController(), 'authenticate']);
 // $router->addRoute('/\/post\/logout/', [new PostController(), 'logout']);
+
+$router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
+
+// $router->addRoute('/\/home/', [new PostController(), 'home']);
+
