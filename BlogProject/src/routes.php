@@ -2,6 +2,7 @@
 
 use App\Controllers\AuthenticationController;
 use App\Controllers\PostController;
+use App\Controllers\RegisterController;
 use App\Router;
 use App\Controllers\UserController;
 
@@ -21,6 +22,7 @@ $router->addRoute('/\/user\/delete\/(\d+)/', [new UserController(), 'delete']);
 $router->addRoute('/\/user\/signin/', [new UserController(), 'signin']);
 $router->addRoute('/\/auth\/validate/', [new AuthenticationController(), 'authenticate']);
 $router->addRoute('/\/user\/logout/', [new UserController(), 'logout']);
+$router->addRoute('/\/user\/verify/', [new UserController(), 'verifyEmail']);
 
 
 $router->addRoute('/\//', [new PostController(), 'index']);
@@ -39,3 +41,6 @@ $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 
 // $router->addRoute('/\/home/', [new PostController(), 'home']);
 
+$router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
+$router->addRoute('/\/register/', [new RegisterController(), 'register']);
+$router->addRoute('/\/register\/verify/', [new RegisterController(), 'verifyEmailForm']);

@@ -8,5 +8,8 @@
                 "config/constants.php",
                 "config/utilities.php"
             ]
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
     }
 }

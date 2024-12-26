@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use mysqli;
+use Exception;
 
 class User
 {
@@ -9,69 +11,102 @@ class User
 
     public function __construct()
     {
-        // Replace these values with your actual database configuration
+        $this->connectDatabase();
+    }
+
+    private function connectDatabase()
+    {
         $host = DB_HOST;
         $username = DB_USER;
         $password = DB_PASSWORD;
         $database = DB_NAME;
 
-        $this->mysqli = new \mysqli($host, $username, $password, $database);
+        $this->mysqli = new mysqli($host, $username, $password, $database);
 
-        // Check connection
         if ($this->mysqli->connect_error) {
-            die("Connection failed: " . $this->mysqli->connect_error);
+            throw new Exception("Connection failed: " . $this->mysqli->connect_error);
         }
     }
 
-    public function getAllUsers()
+    public function getUserByEmail(string $email): ?array
     {
-        $result = $this->mysqli->query("SELECT * FROM users");
-        return $result->fetch_all(MYSQLI_ASSOC);
+        $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
     }
 
-    public function getUserById($userId)
+    public function createUser(string $email, string $password, string $firstName, string $lastName): bool
     {
-        $userId = $this->mysqli->real_escape_string($userId);
-        $result = $this->mysqli->query("SELECT * FROM users WHERE userId = $userId");
-
-        return $result->fetch_assoc();
-    }
-    
-    public function getUserByUsername($username)
-    {
-        $userId = $this->mysqli->real_escape_string($username);
-        $result = $this->mysqli->query("SELECT * FROM users WHERE username = '$username'");
-
-        return $result->fetch_assoc();
-    }
-
-    public function createUser($username, $password, $email)
-    {
-        
-        $username = $this->mysqli->real_escape_string($username);
-        $password = $this->mysqli->real_escape_string($password);
-        $email = $this->mysqli->real_escape_string($email);
-
+        // Hash mật khẩu
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        return $this->mysqli->query("INSERT INTO users (username, password_input, email) VALUES ('$username', '$hashedPassword', '$email')");
+        // Tạo token xác thực email
+        $emailVerificationToken = bin2hex(random_bytes(16));
+
+        // Câu lệnh SQL để thêm người dùng vào cơ sở dữ liệu
+        $stmt = $this->mysqli->prepare(
+            "INSERT INTO users (email, first_name, last_name, password_hash, email_verification_token) 
+         VALUES (?, ?, ?, ?, ?)"
+        );
+
+        // Liên kết các tham số vào câu lệnh SQL
+        $stmt->bind_param("sssss", $email, $firstName, $lastName, $hashedPassword, $emailVerificationToken);
+
+        // Thực thi câu lệnh SQL và trả về kết quả
+        return $stmt->execute();
     }
 
-    public function updateUser($userId, $username, $password, $email)
+
+    public function verifyEmail(string $token): bool
     {
-        $userId = $this->mysqli->real_escape_string($userId);
-        $username = $this->mysqli->real_escape_string($username);
-        $password = $this->mysqli->real_escape_string($password);
-        $email = $this->mysqli->real_escape_string($email);
+        $stmt = $this->mysqli->prepare(
+            "SELECT id FROM users WHERE email_verification_token = ? AND token_expiry > NOW()"
+        );
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        if ($user) {
+            $stmt = $this->mysqli->prepare(
+                "UPDATE users SET is_email_verified = 1, email_verification_token = NULL, token_expiry = NULL WHERE id = ?"
+            );
+            $stmt->bind_param("i", $user['id']);
+            return $stmt->execute();
+        }
 
-        return $this->mysqli->query("UPDATE users SET username='$username', password_input='$hashedPassword', email='$email' WHERE id=$userId");
+        return false;
     }
 
-    public function deleteUser($userId)
+    public function resetPassword(string $email, string $newPassword): bool
     {
-        $userId = $this->mysqli->real_escape_string($userId);
-        $this->mysqli->query("DELETE FROM users WHERE userId=$userId");
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET password_hash = ?, password_reset_token = NULL WHERE email = ?"
+        );
+        $stmt->bind_param("ss", $hashedPassword, $email);
+        return $stmt->execute();
+    }
+
+    public function storeVerificationToken(string $email, string $verificationToken): bool
+    {
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET email_verification_token = ?, token_expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = ?"
+        );
+        $stmt->bind_param("ss", $verificationToken, $email);
+        return $stmt->execute();
+    }
+
+    public function closeConnection(): void
+    {
+        $this->mysqli->close();
+    }
+
+    public function __destruct()
+    {
+        $this->closeConnection();
     }
 }
