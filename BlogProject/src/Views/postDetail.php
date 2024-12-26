@@ -57,62 +57,56 @@
                     <p class="text-center" <?=(int)$countComment['COUNT(*)']>0?"hidden":""?>>Chưa có bình luận nào</p>
                     <div class="content" <?=(int)$countComment['COUNT(*)']==0?"hidden":""?>  >
                       <ul>
-                        <li>
-                          <div class="author-thumb">
-                            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Charles Kate<span>May 16, 2020</span></h4>
-                            <p>Fusce ornare mollis eros. Duis et diam vitae justo fringilla condimentum eu quis leo. Vestibulum id turpis porttitor sapien facilisis scelerisque. Curabitur a nisl eu lacus convallis eleifend posuere id tellus.</p>
-                            <a href="#" class="replied-btn">Trả lời</a>
-                          </div>
-                        </li>
-                        <li class="replied reply-form " >
-                            <div class="content">
-                                <form id="comment" class="reply-form" action="#" method="post">
-                                    <div class="row">
-                                    <div class="col-lg-12">
-                                        <fieldset>
-                                        <textarea style="width: 100%;" name="message" rows="2" id="message" placeholder="Type your comment" required=""></textarea>
-                                        </fieldset>
+                          <?php foreach ($dataComments as $comment):?>
+                            <li >
+                              <ul>
+                                <li style="width: 100%;">
+                                  <div class="author-thumb">
+                                    <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
+                                  </div>
+                                  <div class="right-content">
+                                    <h4><?=$comment['mainComment']['first_name'].' '.$comment['mainComment']['last_name'] ?></h4>
+                                    <p><?=$comment['mainComment']['commentContent']?></p>
+                                    <a href="#" class="replied-btn">Trả lời</a>
+                                  </div>
+                                </li>
+                                
+                                <?php foreach ($comment['subComments'] as $subComment){ ?>
+                                  <li class="replied">
+                                    <div class="author-thumb">
+                                      <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
                                     </div>
-                                    <div class="col-lg-12">
-                                        <fieldset>
-                                        <button type="submit" id="form-submit" class="main-button reply-submit-btn">Đăng</button>
-                                        </fieldset>
+                                    <div class="right-content">
+                                      <h4><?=$subComment['first_name'].' '.$subComment['last_name']?>
+                                      <span><?php $uploadTime = new DateTime($subComment['commentTime']);
+                                        echo $uploadTime->format('M d, Y'); ?>
+                                      </span>
+                                    </h4>
+                                      <p><?=$subComment['commentContent']?></p>
                                     </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 20, 2020</span></h4>
-                            <p>In porta urna sed venenatis sollicitudin. Praesent urna sem, pulvinar vel mattis eget.</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="author-thumb">
-                            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Belisimo Mama<span>May 16, 2020</span></h4>
-                            <p>Nullam nec pharetra nibh. Cras tortor nulla, faucibus id tincidunt in, ultrices eget ligula. Sed vitae suscipit ligula. Vestibulum id turpis volutpat, lobortis turpis ac, molestie nibh.</p>
-                            <a href="#" class="replied-btn">Trả lời</a>  
-                         </div>
-                        </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 22, 2020</span></h4>
-                            <p>Mauris sit amet justo vulputate, cursus massa congue, vestibulum odio. Aenean elit nunc, gravida in erat sit amet, feugiat viverra leo.</p>
-                          </div>
-                        </li>
+                                  </li>
+                                <?php }?>
+                                <li class="replied reply-form">
+                                  <div class="content">
+                                    <form id="comment" class="reply-form" action="#" method="post">
+                                        <div class="row">
+                                          <div class="col-lg-12">
+                                              <fieldset>
+                                              <textarea style="width: 100%;" name="message" rows="2" id="message" placeholder="Type your comment" required=""></textarea>
+                                              </fieldset>
+                                          </div>
+                                          <div class="col-lg-12">
+                                              <fieldset>
+                                              <button type="submit" id="form-submit" class="main-button reply-submit-btn">Đăng</button>
+                                              </fieldset>
+                                          </div>
+                                        </div>
+                                    </form>
+                                  </div>
+                                </li>
+                              </ul>
+                            </li>
+                          <?php endforeach; ?>
                       </ul>
                     </div>
                   </div>

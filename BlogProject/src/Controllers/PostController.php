@@ -57,8 +57,20 @@ class PostController extends Controller
         $postsRecents = $this->postModel->getRecentPosts();
         $categories = $this->categoryModel->getAllCategory();
         $countComments = $this->commentModel->countComment($postId);
-
-        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments]);
+        $comments = $this->commentModel->getAllCommentsOfPost($postId);
+        $dataComments = [];
+        foreach ($comments as $comment){
+            $subcomments = [];
+            $tempSubComments = $this->commentModel->getSubCommentsOfMainComment($comment['postId'], $comment['commentId']);
+            foreach ($tempSubComments as $item){
+                $subcomments[] = $item;
+            }
+            $dataComments[] = [
+                'mainComment' => $comment, // return 1 dong
+                'subComments' => $subcomments, // return []
+            ];
+        }
+        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments,'dataComments'=>$dataComments]);
 
     }
 

@@ -28,19 +28,19 @@ class Comment
     public function getAllCommentsOfPost($postId)
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query("SELECT * FROM comments WHERE postId = $postId AND ISNULL(subcommentId) ORDER BY commentTime;");
+        $result = $this->connection->query("SELECT * FROM comments inner join users on comments.userId = users.id WHERE postId = $postId AND ISNULL(subcommentId) ORDER BY commentTime;");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getSubCommentsOfMainComment($postId, $subcommentId): array|bool|null
+    public function getSubCommentsOfMainComment($postId, $commentId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $subcommentId = $this->connection->real_escape_string($subcommentId);
-        $result = $this->connection->query("SELECT * FROM comments WHERE postId = $postId AND subcommentId = $subcommentId ORDER BY commentTime;");
+        $commentId = $this->connection->real_escape_string($commentId);
+        $result = $this->connection->query("SELECT * FROM comments inner join users on comments.userId = users.id WHERE postId = $postId AND subcommentId = $commentId ORDER BY commentTime;");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function createComment($content, $postId, $subcommentId = null, $userId)
+    public function createComment($content, $postId ,$userId , $subcommentId = null)
     {
         $content = $this->connection->real_escape_string($content);
         $postId = $this->connection->real_escape_string($postId);

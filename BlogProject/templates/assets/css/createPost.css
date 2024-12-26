@@ -196,8 +196,13 @@ html{
     color:#F48840;
 }
 
+.replied{
+    width:100%;
+}
+
 .reply-form{
     width:100%;
+    border: none!important;
 }
 
 @media (min-width:1024px){
