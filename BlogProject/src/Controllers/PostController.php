@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Controller;
 use App\Models\Category;
@@ -10,11 +11,13 @@ class PostController extends Controller
 {
     private $postModel;
     private $categoryModel;
+    private $commentModel;
 
     public function __construct()
     {
         $this->postModel = new Post();
         $this->categoryModel = new Category();
+        $this->commentModel = new Comment();
     }
 
     public function index(){
@@ -39,8 +42,8 @@ class PostController extends Controller
         $posts = $this->postModel->getRecentPosts();
         
         $this->render('home', ['posts' => $posts]);
-
     }
+
 
     public function show($postId)
     {
@@ -53,8 +56,9 @@ class PostController extends Controller
         $post = $this->postModel->getPostById($postId);
         $postsRecents = $this->postModel->getRecentPosts();
         $categories = $this->categoryModel->getAllCategory();
+        $countComments = $this->commentModel->countComment($postId);
 
-        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories]);
+        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments]);
 
     }
 

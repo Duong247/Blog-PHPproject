@@ -23,7 +23,7 @@
                             ?>
                           </a>
                         </li>
-                        <li><a href="#">10 Comments</a></li>
+                        <li><a href="#"><?=$countComment['COUNT(*)'] ?> Comments</a></li>
                       </ul>
                       <p>
                       <?=$post['content']?>
@@ -52,9 +52,10 @@
                 <div class="col-lg-12">
                   <div class="sidebar-item comments">
                     <div class="sidebar-heading">
-                      <h2>4 comments</h2>
+                      <h2><?=(int)$countComment['COUNT(*)']==0?"No":$countComment['COUNT(*)'] ?>  comments</h2>
                     </div>
-                    <div class="content">
+                    <p class="text-center" <?=(int)$countComment['COUNT(*)']>0?"hidden":""?>>Chưa có bình luận nào</p>
+                    <div class="content" <?=(int)$countComment['COUNT(*)']==0?"hidden":""?>  >
                       <ul>
                         <li>
                           <div class="author-thumb">
@@ -66,7 +67,7 @@
                             <a href="#" class="replied-btn">Trả lời</a>
                           </div>
                         </li>
-                        <li class="replied reply-form " style="display: none;">
+                        <li class="replied reply-form " >
                             <div class="content">
                                 <form id="comment" class="reply-form" action="#" method="post">
                                     <div class="row">
@@ -162,7 +163,7 @@
                         <?php 
                             foreach ($postsRecents as $postRc):?>
                               <li>
-                                <a href="postDetail/<?=$postRc['postId']?>">
+                                <a href="/postDetail/<?=$postRc['postId']?>">
                                   <h5><?=$postRc['postName'] ?></h5>
                                   <span><?php $uploadTime = new DateTime($postRc['uploadTime']);
                                     echo $uploadTime->format('M d, Y'); ?>

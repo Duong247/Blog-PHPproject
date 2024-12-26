@@ -31,13 +31,25 @@ class Post
 
     public function getRecentPosts()
     {
-        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName
-                                                    FROM blog_schema.posts 
-                                                        Inner join blog_schema.users on posts.userId = users.id
-                                                        inner join blog_schema.categories on categories.categoryId = posts.categoryId
-                                                    Where status =1
-                                                    ORDER BY uploadTime DESC
-                                                    LIMIT 3;
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        WHERE posts.status = 1
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name
+                                                        ORDER BY posts.uploadTime DESC
+                                                        LIMIT 3
+
                                                     ");
         return $result->fetch_all(MYSQLI_ASSOC);
     }

@@ -27,7 +27,7 @@
                               ?>
                             </a>
                           </li>
-                          <li><a href="#">12 Comments</a></li>
+                          <li><a href="#"><?=$post['commentCount']?> Comments</a></li>
                         </ul>
                         <p><?=$post['description']?></p>
                         <div class="post-options">

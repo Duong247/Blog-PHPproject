@@ -44,8 +44,8 @@ class Comment
     {
         $content = $this->connection->real_escape_string($content);
         $postId = $this->connection->real_escape_string($postId);
-        $subcommentId = $this->connection->real_escape_string($subcommentId);
         $userId = $this->connection->real_escape_string($userId);
+        $subcommentId = $this->connection->real_escape_string($subcommentId);
         $this->connection->query("INSERT INTO comments (commentContent, postId, subCommentId, userId) VALUES ($content, $postId, $subcommentId, $userId)");
     }
 
