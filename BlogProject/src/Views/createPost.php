@@ -63,7 +63,6 @@
                 </div>
               </div>
               //TODO: truyen userId
-              <input type="text" hidden value="2" name="userId">
               <button type="submit" id="save_btn">Save</button>
             </fieldset>
           </form>

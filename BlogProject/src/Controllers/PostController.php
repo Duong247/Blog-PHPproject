@@ -104,6 +104,9 @@ class PostController extends Controller
         //     header('Location: /user/signin');
         // }
         // Handle form submission to create a new post
+        session_start();
+        $userId = $_SESSION['currentUser'];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
             $postName= $_POST['postName'];
@@ -111,7 +114,7 @@ class PostController extends Controller
             $categoryId= $_POST['categoryId'];
             $photo = $this->uploadFile();
             $content= $_POST['content'];
-            $userId= $_POST['userId'];
+            // $userId= $_POST['userId'];
             // Call the model to create a new post
             $this->postModel->createPost($postName,$description,$categoryId,$photo,$content,$userId);
         }
@@ -122,6 +125,7 @@ class PostController extends Controller
         
         $this->render('createPost', ['post' => [],'categories'=>$categories]);
         // header('Location: /');  
+        header('Location: /userPostList');
     }
 
 
@@ -177,7 +181,7 @@ class PostController extends Controller
         session_start();
         $userId = $_SESSION['currentUser'];
         $posts = $this->postModel->getPostByUserId($userId);
-        $this->render('userPostList', ['posts' => $posts]);
+        $this->render('userPostList', ['posts' => $posts,'currentUserId'=>$userId]);
     }
 
 
@@ -211,6 +215,6 @@ class PostController extends Controller
         $this->postModel->deletePost($postId);
 
         // Redirect to the index page after deletion
-        header('Location: /posts/post-list');
+        header('Location: /userPostList');
     }
 }

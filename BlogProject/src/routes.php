@@ -74,3 +74,8 @@ $router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new Comme
 
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
 $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
+
+$router->addRoute('/\/createPost/', [new PostController(), 'create']);
+$router->addRoute('/\/create/', [new PostController(), 'create']);
+$router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
+

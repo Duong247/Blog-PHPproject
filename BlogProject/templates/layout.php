@@ -9,8 +9,6 @@
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.tiny.cloud/1/rpod9wfgzb71njjy5apouixjrbfqwbp7ub7n16j1kx1sbi3p/tinymce/6/tinymce.min.js"
-        referrerpolicy="origin"></script>
     <link rel="stylesheet" href="../../templates/assets/css/createPost.css">
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
@@ -22,7 +20,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://kit.fontawesome.com/3ecdd9878f.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.tiny.cloud/1/gi0p1ajd75o5n26qi8ujdhvgxcvvuyyo3yvuu3atelj6oy62/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="../../templates/assets/css/createPost.css">
     <link rel="stylesheet" href="../../templates/assets/css/templatemo-stand-blog.css" />
@@ -72,7 +70,8 @@
                                         alt="User Avatar">
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a href="#" class="dropdown-item">Quản lý bài viết</a></li>
+                                    <li><a href="/userPostList" class="dropdown-item">Quản lý bài viết</a></li>
+                                    <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
                                     <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
                                     <li>
                                         <form method="POST" action="/logout">

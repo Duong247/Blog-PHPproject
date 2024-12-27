@@ -10,7 +10,7 @@
             <div class="col-lg-12">
               <div class="blog-post">
                 <div class="blog-thumb">
-                  <img src="/templates/assets/images/<?= $post['photo'] ?>" alt="ảnh">
+                  <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="ảnh">
                 </div>
                 <div class="down-content">
                   <a href="postDetail.php">
@@ -29,9 +29,9 @@
                     </li>
                     <li><a href="#"><?= $countComment['COUNT(*)'] ?> Bình luận</a></li>
                   </ul>
-                  <p>
+             
                     <?= $post['content'] ?>
-                  </p>
+                 
                   <div class="post-options">
                     <div class="row">
                       <div class="col-6">
@@ -255,7 +255,7 @@
                 <div class="content">
                   <ul>
                     <?php foreach ($categories as $category): ?>
-                      <li style="list-style: inside"><a href="#"><?= $category['categoryName'] ?></a></li>
+                      <li style="list-style: inside"><a href="/blogs/<?=$category['categoryId'] ?>"><?=$category['categoryName'] ?></a></li>
                     <?php endforeach; ?>
                   </ul>
                 </div>

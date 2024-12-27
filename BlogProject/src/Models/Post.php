@@ -73,7 +73,7 @@ class Post
     public function getPostByUserId($userId):array|bool|null
     {
         $userId = $this->connection->real_escape_string($userId);
-        $result = $this->connection->query(" SELECT * FROM posts where userId = 2");
+        $result = $this->connection->query(" SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId");
 
         return $result->fetch_all(MYSQLI_ASSOC);
     }
@@ -136,7 +136,6 @@ class Post
         
         // Redirect to the index page after creating post
         header('Location: /');
-        
     }
 
     public function updatePost($postId, $postName,$description,$categoryId,$photo,$content,$userId)
@@ -161,6 +160,8 @@ class Post
     public function deletePost($postId)
     {
         $postId = $this->connection->real_escape_string($postId);
-        $this->connection->query("DELETE FROM posts WHERE id=$postId");
+        $this->connection->query("DELETE FROM posts WHERE postId = $postId;");
+        $this->connection->query("DELETE FROM comments WHERE postId = $postId;");
+        header('Location: /userPostList');
     }
 }
