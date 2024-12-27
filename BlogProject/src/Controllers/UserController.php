@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\User;
 use App\Controller;
+use Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class UserController extends Controller
 {
@@ -12,6 +14,12 @@ class UserController extends Controller
     public function __construct()
     {
         $this->userModel = new User();
+    }
+
+    public function verifyEmailForm()
+    {
+        // Hiển thị trang đăng ký
+        return $this->render('user\verifyEmail');
     }
 
     public function verifyEmail()
@@ -36,113 +44,188 @@ class UserController extends Controller
             } else {
                 // Nếu mã không hợp lệ hoặc hết hạn, hiển thị lỗi
                 $_SESSION['error'] = 'Mã xác thực không hợp lệ hoặc đã hết hạn!';
-                $this->render('register\verifyEmail');
+                $this->render('user\verifyEmail');
             }
         }
     }
 
-    // public function index()
-    // {
-    //     if (!$_SESSION['currentUser']) {
-    //         header('Location: /index');
-    //     }
+    public function sendVerificationEmailAgain()
+    {
+        session_start();
+        // Kiểm tra xem email có tồn tại trong session không
+        if (!isset($_SESSION['email'])) {
+            $_SESSION['error'] = 'Không tìm thấy email cần xác thực trong phiên làm việc.';
+            return $this->render('user\verifyEmail'); // Quay lại trang xác thực
+        }
 
-    //     $this->render('users\index', []);
-    // }
+        $email = $_SESSION['email']; // Lấy email từ session
 
-    // public function userList()
-    // {
-    //     if (!$_SESSION['currentUser']) {
-    //         header('Location: /index');
-    //     }
-    //     // Fetch all users and display them in a view
-    //     $users = $this->userModel->getAllUsers();
+        // Tạo mã xác thực (token ngẫu nhiên)
+        $verificationToken = rand(100000, 999999); // Token xác thực ngẫu nhiên
 
-    //     $this->render('users\user-list', ['users' => $users]);
-    // }
+        // Lưu token vào CSDL
+        try {
+            $this->userModel->storeVerificationToken($email, $verificationToken);
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra khi lưu mã xác thực vào cơ sở dữ liệu: ' . $e->getMessage();
+            return $this->render('user\verifyEmail'); // Quay lại trang xác thực
+        }
 
-    // public function show($userId)
-    // {
-    //     // Fetch a single user by ID and display in a view
-    //     $user = $this->userModel->getUserById($userId);
+        // Gửi email xác thực
+        $mail = new PHPMailer(true);
 
-    //     $this->render('users\user-form', ['user' => $user]);
-    // }
+        try {
+            // Cấu hình PHPMailer
+            $mail->isSMTP();
+            $mail->Host = SMTP_HOST; // Sử dụng hằng số cấu hình
+            $mail->SMTPAuth = true;
+            $mail->Username = SMTP_USER; // Sử dụng hằng số cấu hình
+            $mail->Password = SMTP_PASS; // Sử dụng hằng số cấu hình
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = SMTP_PORT; // Sử dụng hằng số cấu hình
 
-    // public function create()
-    // {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $this->processForm();
-    //     } else {
-    //         // Display the form for creating a new user            
-    //         $this->render('users\user-form', ['user' => []]);
-    //     }
-    // }
+            // Người gửi và người nhận
+            $mail->setFrom(SMTP_USER, 'ITC Blog');
+            $mail->addAddress($email);
 
-    // private function processForm()
-    // {
-    //     // Retrieve form data
-    //     $username = $_POST['username'];
-    //     $password = $_POST['password'];
-    //     $email = $_POST['email'];
+            // Nội dung email
+            $mail->isHTML(true);
+            $mail->Subject = mb_encode_mimeheader('Xác thực lại email của bạn', 'UTF-8', 'Q');
+            $mail->Body = 'Mã xác thực của bạn là: <strong>' . $verificationToken . '</strong><br><br>Vui lòng nhập mã này vào trang xác thực của chúng tôi.';
 
-    //     // Call the model to create a new user
-    //     $user = $this->userModel->createUser($username, $password, $email);
+            // Gửi email
+            $mail->send();
 
-    //     if ($user) {
-    //         // Redirect to the user list page or show a success message
-    //         header('Location: /user/index');
-    //         exit();
-    //     } else {
-    //         // Handle the case where the user creation failed
-    //         echo 'User creation failed.';
-    //     }
-    // }
+            // Thông báo thành công và điều hướng
+            $_SESSION['message'] = 'Email xác thực lại đã được gửi. Vui lòng kiểm tra hộp thư của bạn.';
+            return $this->render('user\verifyEmail'); // Chuyển đến trang xác thực
+        } catch (Exception $e) {
+            // Nếu có lỗi khi gửi email
+            $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực lại: ' . $e->getMessage();
+            return $this->render('user\verifyEmail'); // Quay lại trang xác thực
+        }
+    }
+    public function formEmailChangePass()
+    {
+        return $this->render('user\forgotPass');
+    }
+    
+    public function sendTokenChangePass()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = $_POST['email'];
 
+            if (empty($email)) {
+                $_SESSION['error'] = 'Tất cả các trường là bắt buộc!';
 
-    // public function update($userId)
-    // {
-    //     // Handle form submission to update a user
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $this->processFormUpdate($userId);
-    //     } else {
-    //         // Fetch the user data and display the form to update
-    //         $user = $this->userModel->getUserById($userId);
+                $_SESSION['form_data'] = $_POST;
+                return $this->render('user\forgotPass');
+            }
 
-    //         $this->render('users\user-form', ['user' => $user]);
-    //     }
-    // }
+            $user = $this->userModel->getUserByEmail($email);
+            if ($user == null) {
+                $_SESSION['error'] = 'Email không tồn tại!';
 
-    // private function processFormUpdate($userId)
-    // {
+                $_SESSION['form_data'] = $_POST;
+                return $this->render('user\forgotPass');
+            } else {
+                $this->sendTokenToChangePass($email);
+                exit();
+            }
+        }
+    }
 
-    //     // Retrieve form data
-    //     $username = $_POST['username'];
-    //     $password = $_POST['password'];
-    //     $email = $_POST['email'];
+    private function sendTokenToChangePass($email)
+    {
+        $passresetToken = bin2hex(random_bytes(16)); // Token xác thực ngẫu nhiên
+        $this->userModel->storeChangePassToken($email, $passresetToken); // Lưu token vào CSDL
+        // Gửi email
+        $mail = new PHPMailer(true);
+        try {
+            // Cấu hình PHPMailer
+            $mail->isSMTP();
+            $mail->Host = SMTP_HOST; // Sử dụng hằng số cấu hình
+            $mail->SMTPAuth = true;
+            $mail->Username = SMTP_USER; // Sử dụng hằng số cấu hình
+            $mail->Password = SMTP_PASS; // Sử dụng hằng số cấu hình
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port = SMTP_PORT; // Sử dụng hằng số cấu hình
 
+            // Người gửi và người nhận
+            $mail->setFrom(SMTP_USER, 'ITC Blog');
+            $mail->addAddress($email);
 
-    //     // Call the model to update the user
-    //     $user = $this->userModel->updateUser($userId, $username, $password, $email);
+            // Nội dung email
+            $mail->isHTML(true);
+            $mail->Subject = mb_encode_mimeheader('Đổi mật khẩu mới', 'UTF-8', 'Q');
 
-    //     if ($user) {
-    //         // Redirect to the user list page or show a success message
-    //         header('Location: /user/index');
-    //         exit();
-    //     } else {
-    //         // Handle the case where the user creation failed
-    //         echo 'User update failed.';
-    //     }
-    // }
+            // Đường dẫn chứa token
+            $resetLink = 'http://localhost:3000/user/change-pass-email?token=' . urlencode($passresetToken);
 
-    // public function delete($userId)
-    // {
-    //     // Call the model to delete the user
-    //     $this->userModel->deleteUser($userId);
+            // Nội dung email
+            $mail->Body = 'Bạn đã yêu cầu đổi mật khẩu. Vui lòng nhấp vào liên kết bên dưới để tiếp tục đổi mật khẩu: <br><br>' .
+                '<a href="' . $resetLink . '" target="_blank">Đổi mật khẩu</a><br><br>' .
+                'Nếu bạn không yêu cầu, vui lòng bỏ qua email này.';
 
-    //     // Redirect to the user list page after deletion
-    //     header('Location: /index.php');
-    // }
+            $mail->send();
+            session_start();
+            $_SESSION['message'] = 'Đã gửi link thay đổi mật khẩu đến email của bạn';
+            header('location: /user/change-pass');
+            exit(); 
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực: ' . $e->getMessage();
+        }
+    }
+
+    public function checkTokenChangePass()
+    {
+        $token = $_GET['token'] ?? null;
+
+        if (!$token) {
+            session_start();
+            $_SESSION['message'] = 'Token không hợp lệ.';
+            header('location: /user/change-pass');
+            exit(); // Trang báo lỗi
+        }
+
+        // Kiểm tra token trong cơ sở dữ liệu
+        if ($this->userModel->verifyTokenChangePass($token) == null) {
+            session_start();
+            $_SESSION['message'] = 'Token không hợp lệ hoặc đã hết hạn.';
+            header('location: /user/change-pass');
+            exit();
+        }
+        $email = $this->userModel->verifyTokenChangePass($token);
+        // Nếu token hợp lệ, chuyển đến form đổi mật khẩu
+        return $this->render('user\changePassByEmail', ['email' => $email]);
+    }
+
+    public function resetPassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $newPassword = $_POST['new_password'];
+            $confirmPassword = $_POST['confirm_password'];
+
+            // Kiểm tra mật khẩu khớp nhau
+            if ($newPassword !== $confirmPassword) {
+                $_SESSION['error'] = 'Mật khẩu xác nhận không khớp.';
+                return $this->render('user\changePassByEmail', ['email' => $email]);
+            }
+
+            // Cập nhật mật khẩu
+            if ($this->userModel->resetPassword($email, $newPassword)) {
+                session_start();
+                $_SESSION['message'] = 'Đổi mật khẩu thành công!';
+                header('Location: /login/index');
+                exit();
+            } else {
+                $_SESSION['error'] = 'Có lỗi xảy ra. Vui lòng thử lại.';
+                return $this->render('user\changePassByEmail', ['email' => $email]);
+            }
+        }
+    }
+
 
     public function signin()
     {

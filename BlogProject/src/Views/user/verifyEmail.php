@@ -91,10 +91,25 @@ body {
         <button type="submit" class="btn btn-primary w-100">Xác thực</button>
     </form>
     <div class="footer">
-        <p>Chưa nhận được mã? <a href="/register/verifyagain">Gửi lại mã xác thực</a></p>
+        <p>Chưa nhận được mã? <a href="/user/verifyagain">Gửi lại mã xác thực</a></p>
     </div>
 </div>
+<?php
+// Kiểm tra nếu có thông báo trong session
+// src\Controllers\LoginController.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+if (isset($_SESSION['message'])):
+?>
+<script>
+// Hiển thị thông báo từ session bằng alert trong JavaScript
+alert("<?php echo $_SESSION['message']; ?>");
+<?php unset($_SESSION['message']); // Xóa thông báo sau khi hiển thị 
+        ?>
+</script>
+<?php endif; ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <?php $content = ob_get_clean(); ?>
 <?php include(__DIR__ . '/../../../templates/layout.php'); ?>
