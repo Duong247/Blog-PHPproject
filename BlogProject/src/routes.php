@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AuthenticationController;
+use App\Controllers\CommentController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
 use App\Router;
@@ -58,3 +59,9 @@ $router->addRoute('/\/user\/verify/', [new UserController(), 'verifyEmail']);
 
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
+$router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'createComment']);
+$router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
+$router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
+
+
+

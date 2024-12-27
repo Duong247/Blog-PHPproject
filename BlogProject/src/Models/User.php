@@ -28,6 +28,15 @@ class User
         }
     }
 
+    public function getUserById(int $id): ?array
+    {
+        $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
+    }
+
     public function getUserByEmail(string $email): ?array
     {
         $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE email = ?");

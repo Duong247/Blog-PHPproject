@@ -15,11 +15,9 @@
                         <img src="/templates/assets/images/<?=$post['photo'] ?>" alt="">
                       </div>
                       <div class="down-content">
-                        <span><?=$post['categoryName'] ?></span>
-                        <!-- <a href="postDetail.php"><h4><?=$post['postName']?></h4></a> -->
                         <a href="postDetail/<?=$post['postId']?>"><h4><?=$post['postName']?></h4></a>
                         <ul class="post-info">
-                          <li><a href="#"><?=$post['last_name'] ?></a></li>
+                          <li><a href="#"><?=$post['first_name'].' '.$post['last_name'] ?></a></li>
                           <li>
                             <a href="#"> 
                               <?php $uploadTime = new DateTime($post['uploadTime']);
@@ -35,8 +33,7 @@
                             <div class="col-6">
                               <ul class="post-tags">
                                 <li><i class="fa fa-tags"></i></li>
-                                <li><a href="#">Beauty</a>,</li>
-                                <li><a href="#">Nature</a></li>
+                                <li><a href="#"><?=$post['categoryName'] ?></a></li>
                               </ul>
                             </div>
                             <div class="col-6">
@@ -102,7 +99,7 @@
                     <div class="content">
                       <ul>
                         <?php foreach ($categories as $category):?>
-                          <li><a href="#">- <?=$category['categoryName'] ?></a></li>
+                          <li style="list-style: inside"><a href="#"><?=$category['categoryName'] ?></a></li>
                         <?php endforeach; ?>
                       </ul>
                     </div>

@@ -58,7 +58,7 @@ class Post
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName
+        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName, userId
                                                     FROM blog_schema.posts 
                                                         Inner join blog_schema.users on posts.userId = users.id
                                                         inner join blog_schema.categories on categories.categoryId = posts.categoryId

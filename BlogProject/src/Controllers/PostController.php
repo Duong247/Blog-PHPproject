@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use App\Controller;
 use App\Models\Category;
 
@@ -13,11 +14,14 @@ class PostController extends Controller
     private $categoryModel;
     private $commentModel;
 
+    private $userModel;
+
     public function __construct()
     {
         $this->postModel = new Post();
         $this->categoryModel = new Category();
         $this->commentModel = new Comment();
+        $this->userModel = new User();
     }
 
     public function index(){
@@ -59,6 +63,8 @@ class PostController extends Controller
         $countComments = $this->commentModel->countComment($postId);
         $comments = $this->commentModel->getAllCommentsOfPost($postId);
         $dataComments = [];
+        $currentUserId = 4; // TODO: Thay lại bằng userID lấy từ session
+        $user = $this->userModel->getUserById($currentUserId);
         foreach ($comments as $comment){
             $subcomments = [];
             $tempSubComments = $this->commentModel->getSubCommentsOfMainComment($comment['postId'], $comment['commentId']);
@@ -70,7 +76,7 @@ class PostController extends Controller
                 'subComments' => $subcomments, // return []
             ];
         }
-        $this->render('postDetail', ['post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments,'dataComments'=>$dataComments]);
+        $this->render('postDetail', ['user' => $user, 'post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments,'dataComments'=>$dataComments]);
 
     }
 
