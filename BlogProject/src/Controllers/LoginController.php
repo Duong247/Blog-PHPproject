@@ -54,6 +54,7 @@ class LoginController extends Controller
                     $this->sendVerificationEmail($email);
                 } else {
                     session_start();
+                    unset($_SESSION['form_data']);
                     $_SESSION['currentUser'] = $idUser;
                     header('Location: /');
                     exit();

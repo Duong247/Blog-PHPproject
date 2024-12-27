@@ -165,7 +165,7 @@ class User
         // Nếu không khớp, trả về null
         return null;
     }
-    
+
     public function updateName(int $userId, string $firstName, string $lastName): bool
     {
         // Kiểm tra nếu tên hoặc họ trống
@@ -184,6 +184,77 @@ class User
         // Thực thi câu lệnh SQL và trả về kết quả
         return $stmt->execute();
     }
+
+    public function updateNameAndPhoto(string $firstName, string $lastName, ?string $photo, int $id): bool
+    {
+        // Nếu không có ảnh mới, giữ lại giá trị null hoặc tên ảnh cũ
+        if ($photo === null) {
+            $photo = null;
+        }
+
+        // Câu lệnh SQL để cập nhật tên và ảnh người dùng
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET first_name = ?, last_name = ?, photo = ? WHERE id = ?"
+        );
+
+        // Nếu không có ảnh mới, gán giá trị null vào tham số photo
+        $stmt->bind_param("ssss", $firstName, $lastName, $photo, $id);
+
+        // Thực thi câu lệnh SQL và trả về kết quả
+        return $stmt->execute();
+    }
+
+    public function changePassword(string $id, string $oldPassword, string $newPassword): bool
+    {
+        // Khai báo biến $hashedPassword trước khi sử dụng
+        $hashedPassword = null;
+
+        // Truy vấn lấy mật khẩu đã mã hóa từ cơ sở dữ liệu theo email
+        $stmt = $this->mysqli->prepare("SELECT password_hash FROM users WHERE id = ?");
+        if ($stmt === false) {
+            return false; // Kiểm tra lỗi chuẩn bị câu lệnh SQL
+        }
+
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $stmt->store_result();
+
+        // Liên kết kết quả và lấy mật khẩu đã mã hóa
+        $stmt->bind_result($hashedPassword);
+        $stmt->fetch();  // Lấy giá trị đầu tiên trong kết quả
+
+        // Kiểm tra nếu không có mật khẩu đã mã hóa (trường hợp không có kết quả)
+        if (!isset($hashedPassword)) {
+            return false; // Không có mật khẩu đã mã hóa
+        }
+
+        // Kiểm tra mật khẩu cũ có khớp không
+        if (!password_verify($oldPassword, $hashedPassword)) {
+            return false; // Mật khẩu cũ không đúng
+        }
+
+        // Mã hóa mật khẩu mới
+        $newHashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        // Cập nhật mật khẩu mới vào cơ sở dữ liệu
+        $stmt = $this->mysqli->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+        if ($stmt === false) {
+            return false; // Kiểm tra lỗi chuẩn bị câu lệnh SQL
+        }
+
+        $stmt->bind_param("ss", $newHashedPassword, $id);
+
+        // Thực thi câu lệnh SQL và trả về kết quả
+        if ($stmt->execute()) {
+            // Kiểm tra số dòng bị ảnh hưởng
+            if ($stmt->affected_rows > 0) {
+                return true; // Cập nhật thành công
+            }
+        }
+
+        return false; // Không có thay đổi (có thể do email không tồn tại hoặc lỗi)
+    }
+
 
 
     public function closeConnection(): void

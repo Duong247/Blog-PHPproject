@@ -63,8 +63,10 @@ $router->addRoute('/\/user\/reset-password/', [new UserController(), 'resetPassw
 $router->addRoute('/\/user\/change-pass/', [new UserController(), 'formEmailChangePass']);
 $router->addRoute('/\/user\/send-email-token/', [new UserController(), 'sendTokenChangePass']);
 $router->addRoute('/\/user\/profile/', [new UserController(), 'profile']);
-$router->addRoute('/\/user\/update-name/', [new UserController(), 'formUpdateName']);
-$router->addRoute('/\/user\/process-update-name/', [new UserController(), 'updateName']);
+$router->addRoute('/\/user\/form-update-profile/', [new UserController(), 'formUpdateProfile']);
+$router->addRoute('/\/user\/process-update-profile/', [new UserController(), 'updateProfile']);
+$router->addRoute('/\/user\/form-change-pass/', [new UserController(), 'formChangePass']);
+$router->addRoute('/\/user\/process-change-pass/', [new UserController(), 'changePass']);
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
@@ -79,3 +81,5 @@ $router->addRoute('/\/createPost/', [new PostController(), 'create']);
 $router->addRoute('/\/create/', [new PostController(), 'create']);
 $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 
+$router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
+$router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
