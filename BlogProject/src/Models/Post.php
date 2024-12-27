@@ -70,7 +70,13 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getPostByUserId($userId):array|bool|null
+    {
+        $userId = $this->connection->real_escape_string($userId);
+        $result = $this->connection->query(" SELECT * FROM posts where userId = 2");
 
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 
 
     public function getPostsByCategory($categoryId): array|bool|null

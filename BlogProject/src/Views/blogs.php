@@ -9,11 +9,11 @@
                   <div class="col-lg-6">
                     <div class="blog-post">
                       <div class="blog-thumb">
-                        <img src="/templates/assets/images/<?=$post['photo']?>" alt="">
+                        <img src="/assets/images/postImage/<?=$post['photo']?>" alt="">
                       </div>
                       <div class="down-content">
                         <a href="postDetail/<?=$post['postId']?>"><h4><?=$post['postName']?></h4></a>
-                        <ul class="post-info">
+                        <ul class="post-info" style="padding: 0;">
                           <li><a href="#"><?=$post['first_name']?></a></li>
                           <li>
                             <a href="#">
@@ -28,7 +28,7 @@
                         <div class="post-options">
                           <div class="row">
                             <div class="col-lg-12">
-                              <ul class="post-tags">
+                              <ul class="post-tags" style="padding: 0;">
                                 <li><i class="fa fa-tags"></i></li>
                                 <li><a href="#"><?=$post['categoryName']?></a></li>
                               </ul>
@@ -89,9 +89,9 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <?php foreach($categories as $category){?>
-                          <li><a href="<?=$category['categoryId']?>"><?=$category['categoryName']?></a></li>
-                        <?php }?>
+                      <?php foreach ($categories as $category):?>
+                          <li><a href="/blogs/<?=$category['categoryId'] ?>">- <?=$category['categoryName'] ?></a></li>
+                        <?php endforeach; ?>
 
                       </ul>
                     </div>

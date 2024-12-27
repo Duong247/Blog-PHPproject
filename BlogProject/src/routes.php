@@ -14,8 +14,8 @@ $router = new Router();
 
 // Add routes
 $router->addRoute('/\//', [new UserController(), 'index']);
-$router->addRoute('/\/user/', [new UserController(), 'userList']);
-$router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
+// $router->addRoute('/\/user/', [new UserController(), 'userList']);
+// $router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
 //$router->addRoute('/\/user/', [new UserController(), 'index']);
 $router->addRoute('/\/user\/show\/(\d+)/', [new UserController(), 'show']);
 $router->addRoute('/\/user\/create/', [new UserController(), 'create']);
@@ -72,3 +72,5 @@ $router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'cr
 $router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
 $router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
 
+$router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
+$router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);

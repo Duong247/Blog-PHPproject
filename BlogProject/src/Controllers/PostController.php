@@ -122,7 +122,6 @@ class PostController extends Controller
         
         $this->render('createPost', ['post' => [],'categories'=>$categories]);
         // header('Location: /');  
-
     }
 
 
@@ -141,12 +140,11 @@ class PostController extends Controller
         }
 
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     echo "Sorry, file already exists.";
-        //     $uploadOk = 0;
-        // }else{
-        //     mkdir("assets/images/postImage/", 0777, true);
-        // }
+        if (!file_exists($target_file)) {
+            // echo "Sorry, file already exists.";
+            // $uploadOk = 0;
+            mkdir("assets/images/postImage/", 0777, true);
+        }
 
         // Check file size (limit: 5MB)
         if ($_FILES["fileToUpload"]["size"] > 5000000) {
@@ -173,6 +171,13 @@ class PostController extends Controller
                 return false;
             }
         }
+    }
+
+    public function getPostByUserId(){
+        session_start();
+        $userId = $_SESSION['currentUser'];
+        $posts = $this->postModel->getPostByUserId($userId);
+        $this->render('userPostList', ['posts' => $posts]);
     }
 
 
