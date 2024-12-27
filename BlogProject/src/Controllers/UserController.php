@@ -180,6 +180,7 @@ class UserController extends Controller
             $mail->send();
             session_start();
             $_SESSION['message'] = 'Đã gửi link thay đổi mật khẩu đến email của bạn';
+            unset($_SESSION['form_data']);
             header('location: /user/change-pass');
             exit();
         } catch (Exception $e) {
@@ -254,7 +255,8 @@ class UserController extends Controller
         return $this->render('user\profile', ['user' => $user]);
     }
 
-    public function formUpdateName(){
+    public function formUpdateProfile()
+    {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
             header("Location: /login");
@@ -266,36 +268,80 @@ class UserController extends Controller
         if (!$user) {
             die("Không tìm thấy thông tin người dùng.");
         }
-        return $this->render('user\updateName', ['user' => $user]);
+        return $this->render('user\updateProfile', ['user' => $user]);
     }
-    
-    public function updateName()
+
+    public function updateProfile()
     {
+        // Khởi tạo session (nếu chưa có)
+        session_start();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $firstname = $_POST['firstname'];
-            $lastname = $_POST['lastname'];
+            // Lấy thông tin từ form
+            $firstName = $_POST['firstname'];
+            $lastName = $_POST['lastname'];
+            $oldPhoto = $_POST['oldPhoto'];
+            $photo = null;  // Khai báo biến photo
 
-            // Kiểm tra xem các trường có trống không
-            if (empty($firstname) || empty($lastname)) {
-                $_SESSION['error'] = 'Họ và tên không được để trống.';
-                return $this->render('user\updateName');
+            // Kiểm tra nếu có file ảnh mới
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] == 0) {
+                $fileTmpPath = $_FILES['photo']['tmp_name'];
+                $fileName = $_FILES['photo']['name'];
+                $fileSize = $_FILES['photo']['size'];
+                $fileType = $_FILES['photo']['type'];
+
+                // Đặt đường dẫn và tên file mới
+                $uploadDir = 'assets/images/photo/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true); // Tạo thư mục nếu chưa tồn tại
+                }
+
+                $fileNameNew = time() . '_' . $fileName;  // Đặt tên mới cho ảnh (thêm timestamp để tránh trùng lặp)
+
+                // Check file size (limit: 5MB)
+                if ($fileSize > 5000000) {
+                    $_SESSION['error'] = "File của bạn > 5MB";
+                    $_SESSION['form_data'] = $_POST;
+                    header("Location: /user/form-update-profile");
+                    exit();
+                }
+
+                // Kiểm tra loại file (chỉ cho phép ảnh JPEG, PNG, GIF và JPG)
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+                if (!in_array($fileType, $allowedTypes)) {
+                    $_SESSION['error'] = "Chỉ hỗ trợ ảnh JPEG, PNG, GIF và JPG!";
+                    $_SESSION['form_data'] = $_POST;
+                    header("Location: /user/form-update-profile");
+                    exit();
+                }
+
+                error_log("Ảnh đã được lưu tại: " . $fileTmpPath);
+                // Di chuyển ảnh đến thư mục lưu trữ
+                if (move_uploaded_file($fileTmpPath, $uploadDir . $fileNameNew)) {
+                    // Cập nhật đường dẫn ảnh trong cơ sở dữ liệu
+                    $photo = $fileNameNew;
+                    error_log("Ảnh đã được lưu tại: " . $fileTmpPath . $uploadDir . $fileNameNew);
+                } else {
+                    $error = error_get_last();
+                    $_SESSION['error'] = "Lỗi khi tải ảnh lên: " . ($error ? $error['message'] : "Không rõ lỗi");
+
+                    $_SESSION['form_data'] = $_POST;
+                    header("Location: /user/form-update-profile");
+                    exit();
+                }
             }
-
-            session_start();
-            $id = $_SESSION['currentUser'];
-
-            // Cập nhật tên người dùng
-            if ($this->userModel->updateName($id, $firstname, $lastname)) {
-                session_start();
-                $_SESSION['message'] = 'Cập nhật tên thành công!';
-                header('Location: /user/profile');
-                exit();
-            } else {
-                $_SESSION['error'] = 'Có lỗi xảy ra. Vui lòng thử lại.';
-                return $this->render('user\updateName');
+            // Nếu không có ảnh mới, giữ ảnh cũ
+            if ($photo === null) {
+                $photo = $oldPhoto;
             }
+            // Cập nhật thông tin người dùng trong cơ sở dữ liệu
+            $this->userModel->updateNameAndPhoto($firstName, $lastName, $photo, $_SESSION['currentUser']);
+            unset($_SESSION['form_data']);
+            $_SESSION['message'] = "Cập nhật thông tin thành công!";
+            header("Location: /user/profile");
+            exit();
         }
     }
+
 
     public function logout()
     {

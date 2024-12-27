@@ -112,6 +112,7 @@ class RegisterController extends Controller
             $mail->send();
             session_start();
             $_SESSION['email'] = $email;
+            unset($_SESSION['form_data']);
             return $this->render('user\verifyEmail'); // Chuyển đến trang xác thực
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực: ' . $e->getMessage();

@@ -114,7 +114,7 @@ body {
         <div class="forgot-password">
             <a href="/user/change-pass">Quên mật khẩu?</a>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
     </form>
     <div class="footer">
         <p>Đăng kí tài khoản ngay! <a href="/register/index">Đăng kí</a></p>

@@ -185,6 +185,26 @@ class User
         return $stmt->execute();
     }
 
+    public function updateNameAndPhoto(string $firstName, string $lastName, ?string $photo, int $id): bool
+    {
+        // Nếu không có ảnh mới, giữ lại giá trị null hoặc tên ảnh cũ
+        if ($photo === null) {
+            $photo = null;
+        }
+
+        // Câu lệnh SQL để cập nhật tên và ảnh người dùng
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET first_name = ?, last_name = ?, photo = ? WHERE id = ?"
+        );
+
+        // Nếu không có ảnh mới, gán giá trị null vào tham số photo
+        $stmt->bind_param("ssss", $firstName, $lastName, $photo, $id);
+
+        // Thực thi câu lệnh SQL và trả về kết quả
+        return $stmt->execute();
+    }
+
+
 
     public function closeConnection(): void
     {
