@@ -48,13 +48,17 @@ $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 $router->addRoute('/\//', [new PostController(), 'index']);
 $router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
 $router->addRoute('/\/register/', [new RegisterController(), 'register']);
-$router->addRoute('/\/register\/verify/', [new RegisterController(), 'verifyEmailForm']);
-$router->addRoute('/\/register\/verifyagain/', [new RegisterController(), 'sendVerificationEmailAgain']);
+
 
 $router->addRoute('/\/login\/index/', [new LoginController(), 'index']);
 $router->addRoute('/\/login/', [new LoginController(), 'login']);
 
 $router->addRoute('/\/user\/verify/', [new UserController(), 'verifyEmail']);
-
+$router->addRoute('/\/user\/verifyagain/', [new UserController(), 'sendVerificationEmailAgain']);
+$router->addRoute('/\/user\/verify\/index/', [new UserController(), 'verifyEmailForm']);
+$router->addRoute('/\/user\/change-pass-email\?token=([^&]+)/', [new UserController(), 'checkTokenChangePass']);
+$router->addRoute('/\/user\/reset-password/', [new UserController(), 'resetPassword']);
+$router->addRoute('/\/user\/change-pass/', [new UserController(), 'formEmailChangePass']);
+$router->addRoute('/\/user\/send-email-token/', [new UserController(), 'sendTokenChangePass']);
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);

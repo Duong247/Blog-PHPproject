@@ -108,7 +108,9 @@
                 value="<?php echo isset($_SESSION['form_data']['confirm_password']) ? $_SESSION['form_data']['confirm_password'] : ''; ?>"
                 required>
         </div>
-        <?php if (isset($_SESSION['error'])): ?>
+        <?php
+
+        if (isset($_SESSION['error'])): ?>
             <div class="error-message">
                 <?php echo $_SESSION['error'];
                 unset($_SESSION['error']); ?>

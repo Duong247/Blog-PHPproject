@@ -18,6 +18,10 @@ class LoginController extends Controller
 
     public function index()
     {
+        if (isset($_SESSION['currentUser'])) {
+            header('location: /');
+            exit();
+        }
         $this->render('login\index', []);
     }
 
@@ -49,7 +53,7 @@ class LoginController extends Controller
                     $this->sendVerificationEmail($email);
                 } else {
                     $_SESSION['currentUser'] = $emailUser;
-                    header('Location: /home.php');
+                    header('Location: /');
                     exit();
                 }
             }
@@ -75,7 +79,7 @@ class LoginController extends Controller
             $mail->Port = SMTP_PORT; // Sử dụng hằng số cấu hình
 
             // Người gửi và người nhận
-            $mail->setFrom(SMTP_USER, 'Your Application');
+            $mail->setFrom(SMTP_USER, 'ITC Blog');
             $mail->addAddress($email);
 
             // Nội dung email
@@ -85,7 +89,9 @@ class LoginController extends Controller
             $mail->Body = 'Mã xác thực: ' . $verificationToken;
 
             $mail->send();
-            return $this->render('register/verifyEmail'); // Chuyển đến trang xác thực
+            session_start();
+            $_SESSION['email'] = $email;
+            return $this->render('user\verifyEmail'); // Chuyển đến trang xác thực
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực: ' . $e->getMessage();
         }

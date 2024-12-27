@@ -80,6 +80,32 @@ class User
         return false;
     }
 
+    public function verifyTokenChangePass(string $token): ?string
+    {
+        $stmt = $this->mysqli->prepare(
+            "SELECT email FROM users WHERE password_reset_token = ? AND token_expiry > NOW()"
+        );
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user) {
+            return $user['email'];
+        }
+
+        return null;
+    }
+
+    public function storeChangePassToken(string $email, string $token): bool
+    {
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET password_reset_token = ?, token_expiry = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE email = ?"
+        );
+        $stmt->bind_param("ss", $token, $email);
+        return $stmt->execute();
+    }
+
     public function resetPassword(string $email, string $newPassword): bool
     {
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
