@@ -19,7 +19,11 @@ class CommentController extends Controller
         $postId = $_POST['postId'];
         $commentId = $_POST['commentId'] ?? null;
         $content = htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');
-        $userId = 4; //TODO: Sửa lại userId bằng userId được lấy từ session sau khi có session
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
+        $userId = $_SESSION['currentUser'];
         $lastId = $this->commentModel->createComment($content, $postId, $userId, $commentId);
         header('Location: /postDetail/' . $postId . '#cmt' . $lastId['LAST_INSERT_ID()']);
     }

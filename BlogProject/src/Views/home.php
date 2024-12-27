@@ -12,7 +12,7 @@
               <div class="col-lg-12">
                 <div class="blog-post">
                   <div class="blog-thumb">
-                    <img src="/templates/assets/images/<?= $post['photo'] ?>" alt="">
+                    <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="">
                   </div>
                   <div class="down-content">
                     <a href="postDetail/<?= $post['postId'] ?>">
@@ -55,7 +55,7 @@
             <?php endforeach; ?>
             <div class="col-lg-12">
               <div class="main-button">
-                <a href="blogs.php">View All Posts</a>
+                <a href="blogs">View All Posts</a>
               </div>
             </div>
           </div>
@@ -79,9 +79,9 @@
                           <h5><?= $post['postName'] ?></h5>
                           <span>
                             <?php
-                            $uploadTime = new DateTime($post['uploadTime']);
-                            $formattedDate = $uploadTime->format('H:i d/m/Y');
-                            echo $formattedDate;
+                              $uploadTime = new DateTime($post['uploadTime']);
+                              $formattedDate = $uploadTime->format('H:i d/m/Y');
+                              echo $formattedDate;
                             ?>
                           </span>
                         </a>
@@ -100,7 +100,7 @@
                 <div class="content">
                   <ul>
                     <?php foreach ($categories as $category): ?>
-                      <li style="list-style: inside"><a href="#"><?= $category['categoryName'] ?></a></li>
+                      <li style="list-style: inside"><a href="blogs/<?=$category['categoryId'] ?>"><?=$category['categoryName'] ?></a></li>
                     <?php endforeach; ?>
                   </ul>
                 </div>

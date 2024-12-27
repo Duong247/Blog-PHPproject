@@ -6,31 +6,39 @@
     <table class="table mt-3 table-bordered">
         <thead>
             <tr>
-            <th scope="col" style="width:80px">#</th>
-            <th scope="col">Tên bài viết</th>
-            <th scope="col">Thể loại</th>
-            <th scope="col">Ảnh</th>
-            <th scope="col">Thời điểm đăng</th>
-            <th scope="col">Trạng thái</th>
-            <th scope="col"></th>
+                <th scope="col">Ảnh</th>
+                <th scope="col">Tên bài viết</th>
+                <th scope="col">Thể loại</th>
+                <th scope="col">Thời điểm đăng</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td class="text-center"><img src="https://m.media-amazon.com/images/M/MV5BNjIyYjg4YWUtNTM2OS00YTc3LWE5NTEtZTdmMDdiMzE1OGJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" class="img-thumbnail" alt="..." style="width: 80px;"></td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td style="width: 80px;">
-                <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" style="margin: 1px;"><i class="fa-solid fa-pencil"></i></button>
-                    <button type="button" class="btn btn-danger" style="margin: 1px;"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            </td>
+            <?php foreach ($posts as $post){?>
+                <tr>
+                    <td class="text-center"><img src="assets/images/postImage/<?=$post['photo']?>" class="img-thumbnail" alt="..." style="width: 80px;"></td>
+                    <td><?=$post['postName']?></td>
+                    <td><?=$post['categoryName']?></td>
+                    <td><?=$post['uploadTime']?></td>
+                    <td>
+                        <?php if ((int)$post['status'] == 0) { ?>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
+                        <?php } else { ?>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                        <?php } ?>
 
-            </tr>
+                    </td>
+                    <td style="width: 80px;">
+                        <div class="<?=$post['status'] == 0?"d-flex ":"text-center " ?> justify-content-between">
+                            <a <?=$post['status'] == 0?"":"hidden" ?> type="button" class="btn btn-primary" style="margin: 1px;" href="<?=$post['postId']?>"><i class="fa-solid fa-pencil" style="color: #fff;"></i></a>
+                            <a type="button" class="btn btn-danger" style="margin: 1px;" href="post/delete/<?=$post['postId']?>"><i class="fa-solid fa-trash" style="color: #fff;"></i></a>
+                        </div>
+                    </td>
+                </tr>
+                
+            <?php }?>
+
             
         </tbody>
     </table>

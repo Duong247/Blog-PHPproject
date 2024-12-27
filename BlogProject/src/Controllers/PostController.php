@@ -74,7 +74,11 @@ class PostController extends Controller
         $countComments = $this->commentModel->countComment($postId);
         $comments = $this->commentModel->getAllCommentsOfPost($postId);
         $dataComments = [];
-        $currentUserId = 4; // TODO: Thay lại bằng userID lấy từ session
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
+        $currentUserId = $_SESSION['currentUser'];
         $user = $this->userModel->getUserById($currentUserId);
         foreach ($comments as $comment){
             $subcomments = [];
@@ -104,6 +108,9 @@ class PostController extends Controller
         //     header('Location: /user/signin');
         // }
         // Handle form submission to create a new post
+        session_start();
+        $userId = $_SESSION['currentUser'];
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
             $postName= $_POST['postName'];
@@ -111,7 +118,7 @@ class PostController extends Controller
             $categoryId= $_POST['categoryId'];
             $photo = $this->uploadFile();
             $content= $_POST['content'];
-            $userId= $_POST['userId'];
+            // $userId= $_POST['userId'];
             // Call the model to create a new post
             $this->postModel->createPost($postName,$description,$categoryId,$photo,$content,$userId);
         }
@@ -122,7 +129,7 @@ class PostController extends Controller
         
         $this->render('createPost', ['post' => [],'categories'=>$categories]);
         // header('Location: /');  
-
+        header('Location: /userPostList');
     }
 
 
@@ -141,12 +148,11 @@ class PostController extends Controller
         }
 
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     echo "Sorry, file already exists.";
-        //     $uploadOk = 0;
-        // }else{
-        //     mkdir("assets/images/postImage/", 0777, true);
-        // }
+        if (!file_exists($target_file)) {
+            // echo "Sorry, file already exists.";
+            // $uploadOk = 0;
+            mkdir("assets/images/postImage/", 0777, true);
+        }
 
         // Check file size (limit: 5MB)
         if ($_FILES["fileToUpload"]["size"] > 5000000) {
@@ -173,6 +179,13 @@ class PostController extends Controller
                 return false;
             }
         }
+    }
+
+    public function getPostByUserId(){
+        session_start();
+        $userId = $_SESSION['currentUser'];
+        $posts = $this->postModel->getPostByUserId($userId);
+        $this->render('userPostList', ['posts' => $posts,'currentUserId'=>$userId]);
     }
 
 
@@ -206,6 +219,6 @@ class PostController extends Controller
         $this->postModel->deletePost($postId);
 
         // Redirect to the index page after deletion
-        header('Location: /posts/post-list');
+        header('Location: /userPostList');
     }
 }

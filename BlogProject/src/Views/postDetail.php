@@ -1,4 +1,4 @@
-<!-- <img src="/assets/images/postImage/<?=$post['photo'] ?>" alt="ảnh"> -->
+<!-- <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="ảnh"> -->
 <?php ob_start(); ?>
 
 <section class="blog-posts grid-system">
@@ -10,7 +10,7 @@
             <div class="col-lg-12">
               <div class="blog-post">
                 <div class="blog-thumb">
-                  <img src="/templates/assets/images/<?= $post['photo'] ?>" alt="ảnh">
+                  <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="ảnh">
                 </div>
                 <div class="down-content">
                   <a href="postDetail.php">
@@ -29,9 +29,9 @@
                     </li>
                     <li><a href="#"><?= $countComment['COUNT(*)'] ?> Bình luận</a></li>
                   </ul>
-                  <p>
-                    <?= $post['content'] ?>
-                  </p>
+
+                  <?= $post['content'] ?>
+
                   <div class="post-options">
                     <div class="row">
                       <div class="col-6">
@@ -98,7 +98,10 @@
                               </h4>
                               <p><?= $comment['mainComment']['commentContent'] ?></p>
                               <?php
-                              $currentUserId = 4; // TODO: Thay bằng userId lấy từ session
+                              if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
+                                header('Location: /login/index');
+                              }
+                              $currentUserId = $_SESSION['currentUser'];
                               if ($currentUserId == $post['userId'] || $currentUserId == $comment['mainComment']['userId'] || $user['role'] == 1) {
                                 ?>
                                 <button class="btn delete-btn"
@@ -168,8 +171,8 @@
                                   </div>
                                   <div class="col-lg-12">
                                     <fieldset>
-                                      <button style="width: 80px; border-radius: 0; margin-top: 4px" type="submit" id="form-submit"
-                                        class="main-button reply-submit-btn">Đăng</button>
+                                      <button style="width: 80px; border-radius: 0; margin-top: 4px" type="submit"
+                                        id="form-submit" class="main-button reply-submit-btn">Đăng</button>
                                     </fieldset>
                                   </div>
                                 </div>
@@ -200,7 +203,8 @@
                       </div>
                       <div class="col-lg-12">
                         <fieldset>
-                          <button style="width: 80px; border-radius: 0;" type="submit" id="form-submit" class="main-button">Đăng</button>
+                          <button style="width: 80px; border-radius: 0;" type="submit" id="form-submit"
+                            class="main-button">Đăng</button>
                         </fieldset>
                       </div>
                     </div>
@@ -255,7 +259,8 @@
                 <div class="content">
                   <ul>
                     <?php foreach ($categories as $category): ?>
-                      <li style="list-style: inside"><a href="#"><?= $category['categoryName'] ?></a></li>
+                      <li style="list-style: inside"><a
+                          href="/blogs/<?= $category['categoryId'] ?>"><?= $category['categoryName'] ?></a></li>
                     <?php endforeach; ?>
                   </ul>
                 </div>

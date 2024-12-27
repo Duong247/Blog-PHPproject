@@ -70,7 +70,13 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function getPostByUserId($userId):array|bool|null
+    {
+        $userId = $this->connection->real_escape_string($userId);
+        $result = $this->connection->query(" SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId");
 
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 
 
     public function getPostsByCategory($categoryId): array|bool|null

@@ -15,8 +15,8 @@ $router = new Router();
 
 // Add routes
 $router->addRoute('/\//', [new UserController(), 'index']);
-$router->addRoute('/\/user/', [new UserController(), 'userList']);
-$router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
+// $router->addRoute('/\/user/', [new UserController(), 'userList']);
+// $router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
 //$router->addRoute('/\/user/', [new UserController(), 'index']);
 $router->addRoute('/\/user\/show\/(\d+)/', [new UserController(), 'show']);
 $router->addRoute('/\/user\/create/', [new UserController(), 'create']);
@@ -66,6 +66,8 @@ $router->addRoute('/\/user\/send-email-token/', [new UserController(), 'sendToke
 $router->addRoute('/\/user\/profile/', [new UserController(), 'profile']);
 $router->addRoute('/\/user\/form-update-profile/', [new UserController(), 'formUpdateProfile']);
 $router->addRoute('/\/user\/process-update-profile/', [new UserController(), 'updateProfile']);
+$router->addRoute('/\/user\/form-change-pass/', [new UserController(), 'formChangePass']);
+$router->addRoute('/\/user\/process-change-pass/', [new UserController(), 'changePass']);
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 //post details
@@ -73,6 +75,16 @@ $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
 $router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'createComment']);
 $router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
 $router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
+//Blogs
+$router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
+$router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
+
+$router->addRoute('/\/createPost/', [new PostController(), 'create']);
+$router->addRoute('/\/create/', [new PostController(), 'create']);
+$router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
+
+$router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
+$router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
 
 //Admin controllers
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
