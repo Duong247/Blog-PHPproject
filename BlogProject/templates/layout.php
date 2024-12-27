@@ -73,7 +73,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a href="#" class="dropdown-item">Quản lý bài viết</a></li>
-                                    <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
+                                    <li><a href="/user/profile" class="dropdown-item">Trang cá nhân</a></li>
                                     <li>
                                         <form method="POST" action="/logout">
                                             <button type="submit">Logout</button>

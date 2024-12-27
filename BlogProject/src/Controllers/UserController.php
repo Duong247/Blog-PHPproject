@@ -342,6 +342,53 @@ class UserController extends Controller
         }
     }
 
+    public function formChangePass()
+    {
+        session_start();
+        if (!isset($_SESSION['currentUser'])) {
+            header("Location: /login");
+            exit;
+        }
+        return $this->render('user\changePass');
+    }
+
+    public function changePass()
+    {
+        session_start();
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $oldpass = $_POST['oldpass'];
+            $newpass = $_POST['newpass'];
+            $confirmpass = $_POST['confirmpass'];
+
+            if (
+                $newpass !== $confirmpass
+            ) {
+                $_SESSION['error'] = 'Mật khẩu không khớp!';
+                // Đảm bảo giữ lại dữ liệu nhập vào khi có lỗi
+                $_SESSION['form_data'] = $_POST;
+                return $this->render('user/changePass');
+            }
+
+            if (!$this->userModel->changePassword($_SESSION['currentUser'], $oldpass, $newpass)) {
+                $_SESSION['error'] = 'Mật khẩu không đúng!';
+                // Đảm bảo giữ lại dữ liệu nhập vào khi có lỗi
+                $_SESSION['form_data'] = $_POST;
+                return $this->render('user/changePass');
+            } else {
+                unset($_SESSION['form_data']);
+                $_SESSION['message'] = 'Đổi mật khẩu thành công.';
+                $id = $_SESSION['currentUser'];
+                $user = $this->userModel->getUserById($id);
+
+                if (!$user) {
+                    die("Không tìm thấy thông tin người dùng.");
+                }
+
+                return $this->render('user\profile', ['user' => $user]);
+            }
+        }
+    }
+
 
     public function logout()
     {

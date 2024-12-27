@@ -65,6 +65,8 @@ $router->addRoute('/\/user\/send-email-token/', [new UserController(), 'sendToke
 $router->addRoute('/\/user\/profile/', [new UserController(), 'profile']);
 $router->addRoute('/\/user\/form-update-profile/', [new UserController(), 'formUpdateProfile']);
 $router->addRoute('/\/user\/process-update-profile/', [new UserController(), 'updateProfile']);
+$router->addRoute('/\/user\/form-change-pass/', [new UserController(), 'formChangePass']);
+$router->addRoute('/\/user\/process-change-pass/', [new UserController(), 'changePass']);
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);

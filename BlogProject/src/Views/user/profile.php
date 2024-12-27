@@ -184,7 +184,7 @@
     <?php endif; ?>
 
     <!-- Thay đổi mật khẩu -->
-    <form action="/user/changePassword" method="POST" style="margin-top: 30px;">
+    <form action="/user/form-change-pass" method="POST" style="margin-top: 30px;">
         <div class="form-group d-flex justify-content-start gap-2">
             <button type="submit" class="btn btn-primary"
                 style="height: 50px; width: 30%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
