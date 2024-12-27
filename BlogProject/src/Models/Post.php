@@ -115,7 +115,7 @@ class Post
         return $result->fetch_assoc();
     }
 
-    public function createPost($postName,$description,$categoryId,$photo,$content,$userId)
+    public function createPost($postName, $description, $categoryId, $photo, $content, $userId)
     {
         $postName = $this->connection->real_escape_string($postName);
         $description = $this->connection->real_escape_string($description);
@@ -127,13 +127,13 @@ class Post
         $this->connection->query("INSERT INTO posts
                                         (`postName`, `description`, `categoryId`, `photo`, `content`,  `userId` ) 
                                         VALUES ('$postName','$description','$categoryId','$photo','$content','$userId')");
-        
+
         // Redirect to the index page after creating post
         header('Location: /');
-        
+
     }
 
-    public function updatePost($postId, $postName,$description,$categoryId,$photo,$content,$userId)
+    public function updatePost($postId, $postName, $description, $categoryId, $photo, $content, $userId)
     {
         $postId = $this->connection->real_escape_string($postId);
         $postName = $this->connection->real_escape_string($postName);
@@ -142,12 +142,12 @@ class Post
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
         $userId = $this->connection->real_escape_string($userId);
-        
+
 
         $this->connection->query("UPDATE blog_schema.posts
                                         SET postName = '<?=$postName?>' ,description = '<?=$description?>',categoryId = '<?=$categoryId?>',photo='<?=$photo?>',content='<?=$content?>',uploadTime=Now()
                                         WHERE postId = '<?=$postId?>'");
-        
+
         // Redirect to the index page after update
         header('Location: /');
     }
@@ -155,6 +155,35 @@ class Post
     public function deletePost($postId)
     {
         $postId = $this->connection->real_escape_string($postId);
-        $this->connection->query("DELETE FROM posts WHERE id=$postId");
+        $this->connection->query("DELETE FROM comments WHERE postId = $postId");
+        $this->connection->query("DELETE FROM posts WHERE postId = $postId");
     }
+
+    public function getAllManagedPosts(){
+        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function acceptPost($postId){
+        $this->connection->query("UPDATE posts SET status = 1 WHERE postId = $postId");
+    }
+
+    public function declinePost($postId){
+        $this->connection->query("UPDATE posts SET status = -1 WHERE postId = $postId");
+    }
+
 }

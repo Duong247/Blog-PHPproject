@@ -11,50 +11,70 @@
             <button class="btn btn-outline-secondary" type="button">Tìm kiếm</button>
         </div>
     </div>
-
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>
                 <th class="text-center" scope="col" style="width:80px">Hình ảnh</th>
                 <th class="text-center" scope="col">Tên bài viết</th>
-                <th class="text-center" scope="col">Mô tả</th>
-                <th class="text-center" scope="col">Loại</th>
-                <th class="text-center" scope="col">Nội dung</th>
-                <th class="text-center" scope="col">Tác giả</th>
+                <th style="width: 180px;" class="text-center" scope="col">Mô tả</th>
+                <th style="width: 100px;" class="text-center" scope="col">Loại</th>
+                <th style="width: 250px;" class="text-center" scope="col">Nội dung</th>
+                <th style="width: 120px;" class="text-center" scope="col">Tác giả</th>
                 <th style="width: 150px;" class="text-center" scope="col">Thời gian đăng</th>
                 <th style="width: 120px;" class="text-center" scope="col">Trạng thái</th>
                 <th style="width: 100px;" class="text-center" scope="col">Hành động</th>
             </tr>
         </thead>
         <tbody>
-            <?php for ($i = 0; $i < 5; $i++) { ?>
+            <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img
                             src="https://m.media-amazon.com/images/M/MV5BNjIyYjg4YWUtNTM2OS00YTc3LWE5NTEtZTdmMDdiMzE1OGJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
                             class="img-thumbnail" alt="..." style="width: 80px;"></td>
-                    <td>Dương ma tê</td>
-                    <td>Mô tả demo</td>
-                    <td class="text-center">ITC</td>
-                    <td>Những chú bé đần</td>
-                    <td class="text-center">Minh Lại</td>
-                    <td class="text-center">2024-12-17 23:35:31</td>
+                    <td><?= $post['postName'] ?></td>
+                    <td><?= $post['description'] ?></td>
+                    <td class="text-center"><?= $post['categoryName'] ?></td>
+                    <td><?= $post['content'] ?></td>
+                    <td class="text-center"><?= $post['first_name'] . ' ' . $post['last_name'] ?></td>
                     <td class="text-center">
-                        <?php if ($i % 2 != 0) { ?>
+                        <?php
+                        $uploadTime = new DateTime($post['uploadTime']);
+                        $formattedDate = $uploadTime->format('H:i:s d/m/Y');
+                        echo $formattedDate;
+                        ?>
+                    </td>
+                    <td class="text-center">
+                        <?php if ($post['status'] == 0) { ?>
                             <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
+                        <?php } else if ($post['status'] == 1) { ?>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
                         <?php } else { ?>
-                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
                         <?php } ?>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <?php if ($i % 2 != 0) { ?>
-                                <button type="button" class="btn btn-success" style="margin: 1px;" data-toggle="tooltip"
-                                    data-placement="top" title="Duyệt bài viết"><i class="fa-solid fa-check"></i></button>
-                                <button type="button" class="btn btn-danger" style="margin: 1px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xóa bài viết"><i class="fa-solid fa-trash"></i></button>
+                            <?php if ($post['status'] == 0) { ?>
+                                <button type="button" class="btn btn-success" style="margin: 4px;" data-toggle="tooltip"
+                                    data-placement="top" title="Duyệt bài viết" onclick="acceptPost(<?= $post['postId'] ?>)">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                    data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                    onclick="declinePost(<?= $post['postId'] ?>)">
+                                    <i class="fa-solid fa-ban"></i>
+                                </button>
+                            <?php } else if ($post['status'] == -1) { ?>
+                                    <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Xóa bài viết" onclick="deletePost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                             <?php } else { ?>
-                                <button type="button" class="btn btn-danger" style="margin: 1px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xóa bài viết"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                        data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                        onclick="declinePost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
                             <?php } ?>
                         </div>
                     </td>
@@ -81,6 +101,25 @@
         </ul>
     </nav>
 </div>
+<script>
+    function acceptPost(postId) {
+        if (confirm('Bạn có chắc muốn duyệt bài viết này?')) {
+            window.location.href = '/acceptPost?postId=' + postId;
+        }
+    }
+
+    function declinePost(postId) {
+        if (confirm('Bạn có chắc muốn từ chối duyệt bài viết này?')) {
+            window.location.href = '/declinePost?postId=' + postId;
+        }
+    }
+
+    function deletePost(postId) {
+        if (confirm('Bạn có chắc muốn xóa bài viết này?')) {
+            window.location.href = '/deletePost?postId=' + postId;
+        }
+    }
+</script>
 <?php $content = ob_get_clean(); ?>
 <?php
 define('BASE_PATH', dirname(__DIR__, 2));

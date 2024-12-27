@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\AdminController;
 use App\Controllers\AuthenticationController;
 use App\Controllers\CommentController;
 use App\Controllers\PostController;
@@ -67,7 +68,19 @@ $router->addRoute('/\/user\/form-update-profile/', [new UserController(), 'formU
 $router->addRoute('/\/user\/process-update-profile/', [new UserController(), 'updateProfile']);
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
+//post details
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
 $router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'createComment']);
 $router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
 $router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
+
+//Admin controllers
+$router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
+$router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
+$router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
+$router->addRoute('/\/deletePost\?postId=(\d+)/', [new AdminController(), 'deletePost']);
+
+
+
+
+
