@@ -9,12 +9,12 @@
                 <div class="col-lg-12">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="/templates/assets/images/<?=$post['photo'] ?>" alt="ảnh">
+                      <img src="/assets/images/postImage/<?=$post['photo'] ?>" alt="ảnh">
                     </div>
                     <div class="down-content">
                       <span><?=$post['categoryName']?></span>
-                      <a href="postDetail.php"><h4><?=$post['postName']?></h4></a>
-                      <ul class="post-info">
+                      <h4><?=$post['postName']?></h4>
+                      <ul class="post-info" style="padding: 0;">
                         <li><a href="#"><?=$post['last_name'].' '.$post['first_name']?></a></li>
                         <li>
                           <a href="#">
@@ -25,16 +25,15 @@
                         </li>
                         <li><a href="#"><?=$countComment['COUNT(*)'] ?> Comments</a></li>
                       </ul>
-                      <p>
+                      
                       <?=$post['content']?>
-                      </p>
+                      
                       <div class="post-options">
                         <div class="row">
                           <div class="col-6">
-                            <ul class="post-tags">
+                            <ul class="post-tags" style="padding: 0;">
                               <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
+                              <li><a href="#"><?=$post['categoryName']?></a></li>
                             </ul>
                           </div>
                           <div class="col-6">
@@ -176,8 +175,8 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <?php foreach ($categories as $category):?>
-                          <li><a href="#">- <?=$category['categoryName'] ?></a></li>
+                      <?php foreach ($categories as $category):?>
+                          <li><a href="/blogs/<?=$category['categoryId'] ?>">- <?=$category['categoryName'] ?></a></li>
                         <?php endforeach; ?>
                       </ul>
                     </div>
