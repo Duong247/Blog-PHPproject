@@ -38,7 +38,6 @@ $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 // $router->addRoute('/\/auth\/validate/', [new AuthenticationController(), 'authenticate']);
 // $router->addRoute('/\/post\/logout/', [new PostController(), 'logout']);
 
-$router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 
 
 // $router->addRoute('/\/home/', [new PostController(), 'home']);
@@ -46,6 +45,8 @@ $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 // ITC route
 
 //Home
+$router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
+$router->addRoute('/\/blogs/', [new PostController(), 'postList']);
 $router->addRoute('/\//', [new PostController(), 'index']);
 $router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
 $router->addRoute('/\/register/', [new RegisterController(), 'register']);

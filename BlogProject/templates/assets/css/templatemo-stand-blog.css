@@ -405,6 +405,8 @@ header .navbar {
 .blog-posts .blog-thumb img {
 	width: 100%;
 	overflow: hidden;
+    height: 28vw;
+	object-fit: cover;
 }
 
 .blog-posts .down-content {
