@@ -14,54 +14,60 @@
           <h1>Post</h1>
         </div>
         <div id="main_body">
-          <fieldset>
-            <legend>Post Information</legend>
-            <div class="row">
-              <div class="col_50 form_input">
-                <label for="title">Title</label>
-                <input type="text" class="title" id="title" name="title" >
-              </div>
-              <div class="col_25 form_input">
-                <label for="author">Author</label>
-                <input type="text" class="author" id="author" name="author" >
-              </div>
-            </div>
-            <div class="form_input">
-              <label for="description">Description</label>
-              <textarea id="description" name="description" cols="30" rows="5" class="description"></textarea>
-            </div>
-            <div class="row">
-              <div class="form_input">
-                <label for="category">Category</label>
-                <select id="category" name="category" class="form-select">
-                  <option value="1">Giải phẫu</option>
-                  <!-- Add more categories as needed -->
-                </select>
-              </div>
-              <div class="form_input">
-                <label for="upload_file">Upload file</label>
-                <div class="upload_file">
-                  <input
-                    type="file"
-                    class="file_input"
-                    id="image"
-                    name="image"
-                    accept="image/*"
-                    onchange="readURL(this);"
-                  >
+          <form action="create" method="POST" enctype="multipart/form-data">
+            <fieldset>
+              <legend>Post Information</legend>
+              <div class="row">
+                <div class="col_50 form_input">
+                  <label for="postName">Tiêu đề</label>
+                  <input type="text" class="postName" id="postName" name="postName" >
+                </div>
+                <div class="col_25 form_input">
+                  <!-- <label for="currentUser">currentUser</label> -->
+                  <input type="text" hidden class="currentUser" id="currentUser" name="currentUser" >
                 </div>
               </div>
-            </div>
-            <div class="form_input">
-              <label for="textarea_containner">Body:</label>
-              <div id="textarea_containner">
-                <textarea class="textarea" id="body_text" name="body"></textarea>
+              <div class="form_input">
+                <label for="description">Mô tả</label>
+                <textarea id="description" name="description" cols="30" rows="5" class="description"></textarea>
               </div>
-            </div>
-          </fieldset>
+              <div class="row">
+                <div class="form_input">
+                  <label for="categoryId">Thể loại</label>
+                  <select id="category" name="categoryId" class="form-select">
+                    <!-- <option value="">Giải phẫu</option> -->
+                    <?php foreach($categories as $category){?>
+                      <option value="<?=$category['categoryId']?>"><?=$category['categoryName']?></option>  
+                    <?php }?>
+                    <!-- Add more categories as needed -->
+                  </select>
+                </div>
+                <div class="form_input">
+                  <label for="upload_file">Upload file</label>
+                  <div class="upload_file">
+                    <input
+                      type="file"
+                      class="fileToUpload"
+                      id="image"
+                      name="fileToUpload"
+                      accept="image/*"
+                      onchange="readURL(this);"
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="form_input">
+                <label for="textarea_containner">Body:</label>
+                <div id="textarea_containner">
+                  <textarea class="textarea" id="body_text" name="content"></textarea>
+                </div>
+              </div>
+              <!-- TODO: Truyền userId -->
+              <button type="submit" id="save_btn">Save</button>
+            </fieldset>
+          </form>
         </div>
       </div>
-      <button id="save_btn">Save</button>
     </div>
   </div>
 </div>
@@ -80,8 +86,52 @@ tinymce.init({
     ],
 });
 
+tinymce.init({
+    selector: '.textarea',
+    plugins: 'image',
+    toolbar: 'image',
+    images_upload_url: '/upload-image.php',
+    images_upload_handler: function (blobInfo, success, failure) {
+        const formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+        fetch('/upload-image.php', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => success(data.location))
+        .catch(error => failure('Image upload failed.'));
+    }
+});
+
+
+document.getElementById('save_btn').addEventListener('click', function(event) {
+    tinymce.triggerSave(); // Đồng bộ dữ liệu TinyMCE về <textarea>
+    const formData = new FormData();
+    formData.append('title', document.getElementById('title').value);
+    formData.append('author', document.getElementById('author').value);
+    formData.append('description', document.getElementById('description').value);
+    formData.append('category', document.getElementById('category').value);
+    formData.append('body', document.getElementById('body_text').value);
+    formData.append('image', document.getElementById('image').files[0]);
+
+    fetch('/save-post.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        alert('Post saved successfully!');
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+
+
 </script>
-<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/jquery/jquery.min.js"></script  >
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Additional Scripts -->
@@ -101,6 +151,7 @@ tinymce.init({
       t.style.color='#fff';
       }
   }
+  tinymce.activeEditor.setContent('<span>some</span> html');
 </script>
 </div>
 <?php $content = ob_get_clean(); ?>

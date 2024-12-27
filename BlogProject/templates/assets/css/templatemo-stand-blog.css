@@ -6,6 +6,10 @@ https://templatemo.com/tm-551-stand-blog
 
 */
 
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   overflow-x: hidden;
@@ -24,9 +28,10 @@ a {
 	text-decoration: none!important;
 }
 ul {
-	padding: 0;
+	padding: 0 !important;
 	margin: 0;
 	list-style: none;
+	margin-bottom: 0 !important;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -405,10 +410,12 @@ header .navbar {
 .blog-posts .blog-thumb img {
 	width: 100%;
 	overflow: hidden;
+    height: 28vw;
+	object-fit: cover;
 }
 
 .blog-posts .down-content {
-	padding: 40px;
+	padding: 28px;
 	border-right: 1px solid #eee;
 	border-left: 1px solid #eee;
 	border-bottom: 1px solid #eee;
@@ -633,7 +640,6 @@ ul.page-numbers li a:hover {
 	height: 46px;
 	border: 1px solid #eee;
 	font-size: 13px;
-	text-transform: uppercase;
 	font-weight: 500;
 	color: #7a7a7a;
 	outline: none;
@@ -674,7 +680,7 @@ ul.page-numbers li a:hover {
 }
 
 .sidebar .sidebar-item {
-	margin-top: 50px;
+	margin-top: 32px;
 }
 
 .sidebar .search {
@@ -1083,6 +1089,25 @@ footer p a:hover {
 		margin-top: 60px;
 	}
 }
+
+.delete-btn {
+	position: absolute;
+	top: 0;
+	right: 10px;
+	background: none;
+	border: none;
+	cursor: pointer;
+  }
+  
+  .delete-btn i {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 16px;
+	transition: color 0.3s ease; /* Thêm hiệu ứng mượt */
+  }
+  
+  .delete-btn:hover i {
+	color: rgb(182, 5, 5); /* Màu đỏ khi hover */
+  }
 
 @media (max-width: 768px) {
 	.owl-banner .owl-nav {

@@ -10,17 +10,17 @@ use PHPMailer\PHPMailer\Exception;
 
 class RegisterController extends Controller
 {
+    private $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+    }
     // Hàm hiển thị form đăng ký
     public function showRegistrationForm()
     {
         // Hiển thị trang đăng ký
         return $this->render('register/index'); // 'register' là tên render của form đăng ký
-    }
-
-    public function verifyEmailForm()
-    {
-        // Hiển thị trang đăng ký
-        return $this->render('register/verifyEmail'); // 'register' là tên render của form đăng ký
     }
 
     // Hàm xử lý đăng ký người dùng
@@ -52,8 +52,7 @@ class RegisterController extends Controller
             }
 
             // Kiểm tra email đã tồn tại trong cơ sở dữ liệu chưa
-            $userModel = new User();
-            $existingUser = $userModel->getUserByEmail($email);
+            $existingUser = $this->userModel->getUserByEmail($email);
             if ($existingUser) {
                 $_SESSION['error'] = 'Email đã được đăng ký!';
                 // Đảm bảo giữ lại dữ liệu nhập vào khi có lỗi
@@ -62,29 +61,26 @@ class RegisterController extends Controller
             }
 
             // Tạo người dùng mới
-            $userModel->createUser(
+            $this->userModel->createUser(
                 $email,
                 $password,
                 $firstName,
                 $lastName
             );
 
-            // Tạo mã xác thực (token ngẫu nhiên)
-            $verificationToken = rand(100000, 999999); // Token xác thực ngẫu nhiên
-            $userModel->storeVerificationToken($email, $verificationToken); // Lưu token vào CSDL
-
             // Gửi email xác thực với token
-            $this->sendVerificationEmail($email, $verificationToken);
-
-            // Đặt thông báo thành công
-            $_SESSION['success'] = 'Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản của bạn.';
-            return $this->render('register/verifyEmail'); // Chuyển đến trang xác thực
+            $this->sendVerificationEmail($email);
+            return;
         }
     }
 
     // Hàm gửi email xác thực
-    private function sendVerificationEmail($email, $verificationToken)
+    private function sendVerificationEmail($email)
     {
+
+        // Tạo mã xác thực (token ngẫu nhiên)
+        $verificationToken = rand(100000, 999999); // Token xác thực ngẫu nhiên
+        $this->userModel->storeVerificationToken($email, $verificationToken); // Lưu token vào CSDL
         // Gửi email
         $mail = new PHPMailer(true);
         try {
@@ -98,16 +94,26 @@ class RegisterController extends Controller
             $mail->Port = SMTP_PORT; // Sử dụng hằng số cấu hình
 
             // Người gửi và người nhận
-            $mail->setFrom(SMTP_USER, 'Your Application');
+            $mail->setFrom(SMTP_USER, 'ITC Blog');
             $mail->addAddress($email);
 
             // Nội dung email
             $mail->isHTML(true);
-            $mail->Subject = mb_encode_mimeheader('Xác thực email của bạn', 'UTF-8', 'Q');
+            $mail->Subject = iconv_mime_encode('Subject', 'Xác thực email của bạn', array(
+                'input-charset' => 'UTF-8',
+                'output-charset' => 'UTF-8',
+                'line-length' => 76,
+                'line-break-chars' => "\r\n"
+            ));
+            
 
             $mail->Body = 'Mã xác thực: ' . $verificationToken;
 
             $mail->send();
+            session_start();
+            $_SESSION['email'] = $email;
+            unset($_SESSION['form_data']);
+            return $this->render('user\verifyEmail'); // Chuyển đến trang xác thực
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực: ' . $e->getMessage();
         }
