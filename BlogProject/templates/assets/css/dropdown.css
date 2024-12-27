@@ -88,5 +88,5 @@ form button {
 
 /* Hiệu ứng hover cho button logout */
 form button:hover {
-    background-color: #c82333;
+    opacity: 0.7;
 }

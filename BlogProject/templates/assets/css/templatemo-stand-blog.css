@@ -28,7 +28,7 @@ a {
 	text-decoration: none!important;
 }
 ul {
-	padding: 0;
+	padding: 0 !important;
 	margin: 0;
 	list-style: none;
 }
@@ -414,7 +414,7 @@ header .navbar {
 }
 
 .blog-posts .down-content {
-	padding: 40px;
+	padding: 28px;
 	border-right: 1px solid #eee;
 	border-left: 1px solid #eee;
 	border-bottom: 1px solid #eee;
@@ -679,7 +679,7 @@ ul.page-numbers li a:hover {
 }
 
 .sidebar .sidebar-item {
-	margin-top: 50px;
+	margin-top: 32px;
 }
 
 .sidebar .search {

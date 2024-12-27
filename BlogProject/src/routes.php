@@ -68,3 +68,7 @@ $router->addRoute('/\/user\/process-update-name/', [new UserController(), 'updat
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
+$router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'createComment']);
+$router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
+$router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
+
