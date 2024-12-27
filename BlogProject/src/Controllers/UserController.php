@@ -90,7 +90,12 @@ class UserController extends Controller
 
             // Nội dung email
             $mail->isHTML(true);
-            $mail->Subject = mb_encode_mimeheader('Xác thực lại email của bạn', 'UTF-8', 'Q');
+            $mail->Subject = iconv_mime_encode('Subject', 'Xác thực email của bạn', array(
+                'input-charset' => 'UTF-8',
+                'output-charset' => 'UTF-8',
+                'line-length' => 76,
+                'line-break-chars' => "\r\n"
+            ));
             $mail->Body = 'Mã xác thực của bạn là: <strong>' . $verificationToken . '</strong><br><br>Vui lòng nhập mã này vào trang xác thực của chúng tôi.';
 
             // Gửi email
@@ -157,7 +162,12 @@ class UserController extends Controller
 
             // Nội dung email
             $mail->isHTML(true);
-            $mail->Subject = mb_encode_mimeheader('Đổi mật khẩu mới', 'UTF-8', 'Q');
+            $mail->Subject = iconv_mime_encode('Subject', 'Đổi mật khẩu mới', array(
+                'input-charset' => 'UTF-8',
+                'output-charset' => 'UTF-8',
+                'line-length' => 76,
+                'line-break-chars' => "\r\n"
+            ));
 
             // Đường dẫn chứa token
             $resetLink = 'http://localhost:3000/user/change-pass-email?token=' . urlencode($passresetToken);
@@ -231,7 +241,7 @@ class UserController extends Controller
     {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
-            header("Location: /login");
+            header("Location: /login/index");
             exit;
         }
         $id = $_SESSION['currentUser'];

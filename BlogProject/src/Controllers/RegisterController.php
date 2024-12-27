@@ -99,7 +99,13 @@ class RegisterController extends Controller
 
             // Nội dung email
             $mail->isHTML(true);
-            $mail->Subject = mb_encode_mimeheader('Xác thực email của bạn', 'UTF-8', 'Q');
+            $mail->Subject = iconv_mime_encode('Subject', 'Xác thực email của bạn', array(
+                'input-charset' => 'UTF-8',
+                'output-charset' => 'UTF-8',
+                'line-length' => 76,
+                'line-break-chars' => "\r\n"
+            ));
+            
 
             $mail->Body = 'Mã xác thực: ' . $verificationToken;
 

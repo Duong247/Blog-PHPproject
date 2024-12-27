@@ -6,6 +6,10 @@ https://templatemo.com/tm-551-stand-blog
 
 */
 
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   overflow-x: hidden;
