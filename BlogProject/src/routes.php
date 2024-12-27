@@ -61,11 +61,9 @@ $router->addRoute('/\/user\/change-pass-email\?token=([^&]+)/', [new UserControl
 $router->addRoute('/\/user\/reset-password/', [new UserController(), 'resetPassword']);
 $router->addRoute('/\/user\/change-pass/', [new UserController(), 'formEmailChangePass']);
 $router->addRoute('/\/user\/send-email-token/', [new UserController(), 'sendTokenChangePass']);
+$router->addRoute('/\/user\/profile/', [new UserController(), 'profile']);
+$router->addRoute('/\/user\/update-name/', [new UserController(), 'formUpdateName']);
+$router->addRoute('/\/user\/process-update-name/', [new UserController(), 'updateName']);
+$router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 $router->addRoute('/\/postDetail\/(\d+)/', [new PostController(), 'show']);
-$router->addRoute('/\/postDetail\/(\d+)\/create/', [new CommentController(), 'createComment']);
-$router->addRoute('/\/postDetail\/(\d+)\#(\d+)/', [new PostController(), 'show']);
-$router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new CommentController(), 'deleteComment']);
-
-
-

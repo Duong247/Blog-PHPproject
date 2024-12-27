@@ -46,6 +46,7 @@ class User
         return $result->fetch_assoc() ?: null;
     }
 
+
     public function createUser(string $email, string $password, string $firstName, string $lastName): bool
     {
         // Hash mật khẩu
@@ -147,7 +148,7 @@ class User
         return $user && $user['is_email_verified'] == 1;
     }
 
-    public function checkLogin(string $email, string $password): ?string
+    public function checkLogin(string $email, string $password): ?int
     {
         // Truy vấn người dùng bằng email
         $stmt = $this->mysqli->prepare("SELECT * FROM users WHERE email = ?");
@@ -158,11 +159,30 @@ class User
 
         // Kiểm tra xem người dùng có tồn tại và mật khẩu có khớp không
         if ($user && password_verify($password, $user['password_hash'])) {
-            return $user['email']; // Trả về thông tin người dùng nếu đăng nhập thành công
+            return $user['id']; // Trả về thông tin người dùng nếu đăng nhập thành công
         }
 
         // Nếu không khớp, trả về null
         return null;
+    }
+    
+    public function updateName(int $userId, string $firstName, string $lastName): bool
+    {
+        // Kiểm tra nếu tên hoặc họ trống
+        if (empty($firstName) || empty($lastName)) {
+            return false;  // Trả về false nếu dữ liệu không hợp lệ
+        }
+
+        // Câu lệnh SQL để cập nhật tên người dùng
+        $stmt = $this->mysqli->prepare(
+            "UPDATE users SET first_name = ?, last_name = ? WHERE id = ?"
+        );
+
+        // Liên kết các tham số vào câu lệnh SQL
+        $stmt->bind_param("ssi", $firstName, $lastName, $userId);
+
+        // Thực thi câu lệnh SQL và trả về kết quả
+        return $stmt->execute();
     }
 
 

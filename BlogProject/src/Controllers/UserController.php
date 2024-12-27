@@ -109,7 +109,7 @@ class UserController extends Controller
     {
         return $this->render('user\forgotPass');
     }
-    
+
     public function sendTokenChangePass()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -171,7 +171,7 @@ class UserController extends Controller
             session_start();
             $_SESSION['message'] = 'Đã gửi link thay đổi mật khẩu đến email của bạn';
             header('location: /user/change-pass');
-            exit(); 
+            exit();
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra khi gửi email xác thực: ' . $e->getMessage();
         }
@@ -227,21 +227,85 @@ class UserController extends Controller
     }
 
 
-    public function signin()
+    public function profile()
     {
-        $this->render('users\signin', []);
+        session_start();
+        if (!isset($_SESSION['currentUser'])) {
+            header("Location: /login");
+            exit;
+        }
+        $id = $_SESSION['currentUser'];
+        $user = $this->userModel->getUserById($id);
+
+        if (!$user) {
+            die("Không tìm thấy thông tin người dùng.");
+        }
+
+        return $this->render('user\profile', ['user' => $user]);
+    }
+
+    public function formUpdateName(){
+        session_start();
+        if (!isset($_SESSION['currentUser'])) {
+            header("Location: /login");
+            exit;
+        }
+        $id = $_SESSION['currentUser'];
+        $user = $this->userModel->getUserById($id);
+
+        if (!$user) {
+            die("Không tìm thấy thông tin người dùng.");
+        }
+        return $this->render('user\updateName', ['user' => $user]);
+    }
+    
+    public function updateName()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $firstname = $_POST['firstname'];
+            $lastname = $_POST['lastname'];
+
+            // Kiểm tra xem các trường có trống không
+            if (empty($firstname) || empty($lastname)) {
+                $_SESSION['error'] = 'Họ và tên không được để trống.';
+                return $this->render('user\updateName');
+            }
+
+            session_start();
+            $id = $_SESSION['currentUser'];
+
+            // Cập nhật tên người dùng
+            if ($this->userModel->updateName($id, $firstname, $lastname)) {
+                session_start();
+                $_SESSION['message'] = 'Cập nhật tên thành công!';
+                header('Location: /user/profile');
+                exit();
+            } else {
+                $_SESSION['error'] = 'Có lỗi xảy ra. Vui lòng thử lại.';
+                return $this->render('user\updateName');
+            }
+        }
     }
 
     public function logout()
     {
+        // Chỉ xử lý khi yêu cầu là POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            session_start();
-            if (isset($_SESSION['currentUser'])) {
-                unset($_SESSION['currentUser']);
-                session_destroy();
-                header("Location: ../index");
-                exit();
+            // Bắt đầu session một cách an toàn
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
             }
+            // Xóa toàn bộ session thay vì chỉ unset một phần tử
+            $_SESSION = [];
+            session_destroy();
+            // Chuyển hướng về trang chủ
+            header("Location: /");
+            exit();
+        } else {
+            // Nếu không phải phương thức POST, trả về lỗi 405 Method Not Allowed
+            http_response_code(405);
+            echo "Method Not Allowed";
+            exit();
         }
     }
 }

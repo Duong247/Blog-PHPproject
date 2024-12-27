@@ -203,11 +203,11 @@ html {
 }
 
 
-.avatar {
-    /* border-radius: 50%; */
+/* .avatar {
+    border-radius: 50%;
     width: 30px;
     height: 30px;
-}
+} */
 
 .replied{
     width:100%;
@@ -215,6 +215,17 @@ html {
 
 .reply-form{
     width:100%;
+}
+
+.image-avatar{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dropdown-toggle::after {
+    display: none;
 }
 
 @media (min-width:1024px) {

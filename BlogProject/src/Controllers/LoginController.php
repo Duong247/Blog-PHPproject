@@ -18,6 +18,7 @@ class LoginController extends Controller
 
     public function index()
     {
+        session_start();
         if (isset($_SESSION['currentUser'])) {
             header('location: /');
             exit();
@@ -38,8 +39,8 @@ class LoginController extends Controller
                 return $this->render('login/index');
             }
 
-            $emailUser = $this->userModel->checkLogin($email, $password);
-            if ($emailUser == null) {
+            $idUser = $this->userModel->checkLogin($email, $password);
+            if ($idUser == null) {
                 $_SESSION['error'] = 'Tài khoản hoặc mật khẩu không đúng!';
                 // Đảm bảo giữ lại dữ liệu nhập vào khi có lỗi
                 $_SESSION['form_data'] = $_POST;
@@ -52,7 +53,8 @@ class LoginController extends Controller
                     $_SESSION['form_data'] = $_POST;
                     $this->sendVerificationEmail($email);
                 } else {
-                    $_SESSION['currentUser'] = $emailUser;
+                    session_start();
+                    $_SESSION['currentUser'] = $idUser;
                     header('Location: /');
                     exit();
                 }
