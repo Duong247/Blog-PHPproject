@@ -1,178 +1,44 @@
 <?php ob_start(); ?>
 <section class="blog-posts grid-system">
-      <div class="container">
+  <div class="container">
         <div class="row">
           <div class="col-lg-8">
             <div class="all-blog-posts">
               <div class="row">
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="/templates/assets/images/blog-thumb-01.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 31, 2020</a></li>
-                        <li><a href="#">12 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
+                <?php foreach($posts as $post){?>
+                  <div class="col-lg-6">
+                    <div class="blog-post">
+                      <div class="blog-thumb">
+                        <img src="/templates/assets/images/<?=$post['photo']?>" alt="">
+                      </div>
+                      <div class="down-content">
+                        <a href="postDetail/<?=$post['postId']?>"><h4><?=$post['postName']?></h4></a>
+                        <ul class="post-info">
+                          <li><a href="#"><?=$post['first_name']?></a></li>
+                          <li>
+                            <a href="#">
+                              <?php $uploadTime = new DateTime($post['uploadTime']);
+                                    echo $uploadTime->format('M d, Y'); 
+                              ?>
+                            </a>
+                          </li>
+                          <li><a href="#"><?=$post['commentCount']?> Comments</a></li>
+                        </ul>
+                        <p><?=$post['description']?></p>
+                        <div class="post-options">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <ul class="post-tags">
+                                <li><i class="fa fa-tags"></i></li>
+                                <li><a href="#"><?=$post['categoryName']?></a></li>
+                              </ul>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="/templates/assets/images/blog-thumb-02.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Suspendisse et metus</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 22, 2020</a></li>
-                        <li><a href="#">26 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-03.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 18, 2020</a></li>
-                        <li><a href="#">42 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-04.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 16, 2020</a></li>
-                        <li><a href="#">28 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-05.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 12, 2020</a></li>
-                        <li><a href="#">16 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="assets/images/blog-thumb-06.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="postDetail.php"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 10, 2020</a></li>
-                        <li><a href="#">3 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <?php } ?>
                 <div class="col-lg-12">
                   <ul class="page-numbers">
                     <li><a href="#">1</a></li>
@@ -201,18 +67,17 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="postDetail.php">
-                          <h5>Vestibulum id turpis porttitor sapien facilisis scelerisque</h5>
-                          <span>May 31, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Suspendisse et metus nec libero ultrices varius eget in risus</h5>
-                          <span>May 28, 2020</span>
-                        </a></li>
-                        <li><a href="postDetail.php">
-                          <h5>Swag hella echo park leggings, shaman cornhole ethical coloring</h5>
-                          <span>May 14, 2020</span>
-                        </a></li>
+                      <?php foreach ($recentPosts as $recentPost):?>
+                            <li>
+                              <a href="postDetail/<?=$recentPost['postId']?>">
+                                <h5><?=$recentPost['postName'] ?></h5>
+                                <span><?php $uploadTime = new DateTime($recentPost['uploadTime']);
+                                  echo $uploadTime->format('M d, Y'); ?>
+                                </span>
+                              </a>
+                            </li>
+                        <?php endforeach; ?>
+                        
                       </ul>
                     </div>
                   </div>
@@ -224,12 +89,10 @@
                     </div>
                     <div class="content">
                       <ul>
-                        <li><a href="#">- Nature Lifestyle</a></li>
-                        <li><a href="#">- Awesome Layouts</a></li>
-                        <li><a href="#">- Creative Ideas</a></li>
-                        <li><a href="#">- Responsive Templates</a></li>
-                        <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                        <li><a href="#">- Creative &amp; Unique</a></li>
+                        <?php foreach($categories as $category){?>
+                          <li><a href="<?=$category['categoryId']?>"><?=$category['categoryName']?></a></li>
+                        <?php }?>
+
                       </ul>
                     </div>
                   </div>

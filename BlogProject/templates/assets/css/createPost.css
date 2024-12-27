@@ -193,7 +193,6 @@ html {
     width: 100%;
 }
 
-
 .replied-btn {
     color: #F48840;
 }
@@ -226,6 +225,11 @@ html {
 
 .dropdown-toggle::after {
     display: none;
+}
+
+.thumnail-post{
+    height: 300px;
+    object-fit: cover;
 }
 
 @media (min-width:1024px) {

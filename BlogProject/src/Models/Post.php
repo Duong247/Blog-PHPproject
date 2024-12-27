@@ -25,7 +25,23 @@ class Post
 
     public function getAllPosts()
     {
-        $result = $this->connection->query("SELECT * FROM posts");
+        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        WHERE posts.status = 1
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name
+                                                        ORDER BY posts.uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -55,6 +71,39 @@ class Post
     }
 
 
+
+
+    public function getPostsByCategory($categoryId): array|bool|null
+    {
+        $categoryId = $this->connection->real_escape_string($categoryId);
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        WHERE posts.status = 1 and categories.categoryId = $categoryId
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name
+                                                        ORDER BY posts.uploadTime DESC
+                                                    ");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getSearchResult($postNameSearch): array|bool|null
+    {
+        $postNameSearch = $this->connection->real_escape_string($postNameSearch);
+        $result = $this->connection->query(" SELECT * FROM posts WHERE postName LIKE '%$postNameSearch%' ORDER BY uploadTime DESC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
@@ -63,32 +112,44 @@ class Post
                                                         Inner join blog_schema.users on posts.userId = users.id
                                                         inner join blog_schema.categories on categories.categoryId = posts.categoryId
                                                     Where postId = $postId");
-
         return $result->fetch_assoc();
     }
 
-    public function createPost($title, $content)
+    public function createPost($postName,$description,$categoryId,$photo,$content,$userId)
     {
-        $title = $this->connection->real_escape_string($title);
+        $postName = $this->connection->real_escape_string($postName);
+        $description = $this->connection->real_escape_string($description);
+        $categoryId = $this->connection->real_escape_string($categoryId);
+        $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
+        $userId = $this->connection->real_escape_string($userId);
 
-        $this->connection->query("INSERT INTO posts (title, content) VALUES ('$title', '$content')");
+        $this->connection->query("INSERT INTO posts
+                                        (`postName`, `description`, `categoryId`, `photo`, `content`,  `userId` ) 
+                                        VALUES ('$postName','$description','$categoryId','$photo','$content','$userId')");
         
         // Redirect to the index page after creating post
-        header('Location: /posts/post-list');
+        header('Location: /');
+        
     }
 
-    public function updatePost($postId, $title, $content)
+    public function updatePost($postId, $postName,$description,$categoryId,$photo,$content,$userId)
     {
         $postId = $this->connection->real_escape_string($postId);
-        $title = $this->connection->real_escape_string($title);
+        $postName = $this->connection->real_escape_string($postName);
+        $description = $this->connection->real_escape_string($description);
+        $categoryId = $this->connection->real_escape_string($categoryId);
+        $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
+        $userId = $this->connection->real_escape_string($userId);
         
 
-        $this->connection->query("UPDATE posts SET title='$title', content='$content' WHERE id=$postId");
+        $this->connection->query("UPDATE blog_schema.posts
+                                        SET postName = '<?=$postName?>' ,description = '<?=$description?>',categoryId = '<?=$categoryId?>',photo='<?=$photo?>',content='<?=$content?>',uploadTime=Now()
+                                        WHERE postId = '<?=$postId?>'");
         
         // Redirect to the index page after update
-        header('Location: /posts/post-list');
+        header('Location: /');
     }
 
     public function deletePost($postId)
