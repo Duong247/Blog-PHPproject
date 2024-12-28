@@ -259,7 +259,7 @@ class UserController extends Controller
     {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
-            header("Location: /login");
+            header("Location: /login/index");
             exit;
         }
         $id = $_SESSION['currentUser'];
@@ -346,7 +346,7 @@ class UserController extends Controller
     {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
-            header("Location: /login");
+            header("Location: /login/index");
             exit;
         }
         return $this->render('user\changePass');
