@@ -82,6 +82,8 @@ $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId'])
 $router->addRoute('/\/createPost/', [new PostController(), 'create']);
 $router->addRoute('/\/create/', [new PostController(), 'create']);
 $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
+$router->addRoute('/\/post\/update\/(\d+)/', [new PostController(), 'showPostInfo']);
+$router->addRoute('/\/update\/(\d+)/', [new PostController(), 'update']);
 
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
 $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);

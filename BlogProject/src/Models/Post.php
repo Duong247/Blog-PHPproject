@@ -113,7 +113,7 @@ class Post
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName, userId
+        $result = $this->connection->query(" SELECT postId,postName,description,categories.categoryId,photo, content, uploadTime, first_name, last_name ,categoryName, userId
                                                     FROM blog_schema.posts 
                                                         Inner join blog_schema.users on posts.userId = users.id
                                                         inner join blog_schema.categories on categories.categoryId = posts.categoryId
@@ -135,11 +135,10 @@ class Post
                                         VALUES ('$postName','$description','$categoryId','$photo','$content','$userId')");
 
         // Redirect to the index page after creating post
-        header('Location: /');
-
+        // header('Location: /');
     }
 
-    public function updatePost($postId, $postName, $description, $categoryId, $photo, $content, $userId)
+    public function updatePost($postId, $postName,$description,$categoryId,$photo,$content)
     {
         $postId = $this->connection->real_escape_string($postId);
         $postName = $this->connection->real_escape_string($postName);
@@ -147,15 +146,14 @@ class Post
         $categoryId = $this->connection->real_escape_string($categoryId);
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
-        $userId = $this->connection->real_escape_string($userId);
+        
 
-
-        $this->connection->query("UPDATE blog_schema.posts
-                                        SET postName = '<?=$postName?>' ,description = '<?=$description?>',categoryId = '<?=$categoryId?>',photo='<?=$photo?>',content='<?=$content?>',uploadTime=Now()
-                                        WHERE postId = '<?=$postId?>'");
-
+        $this->connection->query("UPDATE posts
+                                        SET postName = '$postName' ,description = '$description',categoryId = '$categoryId',photo='$photo',content='$content',uploadTime=Now()
+                                        WHERE postId = $postId");
+        
         // Redirect to the index page after update
-        header('Location: /');
+        // header('Location: /userPostList');
     }
 
     public function deletePost($postId)

@@ -129,15 +129,19 @@ class PostController extends Controller
         
         $this->render('createPost', ['post' => [],'categories'=>$categories]);
         // header('Location: /');  
-        header('Location: /userPostList');
+        // header('Location: /userPostList');
     }
 
 
     public function uploadFile()
     {
+        if (!isset($_FILES["fileToUpload"]) || $_FILES["fileToUpload"]['error'] !== UPLOAD_ERR_OK) {
+            return null; // Không có file mới, trả về null
+        }
+        
         $target_dir = "assets/images/postImage/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         // Check if image file is an actual image
@@ -149,7 +153,7 @@ class PostController extends Controller
 
         // Check if file already exists
         if (!file_exists($target_file)) {
-            // echo "Sorry, file already exists.";
+            echo "Sorry, file already exists.";
             // $uploadOk = 0;
             mkdir("assets/images/postImage/", 0777, true);
         }
@@ -189,28 +193,43 @@ class PostController extends Controller
     }
 
 
+    public function showPostInfo($postId)
+    {   
+        $categories = $this->categoryModel->getAllCategory();
+        $post = $this->postModel->getPostById($postId);
+        $this->render('createPost', ['post' => $post,'categories'=>$categories]);
+    }
+
     public function update($postId)
     {
-
+       
         // Handle form submission to update a post
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
+            $postId = $_POST['postId'];
             $postName= $_POST['postName'];
             $description= $_POST['description'];
             $categoryId= $_POST['categoryId'];
-            $photo = $this->uploadFile();
+            $photo = $_POST['displayPhoto'];
             $content= $_POST['content'];
-            $userId= $_POST['userId'];
-            
+            // $userId= $_POST['userId'];
+            $newPhoto = $this->uploadFile();
+            if($newPhoto!=null){
+                $photo = $newPhoto;
+            }
             // Call the model to update the post
-            $this->postModel->updatePost($postId, $postName,$description,$categoryId,$photo,$content,$userId);
+            $this->postModel->updatePost($postId, $postName,$description,$categoryId,$photo,$content);
+            header('Location: /userPostList');
         }
 
         // Fetch the post data and display the form to update
-        $post = $this->postModel->getPostById($postId);
+        // $post = $this->postModel->getPostById($postId);
         
-        $this->render('posts\post-form', ['post' => $post]);
+        // $this->render('posts\post-form', ['post' => $post]);
     }
+
+
+
 
     public function delete($postId)
     {

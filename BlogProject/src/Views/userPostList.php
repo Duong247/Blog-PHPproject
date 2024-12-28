@@ -31,7 +31,7 @@
                     </td>
                     <td style="width: 80px;">
                         <div class="<?=$post['status'] == 0?"d-flex ":"text-center " ?> justify-content-between">
-                            <a <?=$post['status'] == 0?"":"hidden" ?> type="button" class="btn btn-primary" style="margin: 1px;" href="<?=$post['postId']?>"><i class="fa-solid fa-pencil" style="color: #fff;"></i></a>
+                            <a <?=$post['status'] == 0?"":"hidden" ?> type="button" class="btn btn-primary" style="margin: 1px;" href="post/update/<?=$post['postId']?>"><i class="fa-solid fa-pencil" style="color: #fff;"></i></a>
                             <a type="button" class="btn btn-danger" style="margin: 1px;" href="post/delete/<?=$post['postId']?>"><i class="fa-solid fa-trash" style="color: #fff;"></i></a>
                         </div>
                     </td>

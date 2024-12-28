@@ -1,26 +1,20 @@
 <?php ob_start(); ?>
 <div class="container">
 <div id="body">
-  <div class="site-container">
-    <div id="action">
-      <div id="action_container">
-        <button class="back_btn">Go Back</button>
-        <button class="saveChange_btn">Save Changes</button>
-      </div>
-    </div>
+  <div class="site-container" >
     <div id="main_container" class="border_css">
       <div id="main_cover">
         <div id="main_head">
           <h1>Post</h1>
         </div>
         <div id="main_body">
-          <form action="create" method="POST" enctype="multipart/form-data">
+          <form action="<?=$post==null?'create':'update/'.$post['postId'] ?>" method="POST" enctype="multipart/form-data">
             <fieldset>
               <legend>Post Information</legend>
               <div class="row">
                 <div class="col_50 form_input">
                   <label for="postName">Tiêu đề</label>
-                  <input type="text" class="postName" id="postName" name="postName" >
+                  <input type="text" class="postName" id="postName" name="postName" value="<?=$post!=null?$post['postName']:'' ?>"  >
                 </div>
                 <div class="col_25 form_input">
                   <!-- <label for="currentUser">currentUser</label> -->
@@ -29,7 +23,7 @@
               </div>
               <div class="form_input">
                 <label for="description">Mô tả</label>
-                <textarea id="description" name="description" cols="30" rows="5" class="description"></textarea>
+                <textarea id="description" name="description" cols="30" rows="5" class="description"><?=$post!=null?$post['description']:'' ?></textarea>
               </div>
               <div class="row">
                 <div class="form_input">
@@ -37,7 +31,7 @@
                   <select id="category" name="categoryId" class="form-select">
                     <!-- <option value="">Giải phẫu</option> -->
                     <?php foreach($categories as $category){?>
-                      <option value="<?=$category['categoryId']?>"><?=$category['categoryName']?></option>  
+                      <option <?=$post!=null && $category['categoryId']==$post['categoryId'] ?$post['postName']:'' ?>  value="<?=$category['categoryId']?>"><?=$category['categoryName']?></option>  
                     <?php }?>
                     <!-- Add more categories as needed -->
                   </select>
@@ -51,19 +45,34 @@
                       id="image"
                       name="fileToUpload"
                       accept="image/*"
-                      onchange="readURL(this);"
+                      onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])"
                     >
                   </div>
                 </div>
+                
+                <div class="form-group">
+                  <div class="col-lg-offset-2 col-sm-10">
+                      <input  type="hidden" name="displayPhoto" value="<?=$post!=null?$post['photo']:''?>" />
+                      <img id="Photo" 
+                        src="<?= $post == null || !isset($post['photo']) ? '': '/assets/images/postImage/'.$post['photo'] ?>" 
+                          class="img img-bordered" 
+                          style="width:200px" />
+                  </div>
+                </div>
+
               </div>
               <div class="form_input">
                 <label for="textarea_containner">Body:</label>
                 <div id="textarea_containner">
-                  <textarea class="textarea" id="body_text" name="content"></textarea>
+                  <textarea class="textarea" id="body_text" name="content">
+                    <?=$post!=null?$post['postName']:'' ?>
+                  </textarea>
                 </div>
               </div>
-              <!-- TODO: Truyền userId -->
-              <button type="submit" id="save_btn">Save</button>
+
+              <input type="hidden" name="postId" value="<?=$post!=null?$post['postId']:'' ?>">
+              <a <?=$post!=null?'':'hidden'?> class="back_btn btn btn-secondary" href="/userPostList">Go Back</a>
+              <button type="submit" id="save_btn"><?=$post==null?'Save':'Save change' ?></button>
             </fieldset>
           </form>
         </div>
