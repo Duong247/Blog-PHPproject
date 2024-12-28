@@ -152,11 +152,11 @@ class PostController extends Controller
         }
 
         // Check if file already exists
-        if (!file_exists($target_file)) {
-            echo "Sorry, file already exists.";
-            // $uploadOk = 0;
-            mkdir("assets/images/postImage/", 0777, true);
-        }
+        // if (!file_exists($target_file)) {
+        //     echo "Sorry, file already exists.";
+        //     // $uploadOk = 0;
+        //     mkdir("assets/images/postImage/", 0777, true);
+        // }
 
         // Check file size (limit: 5MB)
         if ($_FILES["fileToUpload"]["size"] > 5000000) {

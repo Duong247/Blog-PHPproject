@@ -29,9 +29,11 @@
                     </li>
                     <li><a href="#"><?= $countComment['COUNT(*)'] ?> Bình luận</a></li>
                   </ul>
-
-                  <?= $post['content'] ?>
-
+                  <hr style="opacity: .1;">
+                  <div class="content">
+                    <?= $post['content'] ?>
+                  </div>
+                  <hr style="opacity: .1;">
                   <div class="post-options">
                     <div class="row">
                       <div class="col-6">

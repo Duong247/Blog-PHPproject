@@ -1,9 +1,9 @@
 <?php ob_start(); ?>
 <div class="container">
-    <h2>Quản lý bài đăng</h2>
+    <h2>Bài viết của tôi</h2>
+    <hr style="opacity:0.1">
 
-
-    <table class="table mt-3 table-bordered">
+    <table class="table mt-4 table-bordered">
         <thead>
             <tr>
                 <th scope="col">Ảnh</th>
@@ -22,10 +22,12 @@
                     <td><?=$post['categoryName']?></td>
                     <td><?=$post['uploadTime']?></td>
                     <td>
-                        <?php if ((int)$post['status'] == 0) { ?>
+                        <?php if ($post['status'] == 0) { ?>
                             <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
+                        <?php } else if ($post['status'] == 1) { ?>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
                         <?php } else { ?>
-                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
                         <?php } ?>
 
                     </td>

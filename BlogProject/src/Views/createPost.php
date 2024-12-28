@@ -65,7 +65,7 @@
                 <label for="textarea_containner">Body:</label>
                 <div id="textarea_containner">
                   <textarea class="textarea" id="body_text" name="content">
-                    <?=$post!=null?$post['postName']:'' ?>
+                    <?=$post!=null?$post['content']:'' ?>
                   </textarea>
                 </div>
               </div>
