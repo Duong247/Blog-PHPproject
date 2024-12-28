@@ -337,6 +337,8 @@ class UserController extends Controller
             $this->userModel->updateNameAndPhoto($firstName, $lastName, $photo, $_SESSION['currentUser']);
             unset($_SESSION['form_data']);
             $_SESSION['message'] = "Cập nhật thông tin thành công!";
+            $user = $this->userModel->getUserById($_SESSION['currentUser']);
+            $_SESSION['user'] = $user;
             header("Location: /user/profile");
             exit();
         }
