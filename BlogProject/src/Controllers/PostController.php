@@ -247,9 +247,6 @@ class PostController extends Controller
 
     public function searchPosts()
     {
-        $posts = $this->postModel->getAllPosts();
-        $categories = $this->categoryModel->getAllCategory();
-        $recentPosts = $this->postModel->getRecentPosts();
         // Kiểm tra xem có dữ liệu tìm kiếm được gửi qua GET không
         if (isset($_GET['searchValue']) && trim($_GET['searchValue']) !== '') {
             // Lấy giá trị từ form

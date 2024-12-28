@@ -7,13 +7,14 @@
     <div class="input-group mb-3">
         <form action="/managePosts/search" method="GET">
             <select name="status" class="statusFilter" id="status">
-                <option value="">-- Chọn trạng thái --</option>
-                <option value="1">Đã duyệt</option>
-                <option value="0">Chưa duyệt</option>
-                <option value="-1">Từ chối</option>
+                <option value="" <?php if ($status === null) echo 'selected'; ?>>-- Chọn trạng thái --</option>
+                <option value="1" <?php if ($status === '1') echo 'selected'; ?>>Đã duyệt</option>
+                <option value="0" <?php if ($status === '0') echo 'selected'; ?>>Chưa duyệt</option>
+                <option value="-1" <?php if ($status === '-1') echo 'selected'; ?>>Từ chối</option>
             </select>
+
             <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-                name="searchValue" aria-describedby="basic-addon1">
+                name="searchValue" value="<?= htmlspecialchars($searchValue ?? '') ?>" aria-describedby="basic-addon1">
             <div class="input-group-prepend">
                 <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
             </div>

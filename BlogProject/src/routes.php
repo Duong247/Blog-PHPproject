@@ -93,6 +93,7 @@ $router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts
 
 
 //Admin controllers
+$router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']);
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
