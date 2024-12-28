@@ -7,10 +7,14 @@
     <div class="input-group mb-3">
         <form action="/managePosts/search" method="GET">
             <select name="status" class="statusFilter" id="status">
-                <option value="" <?php if ($status === null) echo 'selected'; ?>>-- Chọn trạng thái --</option>
-                <option value="1" <?php if ($status === '1') echo 'selected'; ?>>Đã duyệt</option>
-                <option value="0" <?php if ($status === '0') echo 'selected'; ?>>Chưa duyệt</option>
-                <option value="-1" <?php if ($status === '-1') echo 'selected'; ?>>Từ chối</option>
+                <option value="" <?php if ($status === null)
+                    echo 'selected'; ?>>-- Chọn trạng thái --</option>
+                <option value="1" <?php if ($status === '1')
+                    echo 'selected'; ?>>Đã duyệt</option>
+                <option value="0" <?php if ($status === '0')
+                    echo 'selected'; ?>>Chưa duyệt</option>
+                <option value="-1" <?php if ($status === '-1')
+                    echo 'selected'; ?>>Bị từ chối</option>
             </select>
 
             <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
@@ -24,15 +28,14 @@
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>
-                <th class="text-center" scope="col" style="width:80px">Hình ảnh</th>
+                <th class="text-center" scope="col" style="width:100px">Hình ảnh</th>
                 <th class="text-center" scope="col">Tên bài viết</th>
-                <th style="width: 180px;" class="text-center" scope="col">Mô tả</th>
-                <th style="width: 100px;" class="text-center" scope="col">Loại</th>
-                <th style="width: 250px;" class="text-center" scope="col">Nội dung</th>
-                <th style="width: 120px;" class="text-center" scope="col">Tác giả</th>
+                <th style="width: 200px;" class="text-center" scope="col">Mô tả</th>
+                <th style="width: 150px;" class="text-center" scope="col">Loại</th>
+                <th style="width: 180px;" class="text-center" scope="col">Tác giả</th>
                 <th style="width: 150px;" class="text-center" scope="col">Thời gian đăng</th>
                 <th style="width: 120px;" class="text-center" scope="col">Trạng thái</th>
-                <th style="width: 100px;" class="text-center" scope="col">Hành động</th>
+                <th style="width: 150px;" class="text-center" scope="col">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +47,6 @@
                     <td><?= $post['postName'] ?></td>
                     <td><?= $post['description'] ?></td>
                     <td class="text-center"><?= $post['categoryName'] ?></td>
-                    <td><?= $post['content'] ?></td>
                     <td class="text-center"><?= $post['first_name'] . ' ' . $post['last_name'] ?></td>
                     <td class="text-center">
                         <?php
@@ -57,35 +59,40 @@
                         <?php if ($post['status'] == 0) { ?>
                             <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
                         <?php } else if ($post['status'] == 1) { ?>
-                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
                         <?php } else { ?>
-                            <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
+                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
                         <?php } ?>
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <?php if ($post['status'] == 0) { ?>
-                                <button type="button" class="btn btn-success" style="margin: 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Duyệt bài viết" onclick="acceptPost(<?= $post['postId'] ?>)">
-                                    <i class="fa-solid fa-check"></i>
-                                </button>
-                                <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
-                                    data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
-                                    onclick="declinePost(<?= $post['postId'] ?>)">
-                                    <i class="fa-solid fa-ban"></i>
-                                </button>
-                            <?php } else if ($post['status'] == -1) { ?>
-                                <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xóa bài viết" onclick="deletePost(<?= $post['postId'] ?>)">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            <?php } else { ?>
-                                <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
-                                    data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
-                                    onclick="declinePost(<?= $post['postId'] ?>)">
-                                    <i class="fa-solid fa-ban"></i>
-                                </button>
-                            <?php } ?>
+                            <button type="button" class="btn btn-info" style="margin: 4px;" data-toggle="tooltip"
+                                data-placement="top" title="Xem trước bài viết"
+                                onclick="previewPost(<?= $post['postId'] ?>, <?= $post['id'] ?>)">
+                                <i style="color: #fff" class="fa-solid fa-eye"></i>
+                                <?php if ($post['status'] == 0) { ?>
+                                    <button type="button" class="btn btn-success" style="margin: 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Duyệt bài viết"
+                                        onclick="acceptPost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                        data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                        onclick="declinePost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                <?php } else if ($post['status'] == -1) { ?>
+                                        <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                            data-placement="top" title="Xóa bài viết" onclick="deletePost(<?= $post['postId'] ?>)">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                <?php } else { ?>
+                                        <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                            data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                            onclick="declinePost(<?= $post['postId'] ?>)">
+                                            <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                <?php } ?>
                         </div>
                     </td>
                 </tr>
@@ -112,6 +119,10 @@
     </nav>
 </div>
 <script>
+    function previewPost(postId, userId) {
+        window.location.href = '/managePosts/previewPost?postId=' + postId + '&userId=' + userId;
+    }
+
     function acceptPost(postId) {
         if (confirm('Bạn có chắc muốn duyệt bài viết này?')) {
             window.location.href = '/acceptPost?postId=' + postId;

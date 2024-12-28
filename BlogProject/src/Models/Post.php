@@ -239,7 +239,7 @@ class Post
             $conditions[] = "posts.status = $status";
         }
 
-        $query = "SELECT posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, posts.status
+        $query = "SELECT posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, posts.status, users.id
               FROM blog_schema.posts 
               INNER JOIN blog_schema.users ON posts.userId = users.id
               INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
