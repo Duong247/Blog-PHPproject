@@ -25,10 +25,11 @@ class PostController extends Controller
         $this->userModel = new User();
     }
 
-    public function index(){
+    public function index()
+    {
         $posts = $this->postModel->getRecentPosts();
         $categories = $this->categoryModel->getAllCategory();
-        $this->render('home', ['posts' => $posts,'categories' => $categories]);
+        $this->render('home', ['posts' => $posts, 'categories' => $categories]);
     }
 
     public function postList()
@@ -41,22 +42,24 @@ class PostController extends Controller
         $posts = $this->postModel->getAllPosts();
         $categories = $this->categoryModel->getAllCategory();
         $recentPosts = $this->postModel->getRecentPosts();
-        $this->render('blogs', ['posts' => $posts,'categories' => $categories,'recentPosts'=>$recentPosts]);
+        $this->render('blogs', ['posts' => $posts, 'categories' => $categories, 'recentPosts' => $recentPosts]);
     }
 
-    
 
-    public function getPostByCategory($categoryId){
+
+    public function getPostByCategory($categoryId)
+    {
         $posts = $this->postModel->getPostsByCategory($categoryId);
         $categories = $this->categoryModel->getAllCategory();
         $recentPosts = $this->postModel->getRecentPosts();
-        $this->render('blogs', ['posts' => $posts,'categories' => $categories,'recentPosts'=>$recentPosts]);
+        $this->render('blogs', ['posts' => $posts, 'categories' => $categories, 'recentPosts' => $recentPosts]);
     }
 
-    public function getRecentPost(){
+    public function getRecentPost()
+    {
         $posts = $this->postModel->getRecentPosts();
         $categories = $this->categoryModel->getAllCategory();
-        $this->render('home', ['posts' => $posts,'categories' => $categories]);
+        $this->render('home', ['posts' => $posts, 'categories' => $categories]);
     }
 
 
@@ -75,15 +78,15 @@ class PostController extends Controller
         $comments = $this->commentModel->getAllCommentsOfPost($postId);
         $dataComments = [];
         session_start();
-        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+        if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
             header('Location: /login/index');
         }
         $currentUserId = $_SESSION['currentUser'];
         $user = $this->userModel->getUserById($currentUserId);
-        foreach ($comments as $comment){
+        foreach ($comments as $comment) {
             $subcomments = [];
             $tempSubComments = $this->commentModel->getSubCommentsOfMainComment($comment['postId'], $comment['commentId']);
-            foreach ($tempSubComments as $item){
+            foreach ($tempSubComments as $item) {
                 $subcomments[] = $item;
             }
             $dataComments[] = [
@@ -91,14 +94,14 @@ class PostController extends Controller
                 'subComments' => $subcomments, // return []
             ];
         }
-        $this->render('postDetail', ['user' => $user, 'post' => $post,'postsRecents' => $postsRecents ,'categories' => $categories,'countComment' => $countComments,'dataComments'=>$dataComments]);
-
+        $this->render('postDetail', ['user' => $user, 'post' => $post, 'postsRecents' => $postsRecents, 'categories' => $categories, 'countComment' => $countComments, 'dataComments' => $dataComments]);
     }
 
-    public function getSearchResult($postNameSearch){
+    public function getSearchResult($postNameSearch)
+    {
         $resultSearch = $this->postModel->getSearchResult($postNameSearch);
         $categories = $this->categoryModel->getAllCategory();
-        $this->render('home', ['resultSearch' => $resultSearch,'categories' => $categories]);
+        $this->render('home', ['resultSearch' => $resultSearch, 'categories' => $categories]);
     }
 
     public function create()
@@ -113,31 +116,35 @@ class PostController extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
-            $postName= $_POST['postName'];
-            $description= $_POST['description'];
-            $categoryId= $_POST['categoryId'];
+            $postName = $_POST['postName'];
+            $description = $_POST['description'];
+            $categoryId = $_POST['categoryId'];
             $photo = $this->uploadFile();
-            $content= $_POST['content'];
+            $content = $_POST['content'];
             // $userId= $_POST['userId'];
             // Call the model to create a new post
-            $this->postModel->createPost($postName,$description,$categoryId,$photo,$content,$userId);
+            $this->postModel->createPost($postName, $description, $categoryId, $photo, $content, $userId);
         }
         $categories = $this->categoryModel->getAllCategory();
         // $this
 
         // Display the form to create a new post
-        
-        $this->render('createPost', ['post' => [],'categories'=>$categories]);
+
+        $this->render('createPost', ['post' => [], 'categories' => $categories]);
         // header('Location: /');  
-        header('Location: /userPostList');
+        // header('Location: /userPostList');
     }
 
 
     public function uploadFile()
     {
+        if (!isset($_FILES["fileToUpload"]) || $_FILES["fileToUpload"]['error'] !== UPLOAD_ERR_OK) {
+            return null; // Không có file mới, trả về null
+        }
+
         $target_dir = "assets/images/postImage/";
-        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $uploadOk = 1;
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
         $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
         // Check if image file is an actual image
@@ -148,11 +155,11 @@ class PostController extends Controller
         }
 
         // Check if file already exists
-        if (!file_exists($target_file)) {
-            // echo "Sorry, file already exists.";
-            // $uploadOk = 0;
-            mkdir("assets/images/postImage/", 0777, true);
-        }
+        // if (!file_exists($target_file)) {
+        //     echo "Sorry, file already exists.";
+        //     // $uploadOk = 0;
+        //     mkdir("assets/images/postImage/", 0777, true);
+        // }
 
         // Check file size (limit: 5MB)
         if ($_FILES["fileToUpload"]["size"] > 5000000) {
@@ -181,13 +188,21 @@ class PostController extends Controller
         }
     }
 
-    public function getPostByUserId(){
+    public function getPostByUserId()
+    {
         session_start();
         $userId = $_SESSION['currentUser'];
         $posts = $this->postModel->getPostByUserId($userId);
-        $this->render('userPostList', ['posts' => $posts,'currentUserId'=>$userId]);
+        $this->render('userPostList', ['posts' => $posts, 'currentUserId' => $userId]);
     }
 
+
+    public function showPostInfo($postId)
+    {
+        $categories = $this->categoryModel->getAllCategory();
+        $post = $this->postModel->getPostById($postId);
+        $this->render('createPost', ['post' => $post, 'categories' => $categories]);
+    }
 
     public function update($postId)
     {
@@ -195,22 +210,30 @@ class PostController extends Controller
         // Handle form submission to update a post
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
-            $postName= $_POST['postName'];
-            $description= $_POST['description'];
-            $categoryId= $_POST['categoryId'];
-            $photo = $this->uploadFile();
-            $content= $_POST['content'];
-            $userId= $_POST['userId'];
-            
+            $postId = $_POST['postId'];
+            $postName = $_POST['postName'];
+            $description = $_POST['description'];
+            $categoryId = $_POST['categoryId'];
+            $photo = $_POST['displayPhoto'];
+            $content = $_POST['content'];
+            // $userId= $_POST['userId'];
+            $newPhoto = $this->uploadFile();
+            if ($newPhoto != null) {
+                $photo = $newPhoto;
+            }
             // Call the model to update the post
-            $this->postModel->updatePost($postId, $postName,$description,$categoryId,$photo,$content,$userId);
+            $this->postModel->updatePost($postId, $postName, $description, $categoryId, $photo, $content);
+            header('Location: /userPostList');
         }
 
         // Fetch the post data and display the form to update
-        $post = $this->postModel->getPostById($postId);
-        
-        $this->render('posts\post-form', ['post' => $post]);
+        // $post = $this->postModel->getPostById($postId);
+
+        // $this->render('posts\post-form', ['post' => $post]);
     }
+
+
+
 
     public function delete($postId)
     {
@@ -220,5 +243,26 @@ class PostController extends Controller
 
         // Redirect to the index page after deletion
         header('Location: /userPostList');
+    }
+
+    public function searchPosts()
+    {
+        // Kiểm tra xem có dữ liệu tìm kiếm được gửi qua GET không
+        if (isset($_GET['searchValue']) && trim($_GET['searchValue']) !== '') {
+            // Lấy giá trị từ form
+            $searchValue = $_GET['searchValue'];
+
+            // Gọi phương thức model để tìm kiếm
+            $posts = $this->postModel->searchPosts($searchValue);
+
+            // Truyền kết quả tìm kiếm đến view
+            $categories = $this->categoryModel->getAllCategory();
+            $recentPosts = $this->postModel->getRecentPosts();
+            return $this->render('searchPost', ['posts' => $posts, 'searchValue' => $searchValue, 'categories' => $categories, 'recentPosts' => $recentPosts]);
+        } else {
+            // Nếu không có từ khóa tìm kiếm, trả về danh sách rỗng
+            header('location: /blogs');
+            exit();
+        }
     }
 }

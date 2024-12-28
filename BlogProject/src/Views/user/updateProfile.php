@@ -95,10 +95,11 @@
                 <?php
                 $photoPath = !empty($user['photo']) ? '/assets/images/photo/' . htmlspecialchars($user['photo']) : '/templates/assets/images/noPhoto.png';
                 ?>
-                <img src="<?php echo $photoPath; ?>" alt="Avatar"
+                <img id="previewPhoto" src="<?php echo $photoPath; ?>" alt="Avatar"
                     style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
             </div>
-            <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+            <input type="file" class="form-control" id="photo" name="photo" accept="image/*"
+                onchange="previewImage(this)">
             <input type="hidden" class="form-control" id="oldPhoto" name="oldPhoto"
                 value="<?php echo htmlspecialchars($user['photo'] ?? '/templates/assets/images/noPhoto.png'); ?>">
         </div>
@@ -134,6 +135,18 @@ if (isset($_SESSION['message'])):
         <?php unset($_SESSION['message']); ?>
     </script>
 <?php endif; ?>
+<script>
+    function previewImage(input) {
+        const preview = document.getElementById('previewPhoto');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result; // Cập nhật src của ảnh
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <?php $content = ob_get_clean(); ?>
 <?php include(__DIR__ . '/../../../templates/layout.php'); ?>

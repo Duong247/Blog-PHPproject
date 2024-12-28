@@ -15,33 +15,41 @@
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>
-                <th class="text-center" scope="col">Họ và tên</th>
+                <th style="width: 200px" class="text-center" scope="col">Họ và tên</th>
                 <th class="text-center" scope="col">Email</th>
-                <th class="text-center" scope="col">Thời gian tạo</th>
-                <th style="width: 180px;" class="text-center" scope="col">Số bài viết đã đăng</th>
+                <th style="width: 200px" class="text-center" scope="col">Thời gian tạo</th>
+                <th style="width: 150px" style="width: 180px;" class="text-center" scope="col">Số bài viết đã đăng</th>
                 <th class="text-center" scope="col">Vai trò</th>
                 <th style="width: 150px;" class="text-center" scope="col">Hành động</th>
             </tr>
         </thead>
         <tbody>
-            <?php for ($i = 0; $i < 5; $i++) { ?>
+            <?php foreach ($users as $user) { ?>
                 <tr>
-                    <td>Dương ma tê</td>
-                    <td>duongmate@gmail.com</td>
-                    <td class="text-center">25/12/2024</td>
-                    <td class="text-center">5</td>
-                    <td class="text-center"><?php if ($i < 2)
-                        echo "Admin";
-                    else
-                        echo "Người dùng"; ?></td>
+                    <td><?= $user['first_name'] . ' ' . $user['last_name'] ?></td>
+                    <td><?= $user['email'] ?></td>
+                    <td class="text-center">
+                        <?php
+                        $uploadTime = new DateTime($user['created_at']);
+                        $formattedDate = $uploadTime->format('H:i d/m/Y');
+                        echo $formattedDate;
+                        ?>
+                    </td>
+                    <td class="text-center"><?= $user['quantityPosts'] ?></td>
+                    <td class="text-center">
+                        <?php
+                        if ($user['role'] == 1) {
+                            echo 'Admin';
+                        } else {
+                            echo 'Người dùng';
+                        }
+                        ?>
+                    </td>
                     <td>
                         <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-info" style="margin: 0 4px;" data-toggle="tooltip"
-                                data-placement="top" title="Xem các bài viết của người dùng"><i
+                            <button onclick="viewDetailPostsOfUser(<?=$user['id']?>)" type="button" class="btn btn-info" style="margin: 0 4px;" data-toggle="tooltip"
+                                data-placement="top" title="Xem các bài viết của người dùng"><i style="color: #fff"
                                     class="fa fa-navicon"></i></button>
-                            <button type="button" class="btn btn-warning" style="margin: 0 4px;" data-toggle="tooltip"
-                                data-placement="top" title="Chỉnh sửa người dùng"><i style="color: #fff"
-                                    class="fa-solid fa-pencil"></i></button>
                             <button type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
                                 data-placement="top" title="Xóa người dùng"><i class="fa-solid fa-trash"></i></button>
                         </div>
@@ -69,6 +77,11 @@
         </ul>
     </nav>
 </div>
+<script>
+    function viewDetailPostsOfUser(userId) {
+        window.location.href = '/manageUser?userId=' +userId
+    }
+</script>
 <?php $content = ob_get_clean(); ?>
 <?php
 define('BASE_PATH', dirname(__DIR__, 2));

@@ -259,7 +259,7 @@ class UserController extends Controller
     {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
-            header("Location: /login");
+            header("Location: /login/index");
             exit;
         }
         $id = $_SESSION['currentUser'];
@@ -337,6 +337,8 @@ class UserController extends Controller
             $this->userModel->updateNameAndPhoto($firstName, $lastName, $photo, $_SESSION['currentUser']);
             unset($_SESSION['form_data']);
             $_SESSION['message'] = "Cập nhật thông tin thành công!";
+            $user = $this->userModel->getUserById($_SESSION['currentUser']);
+            $_SESSION['user'] = $user;
             header("Location: /user/profile");
             exit();
         }
@@ -346,7 +348,7 @@ class UserController extends Controller
     {
         session_start();
         if (!isset($_SESSION['currentUser'])) {
-            header("Location: /login");
+            header("Location: /login/index");
             exit;
         }
         return $this->render('user\changePass');

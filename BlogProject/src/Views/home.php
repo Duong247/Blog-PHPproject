@@ -12,7 +12,7 @@
               <div class="col-lg-12">
                 <div class="blog-post">
                   <div class="blog-thumb">
-                    <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="">
+                    <img src="assets/images/postImage/<?= $post['photo'] ?>" alt="">
                   </div>
                   <div class="down-content">
                     <a href="postDetail/<?= $post['postId'] ?>">

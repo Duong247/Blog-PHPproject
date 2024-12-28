@@ -58,8 +58,8 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .page-heading {
-	margin: 0px 10px;
-	padding: 120px 0px;
+	margin: 0px;
+	padding-top: 120px;
 	text-align: left;
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -167,7 +167,7 @@ h1,h2,h3,h4,h5,h6 {
 header {
 	position: absolute;
 	top:0;
-	z-index: 99999;
+	z-index: 100;
 	width: 100%;
 	height: 100px;
 	background-color: #f7f7f7;
@@ -477,12 +477,7 @@ header .navbar {
 	color: #f48840;
 }
 
-.blog-posts .down-content p {
-	padding: 25px 0px;
-	margin: 25px 0px;
-	border-top: 1px solid #eee;
-	border-bottom: 1px solid #eee;
-}
+
 
 .blog-posts .down-content ul.post-share {
 	text-align: right;
@@ -515,6 +510,10 @@ header .navbar {
 .blog-posts .down-content ul.post-tags li a:hover,
 .blog-posts .down-content ul.post-share li a:hover {
 	color: #f48840;
+}
+
+.down-content p{
+	color: #000;
 }
 
 .blog-posts .main-button a {
@@ -1099,15 +1098,34 @@ footer p a:hover {
 	cursor: pointer;
   }
   
-  .delete-btn i {
-	color: rgba(0, 0, 0, 0.7);
-	font-size: 16px;
-	transition: color 0.3s ease; /* Thêm hiệu ứng mượt */
-  }
-  
-  .delete-btn:hover i {
-	color: rgb(182, 5, 5); /* Màu đỏ khi hover */
-  }
+.delete-btn i {
+color: rgba(0, 0, 0, 0.7);
+font-size: 16px;
+transition: color 0.3s ease; /* Thêm hiệu ứng mượt */
+}
+
+.delete-btn:hover i {
+color: rgb(182, 5, 5); /* Màu đỏ khi hover */
+}
+
+.content_managePost_Admin > p{
+	color: #000;
+}
+
+td{
+	align-content: center;
+}
+
+.return_link{
+	color: #000;
+	font-size: 18px;
+	font-weight: 700;
+	transition: all 0.3s;
+}
+
+.return_link:hover{
+	color: #f48840;
+}
 
 @media (max-width: 768px) {
 	.owl-banner .owl-nav {

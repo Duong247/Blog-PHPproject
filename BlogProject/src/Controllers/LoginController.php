@@ -56,6 +56,8 @@ class LoginController extends Controller
                     session_start();
                     unset($_SESSION['form_data']);
                     $_SESSION['currentUser'] = $idUser;
+                    $user = $this->userModel->getUserById($idUser);
+                    $_SESSION['user'] = $user;
                     header('Location: /');
                     exit();
                 }

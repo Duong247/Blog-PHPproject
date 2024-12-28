@@ -70,7 +70,7 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getPostByUserId($userId):array|bool|null
+    public function getPostByUserId($userId): array|bool|null
     {
         $userId = $this->connection->real_escape_string($userId);
         $result = $this->connection->query(" SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId");
@@ -113,7 +113,7 @@ class Post
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query(" SELECT postId,postName,description,categoryName,photo, content, uploadTime, first_name, last_name ,categoryName, userId
+        $result = $this->connection->query(" SELECT postId,postName,description,categories.categoryId, posts.photo, content, uploadTime, first_name, last_name ,categoryName, userId
                                                     FROM blog_schema.posts 
                                                         Inner join blog_schema.users on posts.userId = users.id
                                                         inner join blog_schema.categories on categories.categoryId = posts.categoryId
@@ -135,11 +135,10 @@ class Post
                                         VALUES ('$postName','$description','$categoryId','$photo','$content','$userId')");
 
         // Redirect to the index page after creating post
-        header('Location: /');
-
+        // header('Location: /');
     }
 
-    public function updatePost($postId, $postName, $description, $categoryId, $photo, $content, $userId)
+    public function updatePost($postId, $postName, $description, $categoryId, $photo, $content)
     {
         $postId = $this->connection->real_escape_string($postId);
         $postName = $this->connection->real_escape_string($postName);
@@ -147,15 +146,14 @@ class Post
         $categoryId = $this->connection->real_escape_string($categoryId);
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
-        $userId = $this->connection->real_escape_string($userId);
 
 
-        $this->connection->query("UPDATE blog_schema.posts
-                                        SET postName = '<?=$postName?>' ,description = '<?=$description?>',categoryId = '<?=$categoryId?>',photo='<?=$photo?>',content='<?=$content?>',uploadTime=Now()
-                                        WHERE postId = '<?=$postId?>'");
+        $this->connection->query("UPDATE posts
+                                        SET postName = '$postName' ,description = '$description',categoryId = '$categoryId',photo='$photo',content='$content',uploadTime=Now()
+                                        WHERE postId = $postId");
 
         // Redirect to the index page after update
-        header('Location: /');
+        // header('Location: /userPostList');
     }
 
     public function deletePost($postId)
@@ -166,7 +164,7 @@ class Post
     }
 
     public function getAllManagedPosts(){
-        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status
+        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status, users.id
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
                                                             INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -184,12 +182,98 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function acceptPost($postId){
+    public function searchPosts($searchTerm)
+    {
+        // Escaping input để tránh SQL Injection
+        $searchTerm = $this->connection->real_escape_string($searchTerm);
+
+        // Truy vấn tìm kiếm
+        $query = "SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        WHERE posts.status = 1 and posts.postName LIKE '%$searchTerm%'
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name
+                                                        ORDER BY posts.uploadTime DESC";
+
+        // Thực hiện truy vấn
+        $result = $this->connection->query($query);
+
+        // Kiểm tra kết quả
+        if ($result->num_rows > 0) {
+            // Lưu các bài viết tìm được
+            $posts = [];
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
+            return $posts; // Trả về danh sách bài viết
+        } else {
+            return []; // Không tìm thấy bài viết
+        }
+    }
+
+    public function searchPostAdmin($namePost, $status)
+    {
+        $searchTerm =
+            $namePost !== null ? $this->connection->real_escape_string($namePost) : '';
+        $status =
+            $status !== null ? $this->connection->real_escape_string($status) : '';
+
+        $conditions = [];
+
+        if ($searchTerm !== '') {
+            $conditions[] = "posts.postName LIKE '%$searchTerm%'";
+        }
+
+        if ($status !== '') {
+            $conditions[] = "posts.status = $status";
+        }
+
+        $query = "SELECT posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, posts.status
+              FROM blog_schema.posts 
+              INNER JOIN blog_schema.users ON posts.userId = users.id
+              INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+              LEFT JOIN blog_schema.comments ON comments.postId = posts.postId";
+
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $query .= " GROUP BY posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name";
+
+        $result = $this->connection->query($query);
+
+        if ($result->num_rows > 0) {
+            $posts = [];
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
+            return $posts;
+        } else {
+            return [];
+        }
+    }
+
+
+
+
+    public function acceptPost($postId)
+    {
         $this->connection->query("UPDATE posts SET status = 1 WHERE postId = $postId");
     }
 
-    public function declinePost($postId){
+    public function declinePost($postId)
+    {
         $this->connection->query("UPDATE posts SET status = -1 WHERE postId = $postId");
     }
-
 }
