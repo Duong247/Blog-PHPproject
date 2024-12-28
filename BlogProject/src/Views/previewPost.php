@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div style="padding: 0 0 12px 0" class="col-lg-12">
-                    <a class="return_link" href="/managePosts?>">
+                    <a class="return_link" href="/managePosts">
                         <i class="fa-solid fa-angle-left"></i> Quay lại trang trước
                     </a>
                 </div>
