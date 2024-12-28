@@ -266,4 +266,15 @@ class User
     {
         $this->closeConnection();
     }
+
+
+    //Admin
+    public function getAllUsers(){
+        $stmt = $this->mysqli->prepare(" SELECT 	users.id, users.first_name, users.last_name, users.email, users.created_at, role, COALESCE(Count(posts.postId), 0) as quantityPosts
+                                                FROM 	posts RIGHT JOIN users on posts.userId = users.id
+                                                GROUP BY users.first_name, users.last_name, users.email, users.created_at, role;");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
 }

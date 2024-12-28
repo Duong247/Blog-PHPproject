@@ -23,15 +23,14 @@
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>
-                <th class="text-center" scope="col" style="width:80px">Hình ảnh</th>
+                <th class="text-center" scope="col" style="width:100px">Hình ảnh</th>
                 <th class="text-center" scope="col">Tên bài viết</th>
-                <th style="width: 180px;" class="text-center" scope="col">Mô tả</th>
-                <th style="width: 100px;" class="text-center" scope="col">Loại</th>
-                <th style="width: 250px;" class="text-center" scope="col">Nội dung</th>
-                <th style="width: 120px;" class="text-center" scope="col">Tác giả</th>
+                <th style="width: 200px;" class="text-center" scope="col">Mô tả</th>
+                <th style="width: 150px;" class="text-center" scope="col">Loại</th>
+                <th style="width: 180px;" class="text-center" scope="col">Tác giả</th>
                 <th style="width: 150px;" class="text-center" scope="col">Thời gian đăng</th>
                 <th style="width: 120px;" class="text-center" scope="col">Trạng thái</th>
-                <th style="width: 100px;" class="text-center" scope="col">Hành động</th>
+                <th style="width: 150px;" class="text-center" scope="col">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -43,7 +42,6 @@
                     <td><?= $post['postName'] ?></td>
                     <td><?= $post['description'] ?></td>
                     <td class="text-center"><?= $post['categoryName'] ?></td>
-                    <td><?= $post['content'] ?></td>
                     <td class="text-center"><?= $post['first_name'] . ' ' . $post['last_name'] ?></td>
                     <td class="text-center">
                         <?php
@@ -63,6 +61,11 @@
                     </td>
                     <td>
                         <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-info" style="margin: 4px;" data-toggle="tooltip"
+                                data-placement="top" title="Xem trước bài viết"
+                                onclick="previewPost(<?= $post['postId'] ?>, <?= $post['id'] ?>)">
+                                <i style="color: #fff" class="fa-solid fa-eye"></i>
+                            </button>
                             <?php if ($post['status'] == 0) { ?>
                                 <button type="button" class="btn btn-success" style="margin: 4px;" data-toggle="tooltip"
                                     data-placement="top" title="Duyệt bài viết" onclick="acceptPost(<?= $post['postId'] ?>)">
@@ -111,6 +114,10 @@
     </nav>
 </div>
 <script>
+    function previewPost(postId, userId) {
+        window.location.href = '/managePosts/previewPost?postId=' + postId + '&userId=' + userId;
+    }
+
     function acceptPost(postId) {
         if (confirm('Bạn có chắc muốn duyệt bài viết này?')) {
             window.location.href = '/acceptPost?postId=' + postId;

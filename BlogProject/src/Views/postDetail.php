@@ -13,23 +13,19 @@
                   <img src="/assets/images/postImage/<?= $post['photo'] ?>" alt="ảnh">
                 </div>
                 <div class="down-content">
-                  <a href="postDetail.php">
-                    <h4><?= $post['postName'] ?></h4>
-                  </a>
+                  <h4><?= $post['postName'] ?></h4>
                   <ul class="post-info">
                     <li><a href="#"><?= $post['last_name'] . ' ' . $post['first_name'] ?></a></li>
-                    <li>
-                      <a href="#">
-                        <?php
-                        $uploadTime = new DateTime($post['uploadTime']);
-                        $formattedDate = $uploadTime->format('H:i d/m/Y');
-                        echo $formattedDate;
-                        ?>
-                      </a>
+                    <li style="color: #AAAAAA">
+                      <?php
+                      $uploadTime = new DateTime($post['uploadTime']);
+                      $formattedDate = $uploadTime->format('H:i d/m/Y');
+                      echo $formattedDate;
+                      ?>
                     </li>
-                    <li><a href="#"><?= $countComment['COUNT(*)'] ?> Bình luận</a></li>
+                    <li style="color: #AAAAAA"><?= $countComment['COUNT(*)'] ?> Bình luận</li>
                   </ul>
-                  <hr style="opacity: .1;">
+                                    <hr style="opacity: .1;">
                   <div class="content">
                     <?= $post['content'] ?>
                   </div>

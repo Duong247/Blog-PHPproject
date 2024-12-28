@@ -91,14 +91,20 @@ $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory'
 $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
 $router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts']);
 
-
-
-//Admin controllers
-$router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']);
+//Admin
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
+$router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']);
+$router->addRoute('/\/managePosts\/previewPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'previewPost']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
 $router->addRoute('/\/deletePost\?postId=(\d+)/', [new AdminController(), 'deletePost']);
+$router->addRoute('/\/manageUsers/', [new AdminController(), 'getAllUsers']);
+$router->addRoute('/\/manageUser\?userId=(\d+)/', [new AdminController(), 'getPostByUserId']);
+$router->addRoute('/\/manageUser\/previewPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'previewPostOfUser']);
+$router->addRoute('/\/manageUser\/acceptPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'acceptPostOfUser']);
+$router->addRoute('/\/manageUser\/declinePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'declinePostOfUser']);
+$router->addRoute('/\/manageUser\/deletePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'deletePostOfUser']);
+
 // categories
 $router->addRoute('/\/manageCategories/', [new CategoriesController(), 'index']);
 $router->addRoute('/\/manageCategories\/create/', [new CategoriesController(), 'create']);
