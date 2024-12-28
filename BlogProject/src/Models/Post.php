@@ -70,7 +70,7 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getPostByUserId($userId):array|bool|null
+    public function getPostByUserId($userId): array|bool|null
     {
         $userId = $this->connection->real_escape_string($userId);
         $result = $this->connection->query(" SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId");
@@ -113,7 +113,7 @@ class Post
     public function getPostById($postId): array|bool|null
     {
         $postId = $this->connection->real_escape_string($postId);
-        $result = $this->connection->query(" SELECT postId,postName,description,categories.categoryId,photo, content, uploadTime, first_name, last_name ,categoryName, userId
+        $result = $this->connection->query(" SELECT postId,postName,description,categories.categoryId, posts.photo, content, uploadTime, first_name, last_name ,categoryName, userId
                                                     FROM blog_schema.posts 
                                                         Inner join blog_schema.users on posts.userId = users.id
                                                         inner join blog_schema.categories on categories.categoryId = posts.categoryId
@@ -138,7 +138,7 @@ class Post
         // header('Location: /');
     }
 
-    public function updatePost($postId, $postName,$description,$categoryId,$photo,$content)
+    public function updatePost($postId, $postName, $description, $categoryId, $photo, $content)
     {
         $postId = $this->connection->real_escape_string($postId);
         $postName = $this->connection->real_escape_string($postName);
@@ -146,12 +146,12 @@ class Post
         $categoryId = $this->connection->real_escape_string($categoryId);
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
-        
+
 
         $this->connection->query("UPDATE posts
                                         SET postName = '$postName' ,description = '$description',categoryId = '$categoryId',photo='$photo',content='$content',uploadTime=Now()
                                         WHERE postId = $postId");
-        
+
         // Redirect to the index page after update
         // header('Location: /userPostList');
     }
@@ -163,7 +163,8 @@ class Post
         $this->connection->query("DELETE FROM posts WHERE postId = $postId");
     }
 
-    public function getAllManagedPosts(){
+    public function getAllManagedPosts()
+    {
         $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
@@ -182,12 +183,13 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function acceptPost($postId){
+    public function acceptPost($postId)
+    {
         $this->connection->query("UPDATE posts SET status = 1 WHERE postId = $postId");
     }
 
-    public function declinePost($postId){
+    public function declinePost($postId)
+    {
         $this->connection->query("UPDATE posts SET status = -1 WHERE postId = $postId");
     }
-
 }
