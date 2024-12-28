@@ -2,6 +2,7 @@
 
 use App\Controllers\AdminController;
 use App\Controllers\AuthenticationController;
+use App\Controllers\CategoriesController;
 use App\Controllers\CommentController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
@@ -98,3 +99,14 @@ $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
 $router->addRoute('/\/deletePost\?postId=(\d+)/', [new AdminController(), 'deletePost']);
+// categories
+$router->addRoute('/\/manageCategories/', [new CategoriesController(), 'index']);
+$router->addRoute('/\/manageCategories\/create/', [new CategoriesController(), 'create']);
+$router->addRoute('/\/manageCategories\/delete\/(\d+)/', [new CategoriesController(), 'delete']);
+$router->addRoute('/\/manageCategories\/update\/(\d+)/', [new CategoriesController(), 'update']);
+
+
+
+
+
+

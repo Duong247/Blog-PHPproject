@@ -25,9 +25,36 @@ class Category
 
     public function getAllCategory()
     {
-        $result = $this->connection->query("SELECT * FROM categories");
+        $result = $this->connection->query(" SELECT categories.categoryId,categoryName, COUNT(posts.postId) AS postCount
+                                                    FROM categories LEFT JOIN posts ON categories.categoryId = posts.categoryId
+                                                    GROUP BY categories.categoryId, categoryName;");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function createCategory($categoryName){
+        $categoryName = $this->connection->real_escape_string($categoryName);
+        $this->connection->query("INSERT INTO categories (categoryName) VALUES ('$categoryName')");
+
+    }
+
+    public function updateCategory($categoryId,$categoryName){
+        $categoryId = $this->connection->real_escape_string($categoryId);
+        $this->connection->query(" UPDATE categories SET categoryName = '$categoryName' WHERE categoryId = $categoryId;");
+
+    }
+
+    public function deleteCategory($categoryId){
+        $categoryId = $this->connection->real_escape_string(string: $categoryId);
+        $this->connection->query("   DELETE FROM comments
+                                            WHERE postId IN (
+                                                SELECT postId 
+                                                FROM posts 
+                                                WHERE categoryId = $categoryId
+                                            );");
+        $this->connection->query(" DELETE FROM posts WHERE categoryId = $categoryId");
+        $this->connection->query(" DELETE FROM categories Where categoryId=$categoryId");
+
+    }
+    
     
 }
