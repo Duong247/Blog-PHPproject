@@ -68,31 +68,30 @@
                             session_start();
                         }
                         if (isset($_SESSION['user'])) { ?>
-                            <li class="nav-item">
-                                <div class="btn-group">
-                                    <a href="#" class="btn dropdown-toggle" aria-expanded="false">
-                                        <img class="image-avatar"
-                                            src="<?= isset($_SESSION['user']['photo']) && $_SESSION['user']['photo']
-                                                        ? 'assets/images/photo/' . $_SESSION['user']['photo']
+                        <li class="nav-item">
+                            <div class="btn-group">
+                                <a href="#" class="btn dropdown-toggle" aria-expanded="false">
+                                    <img class="image-avatar" src="<?= isset($_SESSION['user']['photo']) && $_SESSION['user']['photo']
+                                                        ? '/assets/images/photo/' . $_SESSION['user']['photo']
                                                         : '/templates/assets/images/noPhoto.png' ?>" alt="User Avatar">
 
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a href="/userPostList" class="dropdown-item">Quản lý bài viết</a></li>
-                                        <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
-                                        <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
-                                        <li>
-                                            <form method="POST" action="/logout">
-                                                <button type="submit">Logout</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a href="/userPostList" class="dropdown-item">Quản lý bài viết</a></li>
+                                    <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
+                                    <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
+                                    <li>
+                                        <form method="POST" action="/logout">
+                                            <button type="submit">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                         <?php } else { ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login/index">Đăng nhập</a>
-                            </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/index">Đăng nhập</a>
+                        </li>
                         <?php } ?>
 
 

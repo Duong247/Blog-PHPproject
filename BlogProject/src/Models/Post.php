@@ -183,6 +183,47 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function searchPosts($searchTerm)
+    {
+        // Escaping input để tránh SQL Injection
+        $searchTerm = $this->connection->real_escape_string($searchTerm);
+
+        // Truy vấn tìm kiếm
+        $query = "SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+                                                        FROM blog_schema.posts 
+                                                            INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                            INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                            LEFT JOIN blog_schema.comments ON comments.postId = posts.postId
+                                                        WHERE posts.status = 1 and posts.postName LIKE '%$searchTerm%'
+                                                        GROUP BY 
+                                                            posts.postId,
+                                                            posts.postName,
+                                                            posts.description,
+                                                            categories.categoryName,
+                                                            posts.photo,
+                                                            posts.content,
+                                                            posts.uploadTime,
+                                                            users.first_name,
+                                                            users.last_name
+                                                        ORDER BY posts.uploadTime DESC";
+
+        // Thực hiện truy vấn
+        $result = $this->connection->query($query);
+
+        // Kiểm tra kết quả
+        if ($result->num_rows > 0) {
+            // Lưu các bài viết tìm được
+            $posts = [];
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
+            return $posts; // Trả về danh sách bài viết
+        } else {
+            return []; // Không tìm thấy bài viết
+        }
+    }
+
+
     public function acceptPost($postId)
     {
         $this->connection->query("UPDATE posts SET status = 1 WHERE postId = $postId");

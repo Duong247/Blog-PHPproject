@@ -85,16 +85,15 @@ $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 $router->addRoute('/\/post\/update\/(\d+)/', [new PostController(), 'showPostInfo']);
 $router->addRoute('/\/update\/(\d+)/', [new PostController(), 'update']);
 
+
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
 $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
+$router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts']);
+
+
 
 //Admin controllers
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
 $router->addRoute('/\/deletePost\?postId=(\d+)/', [new AdminController(), 'deletePost']);
-
-
-
-
-
