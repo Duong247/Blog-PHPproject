@@ -94,6 +94,7 @@ $router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts
 //Admin
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);  // ok
 $router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']); // ok
+$router->addRoute('/\/manageUserPosts\/search/', [new AdminController(), 'searchPostsOfUserAdmin']); // ok
 $router->addRoute('/\/managePosts\/previewPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'previewPost']); // ok
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']); // ok
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']); // ok
