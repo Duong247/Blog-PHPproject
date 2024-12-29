@@ -56,5 +56,9 @@ class Category
 
     }
     
-    
+    public function getCategoryById($categoryId){
+        $categoryId = $this->connection->real_escape_string($categoryId);
+        $result = $this->connection->query("SELECT * FROM categories WHERE categoryId = $categoryId");
+        return $result->fetch_assoc();
+    }
 }

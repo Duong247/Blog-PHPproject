@@ -1,17 +1,17 @@
 <?php ob_start(); ?>
 <style>
     body {
-        background-color: #f4f4f4;
+        background-color: #FFF;
         font-family: Arial, sans-serif;
         color: #333;
     }
 
     .profile-container {
-        max-width: 600px;
+        max-width: 400px;
         margin: 50px auto;
         background: #fff;
         border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         padding: 25px;
     }
 
@@ -22,7 +22,8 @@
 
     .profile-header h1 {
         font-size: 26px;
-        color: #FF7F50;
+        color: #F48840;
+        font-weight: bold;
     }
 
     .avatar {
@@ -77,12 +78,12 @@
     }
 
     .form-control:focus {
-        border-color: #FF7F50;
+        border-color: #F48840;
         box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
     }
 
     .btn-primary {
-        background-color: #FF7F50;
+        background-color: #F48840;
         border: none;
         color: #fff;
         width: 100%;
@@ -105,7 +106,7 @@
     }
 
     .footer a {
-        color: #FF7F50;
+        color: #F48840;
         text-decoration: none;
     }
 
@@ -146,11 +147,11 @@
 <div class="profile-container">
     <div class="profile-header"
         style="display: flex; align-items: center; justify-content: center; width: 100%; position: relative;">
-        <h1 style="font-size: 26px; color: #FF7F50; margin: 0;">
+        <h1 style="font-size: 26px; color: #F48840; margin: 0;">
             Thông tin cá nhân
         </h1>
         <i class="edit-icon" style="font-size: 30px; margin-left: 10px; position: absolute; right: 0;">
-            <a href="/user/form-update-profile" style="color: #FF7F50;">&#9998;</a>
+            <a href="/user/form-update-profile" style="color: #F48840;">&#9998;</a>
         </i>
     </div>
     <!-- Hiển thị ảnh đại diện -->
@@ -165,7 +166,7 @@
     <div class="form-group">
         <label for="fullname">Họ và tên</label>
         <p class="form-control-plaintext" id="fullname">
-            <?php echo htmlspecialchars($user['last_name'] . " " . $user['first_name']); ?>
+            <?php echo htmlspecialchars($user['first_name'] . " " . $user['last_name']); ?>
         </p>
     </div>
 
@@ -185,17 +186,17 @@
 
     <!-- Thay đổi mật khẩu -->
     <form action="/user/form-change-pass" method="POST" style="margin-top: 30px;">
-        <div class="form-group d-flex justify-content-start gap-2">
+        <div class="form-group">
             <button type="submit" class="btn btn-primary"
-                style="height: 50px; width: 30%; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                style="height: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
                 <i class="fa fa-key" style="margin-right: 10px;"></i> Đổi mật khẩu
             </button>
-            <a href="/" class="btn btn-secondary"
-                style="height: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
-                Quay lại
-            </a>
         </div>
     </form>
+    <a href="/" class="btn btn-secondary"
+        style="height: 50px; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+        Quay lại
+    </a>
     <?php
     // Kiểm tra nếu có thông báo trong session
     if (session_status() === PHP_SESSION_NONE) {

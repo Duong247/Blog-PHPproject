@@ -5,20 +5,21 @@
     <hr>
 
     <div class="input-group mb-3">
-        <form action="/managePosts/search" method="GET">
-            <select name="status" class="statusFilter" id="status">
+        <form class="d-flex w-100 justify-content-between" action="/managePosts/search" method="GET">
+            <select style="width: 185px; outline: none" name="status" class="statusFilter text-center" id="status">
                 <option value="">-- Chọn trạng thái --</option>
                 <option value="1">Đã duyệt</option>
                 <option value="0">Chưa duyệt</option>
-                <option value="-1">Từ chối</option>
+                <option value="-1">Bị từ chối</option>
             </select>
-            <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-                name="searchValue" aria-describedby="basic-addon1">
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+            <div style="width: 85%" class="d-flex justify-content-center">
+                <input style="border-radius: 0" type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
+                    name="searchValue" aria-describedby="basic-addon1">
+                <div class="input-group-prepend">
+                    <button style="border-radius: 0" class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                </div>
             </div>
         </form>
-
     </div>
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">

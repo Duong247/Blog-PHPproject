@@ -30,22 +30,15 @@
                                         </li>
                                         <li style="color: #AAAAAA"><?= $countComment['COUNT(*)'] ?> Bình luận</li>
                                     </ul>
-
+                                    <hr style="opacity: .1;">
                                     <?= $post['content'] ?>
-
+                                    <hr style="opacity: .1;">
                                     <div class="post-options">
                                         <div class="row">
                                             <div class="col-6">
                                                 <ul class="post-tags">
                                                     <li><i class="fa fa-tags"></i></li>
                                                     <li><a href="#"><?= $post['categoryName'] ?></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-6">
-                                                <ul class="post-share">
-                                                    <li><i class="fa fa-share-alt"></i></li>
-                                                    <li><a href="#">Facebook</a>,</li>
-                                                    <li><a href="#"> Twitter</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -75,7 +68,7 @@
                                                         <?php
                                                         $uploadTime = new DateTime($post['uploadTime']);
                                                         $formattedDate = $uploadTime->format('H:i d/m/Y');
-                                                        echo $formattedDate;
+                                                        echo $post['first_name'] . ' ' . $post['last_name'] . ' | ' . $formattedDate;
                                                         ?>
                                                     </span>
                                                 </a>
@@ -93,8 +86,7 @@
                                 <div class="content">
                                     <ul>
                                         <?php foreach ($categories as $category): ?>
-                                            <li style="list-style: inside"><a
-                                                    href="#"><?= $category['categoryName'] ?></a>
+                                            <li style="list-style: inside"><a href="#"><?= $category['categoryName'] ?></a>
                                             </li>
                                         <?php endforeach; ?>
                                     </ul>
@@ -107,30 +99,6 @@
         </div>
     </div>
 </section>
-
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="social-icons">
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Behance</a></li>
-                    <li><a href="#">Linkedin</a></li>
-                    <li><a href="#">Dribbble</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-12">
-                <div class="copyright-text">
-                    <p>Copyright 2020 Stand Blog Co.
-
-                        | Design: <a rel="nofollow" href="https://templatemo.com" target="_parent">TemplateMo</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
 
 
 <!-- Bootstrap core JavaScript -->

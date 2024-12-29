@@ -1,9 +1,13 @@
 <?php ob_start(); ?>
 <style>
     body {
-        background-color: #f4f4f4;
+        background-color: #fff;
         font-family: Arial, sans-serif;
         color: #333;
+    }
+
+    label{
+        font-weight: bold;
     }
 
     .register-container {
@@ -11,7 +15,7 @@
         margin: 50px auto;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         padding: 20px;
     }
 
@@ -23,6 +27,7 @@
     .register-header h1 {
         font-size: 24px;
         color: #FF7F50;
+        font-weight: bold;
         /* Cam */
     }
 
@@ -78,14 +83,14 @@
 
     <form action="/register" method="POST">
         <div class="mb-3">
-            <label for="first_name" class="form-label">Tên</label>
-            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Tên của bạn"
+            <label for="first_name" class="form-label">Họ đệm</label>
+            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Họ đệm của bạn"
                 value="<?php echo isset($_SESSION['form_data']['first_name']) ? $_SESSION['form_data']['first_name'] : ''; ?>"
                 required>
         </div>
         <div class="mb-3">
-            <label for="last_name" class="form-label">Họ đệm</label>
-            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Họ đệm của bạn"
+            <label for="last_name" class="form-label">Tên</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Tên của bạn"
                 value="<?php echo isset($_SESSION['form_data']['last_name']) ? $_SESSION['form_data']['last_name'] : ''; ?>"
                 required>
         </div>

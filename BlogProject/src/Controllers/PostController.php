@@ -52,7 +52,8 @@ class PostController extends Controller
         $posts = $this->postModel->getPostsByCategory($categoryId);
         $categories = $this->categoryModel->getAllCategory();
         $recentPosts = $this->postModel->getRecentPosts();
-        $this->render('blogs', ['posts' => $posts, 'categories' => $categories, 'recentPosts' => $recentPosts]);
+        $categorySelected = $this->categoryModel->getCategoryById($categoryId);
+        $this->render('blogs', ['posts' => $posts, 'categories' => $categories, 'recentPosts' => $recentPosts, 'categorySelected' => $categorySelected]);
     }
 
     public function getRecentPost()

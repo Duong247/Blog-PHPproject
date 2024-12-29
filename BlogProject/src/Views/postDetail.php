@@ -25,7 +25,7 @@
                     </li>
                     <li style="color: #AAAAAA"><?= $countComment['COUNT(*)'] ?> Bình luận</li>
                   </ul>
-                                    <hr style="opacity: .1;">
+                  <hr style="opacity: .1;">
                   <div class="content">
                     <?= $post['content'] ?>
                   </div>
@@ -36,13 +36,6 @@
                         <ul class="post-tags">
                           <li><i class="fa fa-tags"></i></li>
                           <li><a href="#"><?= $post['categoryName'] ?></a></li>
-                        </ul>
-                      </div>
-                      <div class="col-6">
-                        <ul class="post-share">
-                          <li><i class="fa fa-share-alt"></i></li>
-                          <li><a href="#">Facebook</a>,</li>
-                          <li><a href="#"> Twitter</a></li>
                         </ul>
                       </div>
                     </div>
@@ -64,10 +57,10 @@
                     <?php foreach ($dataComments as $comment): ?>
                       <li style="width: 100%;">
                         <ul>
-                          <li style="width: 100%; position: relative"
-                            id="cmt<?= $comment['mainComment']['commentId'] ?>">
+                          <li style="width: 100%; position: relative" id="cmt<?= $comment['mainComment']['commentId'] ?>">
                             <div class="author-thumb">
-                              <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
+                              <img
+                                src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
                                 alt="">
                             </div>
                             <div class="right-content">
@@ -103,7 +96,7 @@
                               }
                               $currentUserId = $_SESSION['currentUser'];
                               if ($currentUserId == $post['userId'] || $currentUserId == $comment['mainComment']['userId'] || $user['role'] == 1) {
-                              ?>
+                                ?>
                                 <button class="btn delete-btn"
                                   onclick="deleteComment(<?= $post['postId'] ?>, <?= $comment['mainComment']['commentId'] ?>)">
                                   <i class="fa fa-times"></i>
@@ -112,40 +105,40 @@
                             </div>
                           </li>
                           <?php foreach ($comment['subComments'] as $subComment) { ?>
-                            <li style="position: relative" id="cmt<?= $subComment['commentId'] ?>"
-                              class="replied">
+                            <li style="position: relative" id="cmt<?= $subComment['commentId'] ?>" class="replied">
                               <div class="author-thumb">
-                                <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
+                                <img
+                                  src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
                                   alt="">
                               </div>
                               <div class="right-content">
                                 <h4><?= $subComment['first_name'] . ' ' . $subComment['last_name'] ?>
                                   <span><?php
-                                        $uploadTime = new DateTime($subComment['commentTime']);
+                                  $uploadTime = new DateTime($subComment['commentTime']);
 
-                                        $formattedDate = $uploadTime->format('d/m/Y');
-                                        $dayOfWeek = $uploadTime->format('l');
+                                  $formattedDate = $uploadTime->format('d/m/Y');
+                                  $dayOfWeek = $uploadTime->format('l');
 
-                                        $daysInVietnamese = [
-                                          'Sunday' => 'Chủ nhật',
-                                          'Monday' => 'Thứ hai',
-                                          'Tuesday' => 'Thứ ba',
-                                          'Wednesday' => 'Thứ tư',
-                                          'Thursday' => 'Thứ năm',
-                                          'Friday' => 'Thứ sáu',
-                                          'Saturday' => 'Thứ bảy'
-                                        ];
+                                  $daysInVietnamese = [
+                                    'Sunday' => 'Chủ nhật',
+                                    'Monday' => 'Thứ hai',
+                                    'Tuesday' => 'Thứ ba',
+                                    'Wednesday' => 'Thứ tư',
+                                    'Thursday' => 'Thứ năm',
+                                    'Friday' => 'Thứ sáu',
+                                    'Saturday' => 'Thứ bảy'
+                                  ];
 
-                                        $dayInVietnamese = $daysInVietnamese[$uploadTime->format('l')];
+                                  $dayInVietnamese = $daysInVietnamese[$uploadTime->format('l')];
 
-                                        echo "$dayInVietnamese, $formattedDate lúc " . $uploadTime->format('H:i');
-                                        ?>
+                                  echo "$dayInVietnamese, $formattedDate lúc " . $uploadTime->format('H:i');
+                                  ?>
                                   </span>
                                 </h4>
                                 <p><?= $subComment['commentContent'] ?></p>
                                 <?php
                                 if ($currentUserId == $post['userId'] || $currentUserId == $subComment['userId'] || $user['role'] == 1) {
-                                ?>
+                                  ?>
                                   <button class="btn delete-btn"
                                     onclick="deleteComment(<?= $post['postId'] ?>,<?= $subComment['commentId'] ?>)">
                                     <i class="fa fa-times"></i>
@@ -156,28 +149,23 @@
                           <?php } ?>
                           <li class="replied reply-form">
                             <div class="content">
-                              <form id="comment" class="reply-form"
-                                action="/postDetail/<?= $post['postId'] ?>/create"
+                              <form id="comment" class="reply-form" action="/postDetail/<?= $post['postId'] ?>/create"
                                 method="POST">
                                 <div class="row">
                                   <input name="commentId" type="hidden"
                                     value="<?= $comment['mainComment']['commentId'] ?>" />
-                                  <input name="postId" type="hidden"
-                                    value="<?= $post['postId'] ?>" />
+                                  <input name="postId" type="hidden" value="<?= $post['postId'] ?>" />
                                   <div class="col-lg-12">
                                     <fieldset>
-                                      <textarea style="width: 100%; padding: 8px;"
-                                        name="message" rows="2" id="message"
+                                      <textarea style="width: 100%; padding: 8px;" name="message" rows="2" id="message"
                                         placeholder="Trả lời <?= $comment['mainComment']['first_name'] . ' ' . $comment['mainComment']['last_name'] ?>"
                                         required></textarea>
                                     </fieldset>
                                   </div>
                                   <div class="col-lg-12">
                                     <fieldset>
-                                      <button
-                                        style="width: 80px; border-radius: 0; margin-top: 4px"
-                                        type="submit" id="form-submit"
-                                        class="main-button reply-submit-btn">Đăng</button>
+                                      <button style="width: 80px; border-radius: 0; margin-top: 4px" type="submit"
+                                        id="form-submit" class="main-button reply-submit-btn">Đăng</button>
                                     </fieldset>
                                   </div>
                                 </div>
@@ -202,14 +190,14 @@
                     <div class="row">
                       <div class="col-lg-12">
                         <fieldset>
-                          <textarea name="message" rows="5" id="message"
-                            placeholder="Nhập bình luận của bạn" required=""></textarea>
+                          <textarea name="message" rows="5" id="message" placeholder="Nhập bình luận của bạn"
+                            required=""></textarea>
                         </fieldset>
                       </div>
                       <div class="col-lg-12">
                         <fieldset>
-                          <button style="width: 80px; border-radius: 0;" type="submit"
-                            id="form-submit" class="main-button">Đăng</button>
+                          <button style="width: 80px; border-radius: 0;" type="submit" id="form-submit"
+                            class="main-button">Đăng</button>
                         </fieldset>
                       </div>
                     </div>
@@ -226,8 +214,7 @@
             <div style="padding: 0" class="col-lg-12">
               <div class="sidebar-item search">
                 <form id="search_form" name="gs" method="GET" action="#">
-                  <input type="text" name="q" class="searchText" placeholder="Nhập để tìm kiếm..."
-                    autocomplete="on">
+                  <input type="text" name="q" class="searchText" placeholder="Nhập để tìm kiếm..." autocomplete="on">
                 </form>
               </div>
             </div>
@@ -247,7 +234,7 @@
                             <?php
                             $uploadTime = new DateTime($post['uploadTime']);
                             $formattedDate = $uploadTime->format('H:i d/m/Y');
-                            echo $formattedDate;
+                            echo $post['first_name'] . ' ' . $post['last_name'] . ' | ' . $formattedDate;
                             ?>
                           </span>
                         </a>

@@ -1,12 +1,10 @@
 <?php ob_start(); ?>
 <div class="container">
     <h2 style="padding-bottom: 8px">Quản lý bài đăng</h2>
-
     <hr>
-
     <div class="input-group mb-3">
-        <form action="/managePosts/search" method="GET">
-            <select name="status" class="statusFilter" id="status">
+        <form class="d-flex w-100 justify-content-between" action="/managePosts/search" method="GET">
+            <select style="width: 185px; outline: none; font-size: 18px" name="status" class="statusFilter text-center" id="status">
                 <option value="" <?php if ($status === null)
                     echo 'selected'; ?>>-- Chọn trạng thái --</option>
                 <option value="1" <?php if ($status === '1')
@@ -16,14 +14,15 @@
                 <option value="-1" <?php if ($status === '-1')
                     echo 'selected'; ?>>Bị từ chối</option>
             </select>
-
-            <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-                name="searchValue" value="<?= htmlspecialchars($searchValue ?? '') ?>" aria-describedby="basic-addon1">
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+            <div style="width: 85%" class="d-flex justify-content-center">
+                <input style="border-radius: 0" type="text" class="form-control"
+                    placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label="" name="searchValue"
+                    value="<?= htmlspecialchars($searchValue ?? '') ?>" aria-describedby="basic-addon1">
+                <div class="input-group-prepend">
+                    <button style="border-radius: 0" class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                </div>
             </div>
         </form>
-
     </div>
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">

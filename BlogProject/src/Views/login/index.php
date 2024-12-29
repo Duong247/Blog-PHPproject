@@ -2,7 +2,7 @@
 
 <style>
 body {
-    background-color: #f4f4f4;
+    background-color: #fff;
     font-family: Arial, sans-serif;
     color: #333;
 }
@@ -12,7 +12,7 @@ body {
     margin: 50px auto;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
     padding: 20px;
 }
 
@@ -23,8 +23,9 @@ body {
 
 .login-header h1 {
     font-size: 24px;
-    color: #FF7F50;
+    color: #F48840;
     /* Cam */
+    font-weight: bold;
 }
 
 .form-control {
@@ -35,12 +36,12 @@ body {
 }
 
 .form-control:focus {
-    border-color: #FF7F50;
+    border-color: #F48840;
     box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
 }
 
 .btn-primary {
-    background-color: #FF7F50;
+    background-color: #F48840;
     border: none;
     color: #fff;
 }
@@ -57,7 +58,7 @@ body {
 }
 
 .footer a {
-    color: #FF7F50;
+    color: #F48840;
     text-decoration: none;
 }
 
@@ -71,13 +72,14 @@ body {
 }
 
 .forgot-password a {
-    color: red;
+    color: rgba(0, 0, 0, 0.5);
     /* Đổi màu chữ thành đỏ */
     text-decoration: none;
     font-size: 14px;
 }
 
 .forgot-password a:hover {
+    color: #F48840;
     text-decoration: underline;
 }
 
@@ -117,7 +119,7 @@ body {
         <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
     </form>
     <div class="footer">
-        <p>Đăng kí tài khoản ngay! <a href="/register/index">Đăng kí</a></p>
+        <p>Đăng ký tài khoản ngay! <a href="/register/index">Đăng ký</a></p>
     </div>
 </div>
 <?php
