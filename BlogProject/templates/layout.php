@@ -46,23 +46,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="about.html">About Us</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="blog.html">Blog Entries</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="post-details.html">Post Details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact Us</a>
-                        </li>
+                                               
                         <?php
                         if (session_status() === PHP_SESSION_NONE) {
                             session_start();
@@ -77,13 +61,21 @@
 
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a href="/userPostList" class="dropdown-item">Quản lý bài viết</a></li>
+                                    <li><a href="/userPostList" class="dropdown-item">Bài viết của tôi</a></li>
                                     <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
-                                    <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
+                                    <li><a href="/user/profile" class="dropdown-item">Trang cá nhân</a></li>
                                     <li>
-                                        <form method="POST" action="/logout">
-                                            <button type="submit">Logout</button>
-                                        </form>
+                                        <ul class=" dropdown-menu-end" <?=$_SESSION['user']['role']==0?'hidden':''?>>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a href="/managePosts" class="dropdown-item">Quản lý bài viết</a></li>
+                                            <li><a href="/manageCategories" class="dropdown-item">Quản lý thể loại</a></li>
+                                            <li><a href="/manageUsers" class="dropdown-item">Quản lý tài khoản</a></li>
+                                        </ul>
+
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a href="/logout" class="dropdown-item">Đăng xuất</a>
                                     </li>
                                 </ul>
                             </div>
