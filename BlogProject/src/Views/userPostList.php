@@ -35,9 +35,13 @@
         </thead>
         <tbody>
         <?php if(isset($resultSearch)) { ?>
+            <?php if (count($resultSearch) == 0)
+                echo "<tr>
+                        <td colspan='7' class='text-center'> Không có thông tin bài viết trùng khớp </td>
+                      </tr>" ?>
             <?php foreach ($resultSearch as $post) { ?>
                 <tr>
-                    <td class="text-center"><img src="assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
+                    <td class="text-center"><img src="/assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
                             alt="..." style="width: 80px;"></td>
                     <td><?= $post['postName'] ?></td>
                     <td><?= $post['description'] ?></td>

@@ -155,6 +155,7 @@ class Post
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
         $userId = $this->connection->real_escape_string($userId);
+        
 
         $this->connection->query("INSERT INTO posts
                                         (`postName`, `description`, `categoryId`, `photo`, `content`,  `userId` ) 
