@@ -5,15 +5,16 @@
 
     <div class="input-group mb-3">
         <form class="d-flex w-100 justify-content-between" action="/post/search" method="GET">
-            <select style="width: 185px; outline: none" name="status" class="statusFilter text-center" id="status">
-                <option  value="">-- Chọn trạng thái --</option>
-                <option <?=isset($status)&& $status==1?'selected':'' ?> value="1">Đã duyệt</option>
-                <option <?=isset($status)&&$status==0?'selected':'' ?> value="0">Chưa duyệt</option>
-                <option <?=isset($status)&&$status==-1?'selected':'' ?> value="-1">Bị từ chối</option>
+            <select style="width: 185px; outline: none; font-size: 16px; color:rgb(74, 76, 78); border: solid 1px #6C757D" name="status" class="statusFilter text-center" id="status">
+                <option value="">-- Chọn trạng thái --</option>
+                <option <?= isset($status) && $status == 1 ? 'selected' : '' ?> value="1">Đã duyệt</option>
+                <option <?= isset($status) && $status == 0 ? 'selected' : '' ?> value="0">Chưa duyệt</option>
+                <option <?= isset($status) && $status == -1 ? 'selected' : '' ?> value="-1">Bị từ chối</option>
             </select>
             <div style="width: 85%" class="d-flex justify-content-center">
-                <input style="border-radius: 0" type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-                    name="searchValue" aria-describedby="basic-addon1" value="<?=isset($searchValue)?$searchValue:''?>">
+                <input style="border-radius: 0" type="text" class="form-control"
+                    placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label="" name="searchValue"
+                    aria-describedby="basic-addon1" value="<?= isset($searchValue) ? $searchValue : '' ?>">
                 <div class="input-group-prepend">
                     <button style="border-radius: 0" class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                 </div>
@@ -34,51 +35,14 @@
             </tr>
         </thead>
         <tbody>
-        <?php if(isset($resultSearch)) { ?>
-            <?php if (count($resultSearch) == 0)
-                echo "<tr>
-                        <td colspan='7' class='text-center'> Không có thông tin bài viết trùng khớp </td>
+            <?php if (isset($resultSearch)) { ?>
+                <?php if (count($resultSearch) == 0)
+                    echo "<tr>
+                        <td colspan='7' class='text-center'> Không có kết quả tìm kiếm </td>
                       </tr>" ?>
-            <?php foreach ($resultSearch as $post) { ?>
-                <tr>
-                    <td class="text-center"><img src="/assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
-                            alt="..." style="width: 80px;"></td>
-                    <td><?= $post['postName'] ?></td>
-                    <td><?= $post['description'] ?></td>
-                    <td class="text-center"><?= $post['categoryName'] ?></td>
-                    <td class="text-center">
-                        <?php
-                        $uploadTime = new DateTime($post['uploadTime']);
-                        $formattedDate = $uploadTime->format('H:i:s d/m/Y');
-                        echo $formattedDate;
-                        ?>
-                    </td>
-                    <td class="text-center">
-                        <?php if ($post['status'] == 0) { ?>
-                            <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
-                        <?php } else if ($post['status'] == 1) { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
-                        <?php } else { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
-                        <?php } ?>
-                    </td>
-                    <td>
-                        <div class="<?= $post['status'] == 0 ? "d-flex " : "text-center " ?> justify-content-center">
-                            <a <?= $post['status'] == 0 ? "" : "hidden" ?> type="button" class="btn btn-primary"
-                                style="margin: 4px;" href="post/update/<?= $post['postId'] ?>"><i class="fa-solid fa-pencil"
-                                    style="color: #fff;"></i></a>
-                            <a type="button" class="btn btn-danger" style="margin: 4px;"
-                                onclick="deletePost(<?=$post['postId']?>)"><i class="fa-solid fa-trash"
-                                    style="color: #fff;"></i></a>
-                        </div>
-                    </td>
-                </tr>
-
-            <?php } ?>
-            <?php }else{ ?>
-                <?php foreach ($posts as $post) { ?>
+                <?php foreach ($resultSearch as $post) { ?>
                     <tr>
-                        <td class="text-center"><img src="assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
+                        <td class="text-center"><img src="/assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
                                 alt="..." style="width: 80px;"></td>
                         <td><?= $post['postName'] ?></td>
                         <td><?= $post['description'] ?></td>
@@ -105,14 +69,58 @@
                                     style="margin: 4px;" href="post/update/<?= $post['postId'] ?>"><i class="fa-solid fa-pencil"
                                         style="color: #fff;"></i></a>
                                 <a type="button" class="btn btn-danger" style="margin: 4px;"
-                                    onclick="deletePost(<?=$post['postId']?>)"><i class="fa-solid fa-trash"
+                                    onclick="deletePost(<?= $post['postId'] ?>)"><i class="fa-solid fa-trash"
                                         style="color: #fff;"></i></a>
                             </div>
                         </td>
                     </tr>
 
                 <?php } ?>
-            <?php } ?>               
+            <?php } else { ?>
+                <?php if (count($posts) != 0) { ?>
+                    <?php foreach ($posts as $post) { ?>
+                        <tr>
+                            <td class="text-center"><img src="assets/images/postImage/<?= $post['photo'] ?>" class="img-thumbnail"
+                                    alt="..." style="width: 80px;"></td>
+                            <td><?= $post['postName'] ?></td>
+                            <td><?= $post['description'] ?></td>
+                            <td class="text-center"><?= $post['categoryName'] ?></td>
+                            <td class="text-center">
+                                <?php
+                                $uploadTime = new DateTime($post['uploadTime']);
+                                $formattedDate = $uploadTime->format('H:i:s d/m/Y');
+                                echo $formattedDate;
+                                ?>
+                            </td>
+                            <td class="text-center">
+                                <?php if ($post['status'] == 0) { ?>
+                                    <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
+                                <?php } else if ($post['status'] == 1) { ?>
+                                        <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                                <?php } else { ?>
+                                        <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
+                                <?php } ?>
+                            </td>
+                            <td>
+                                <div class="<?= $post['status'] == 0 ? "d-flex " : "text-center " ?> justify-content-center">
+                                    <a <?= $post['status'] == 0 ? "" : "hidden" ?> type="button" class="btn btn-primary"
+                                        style="margin: 4px;" href="post/update/<?= $post['postId'] ?>"><i class="fa-solid fa-pencil"
+                                            style="color: #fff;"></i></a>
+                                    <a type="button" class="btn btn-danger" style="margin: 4px;"
+                                        onclick="deletePost(<?= $post['postId'] ?>)"><i class="fa-solid fa-trash"
+                                            style="color: #fff;"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    <?php }
+                } else { ?>
+                    <tr>
+                        <td colspan='7' class='text-center'> Chưa có bài viết nào. <a style="color: #f48840"
+                                href="/createPost">Đăng bài</a> </td>
+                    </tr>
+                <?php }
+            } ?>
 
         </tbody>
     </table>

@@ -16,19 +16,23 @@ class CommentController extends Controller
 
     public function createComment()
     {
-        $postId = $_POST['postId'];
-        $commentId = $_POST['commentId'] ?? null;
-        $content = htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');
         session_start();
         if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
             header('Location: /login/index');
         }
+        $postId = $_POST['postId'];
+        $commentId = $_POST['commentId'] ?? null;
+        $content = htmlspecialchars($_POST['message'], ENT_QUOTES, 'UTF-8');
         $userId = $_SESSION['currentUser'];
         $lastId = $this->commentModel->createComment($content, $postId, $userId, $commentId);
         header('Location: /postDetail/' . $postId . '#cmt' . $lastId['LAST_INSERT_ID()']);
     }
 
     public function deleteComment(){
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
         $commentId = $_GET['commentId'];
         $postId = $_GET['postId'];
         $this->commentModel->deleteComment($commentId);

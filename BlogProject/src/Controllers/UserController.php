@@ -274,7 +274,6 @@ class UserController extends Controller
     public function updateProfile()
     {
         // Khởi tạo session (nếu chưa có)
-        session_start();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Lấy thông tin từ form
             $firstName = $_POST['firstname'];
@@ -407,6 +406,8 @@ class UserController extends Controller
         exit();
     }
 
-    
+    public function accessFailed(){
+        $this->render('notPermittedPage', []);
+    }
 
 }

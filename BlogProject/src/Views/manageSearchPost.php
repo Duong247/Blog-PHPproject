@@ -4,7 +4,7 @@
     <hr>
     <div class="input-group mb-3">
         <form class="d-flex w-100 justify-content-between" action="/managePosts/search" method="GET">
-            <select style="width: 185px; outline: none; font-size: 18px" name="status" class="statusFilter text-center" id="status">
+            <select style="width: 185px; outline: none; font-size: 16px; color:rgb(74, 76, 78); border: solid 1px #6C757D" name="status" class="statusFilter text-center" id="status">
                 <option value="" <?php if ($status === null)
                                         echo 'selected'; ?>>-- Chọn trạng thái --</option>
                 <option value="1" <?php if ($status === '1')
@@ -39,7 +39,7 @@
         </thead>
         <tbody>
             <?php if (count($posts) == 0)
-                echo "<tr><td colspan='9' class='text-center'>Chưa đăng bài viết nào.</td></tr>" ?>
+                echo "<tr><td colspan='9' class='text-center'>Không có kết quả tìm kiếm</td></tr>" ?>
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img
@@ -100,7 +100,8 @@
             <?php } ?>
         </tbody>
     </table>
-    <nav style="display: flex; justify-content: center; color: #000; margin-top: 32px"
+    <!-- Pagination -->
+    <!-- <nav style="display: flex; justify-content: center; color: #000; margin-top: 32px"
         aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
@@ -117,7 +118,7 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav> -->
 </div>
 <script>
     function previewPost(postId, userId) {

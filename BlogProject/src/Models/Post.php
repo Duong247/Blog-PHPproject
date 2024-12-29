@@ -107,7 +107,7 @@ class Post
     {
         $userId=$_SESSION['currentUser'];
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
-        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
                                                     FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
                                                     WHERE postName LIKE '%$postNameSearch%' AND userId= $userId ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
@@ -117,7 +117,7 @@ class Post
     {
         $userId=$_SESSION['currentUser'];
         $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
-        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
                                                     FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
                                                     WHERE status = $statusSearchValue AND userId= $userId ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
@@ -128,7 +128,7 @@ class Post
         $userId=$_SESSION['currentUser'];
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
         $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
-        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
                                                     FROM blog_schema.posts 
                                                         INNER JOIN blog_schema.users ON posts.userId = users.id
                                                         INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId

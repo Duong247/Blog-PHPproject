@@ -76,7 +76,7 @@
             <div style="padding: 0" class="col-lg-12">
               <div class="sidebar-item search">
                 <form id="search_form" method="GET" action="/blogs/search-posts">
-                  <input type="text" name="searchValue" class="searchText" placeholder="Tìm kiếm bài viết..."
+                  <input type="text" name="searchValue" class="searchText" placeholder="Nhập để tìm kiếm..."
                     autocomplete="on">
                 </form>
               </div>

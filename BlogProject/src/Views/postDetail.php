@@ -91,17 +91,15 @@
                               </h4>
                               <p><?= $comment['mainComment']['commentContent'] ?></p>
                               <?php
-                              if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
-                                header('Location: /login/index');
-                              }
-                              $currentUserId = $_SESSION['currentUser'];
-                              if ($currentUserId == $post['userId'] || $currentUserId == $comment['mainComment']['userId'] || $user['role'] == 1) {
-                                ?>
-                                <button class="btn delete-btn"
-                                  onclick="deleteComment(<?= $post['postId'] ?>, <?= $comment['mainComment']['commentId'] ?>)">
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              <?php } ?>
+                              if (isset($_SESSION['user'])) {
+                                if ($user['id'] == $post['userId'] || $user['id'] == $comment['mainComment']['userId'] || $user['role'] == 1) {
+                                  ?>
+                                  <button class="btn delete-btn"
+                                    onclick="deleteComment(<?= $post['postId'] ?>, <?= $comment['mainComment']['commentId'] ?>)">
+                                    <i class="fa fa-times"></i>
+                                  </button>
+                                <?php }
+                              } ?>
                             </div>
                           </li>
                           <?php foreach ($comment['subComments'] as $subComment) { ?>
@@ -213,8 +211,9 @@
           <div class="row">
             <div style="padding: 0" class="col-lg-12">
               <div class="sidebar-item search">
-                <form id="search_form" name="gs" method="GET" action="#">
-                  <input type="text" name="q" class="searchText" placeholder="Nhập để tìm kiếm..." autocomplete="on">
+                <form id="search_form" method="GET" action="/blogs/search-posts">
+                  <input type="text" name="searchValue" class="searchText" placeholder="Nhập để tìm kiếm..."
+                    autocomplete="on">
                 </form>
               </div>
             </div>
@@ -291,6 +290,15 @@
   </div>
 </footer>
 
+<script>
+  // Lắng nghe sự kiện nhấn phím Enter
+  document.getElementById("search_form").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Ngăn chặn hành vi mặc định
+      this.submit(); // Gửi form qua JavaScript
+    }
+  });
+</script>
 
 <!-- Bootstrap core JavaScript -->
 <script src="vendor/jquery/jquery.min.js"></script>

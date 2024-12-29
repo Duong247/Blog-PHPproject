@@ -34,11 +34,6 @@ class PostController extends Controller
 
     public function postList()
     {
-        // session_start();
-        // if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
-        //     header('Location: /user/signin');
-        // }
-        // Fetch all users and display them in a view
         $posts = $this->postModel->getAllPosts();
         $categories = $this->categoryModel->getAllCategory();
         $recentPosts = $this->postModel->getRecentPosts();
@@ -66,11 +61,6 @@ class PostController extends Controller
 
     public function show($postId)
     {
-
-        // session_start();
-        // if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
-        //     header('Location: /user/signin');
-        // }
         // Fetch a single post by ID and display in a view
         $post = $this->postModel->getPostById($postId);
         $postsRecents = $this->postModel->getRecentPosts();
@@ -79,10 +69,7 @@ class PostController extends Controller
         $comments = $this->commentModel->getAllCommentsOfPost($postId);
         $dataComments = [];
         session_start();
-        if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
-            header('Location: /login/index');
-        }
-        $currentUserId = $_SESSION['currentUser'];
+        $currentUserId = $_SESSION['currentUser'] ?? 0;
         $user = $this->userModel->getUserById($currentUserId);
         foreach ($comments as $comment) {
             $subcomments = [];
@@ -125,14 +112,23 @@ class PostController extends Controller
         $this->render('userPostList', ['resultSearch' => $result,'searchValue'=>$postNameSearch,'status'=>$status]);
     }
 
+    public function showCreatePost()
+    {
+        session_start();
+        if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
+            header('Location: /login/index');
+        }
+        $categories = $this->categoryModel->getAllCategory();
+        $this->render('createPost', ['post' => [], 'categories' => $categories]);
+    }
+
     public function create()
     {
-        // session_start();
-        // if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
-        //     header('Location: /user/signin');
-        // }
-        // Handle form submission to create a new post
         session_start();
+        if (!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null) {
+            header('Location: /login/index');
+        }
+        // Handle form submission to create a new post
         $userId = $_SESSION['currentUser'];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -146,12 +142,7 @@ class PostController extends Controller
             // Call the model to create a new post
             $this->postModel->createPost($postName, $description, $categoryId, $photo, $content, $userId);
         }
-        $categories = $this->categoryModel->getAllCategory();
-        // $this
-
-        // Display the form to create a new post
-
-        $this->render('createPost', ['post' => [], 'categories' => $categories]);
+        header('Location: /userPostList');
     }
 
 
@@ -210,6 +201,9 @@ class PostController extends Controller
     public function getPostByUserId()
     {
         session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
         $userId = $_SESSION['currentUser'];
         $posts = $this->postModel->getPostByUserId($userId);
         $this->render('userPostList', ['posts' => $posts, 'currentUserId' => $userId]);
@@ -218,6 +212,10 @@ class PostController extends Controller
 
     public function showPostInfo($postId)
     {
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
         $categories = $this->categoryModel->getAllCategory();
         $post = $this->postModel->getPostById($postId);
         $this->render('createPost', ['post' => $post, 'categories' => $categories]);
@@ -225,7 +223,10 @@ class PostController extends Controller
 
     public function update($postId)
     {
-
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
         // Handle form submission to update a post
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve form data
@@ -257,6 +258,10 @@ class PostController extends Controller
     public function delete($postId)
     {
 
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
         // Call the model to delete the post
         $this->postModel->deletePost($postId);
 

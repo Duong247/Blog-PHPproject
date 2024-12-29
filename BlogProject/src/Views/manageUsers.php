@@ -6,11 +6,11 @@
 
     <form action="manageUser/search" method="POST" class="mb-3">
         <div class="input-group">
-            <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên người dùng cần tìm kiếm..." aria-label=""
-                aria-describedby="basic-addon1" value="<?=isset($searchvalue)?$searchvalue:''?>">
+            <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên người dùng cần tìm kiếm..."
+                aria-label="" aria-describedby="basic-addon1" value="<?= isset($searchvalue) ? $searchvalue : '' ?>">
             <div class="input-group-prepend">
                 <button type="submit" class="btn btn-outline-secondary">Tìm kiếm</button>
-            </div> 
+            </div>
         </div>
     </form>
 
@@ -27,15 +27,15 @@
             </tr>
         </thead>
         <tbody>
-           
-            <?php if(isset($usersResults)){?>    
-                <?php if( count($usersResults)==0){?>
+
+            <?php if (isset($usersResults)) { ?>
+                <?php if (count($usersResults) == 0) { ?>
                     <tr>
-                        <td colspan="6" class="text-center" >
-                            không có dữ liệu trùng khớp
+                        <td colspan="6" class="text-center">
+                            Không có kết quả tìm kiếm
                         </td>
                     </tr>
-                <?php }?>            
+                <?php } ?>
                 <?php foreach ($usersResults as $user) { ?>
                     <tr>
                         <td><?= $user['first_name'] . ' ' . $user['last_name'] ?></td>
@@ -59,8 +59,9 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <button onclick="viewDetailPostsOfUser(<?=$user['id']?>)" type="button" class="btn btn-info" style="margin: 0 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xem các bài viết của người dùng"><i style="color: #fff"
+                                <button onclick="viewDetailPostsOfUser(<?= $user['id'] ?>)" type="button" class="btn btn-info"
+                                    style="margin: 0 4px;" data-toggle="tooltip" data-placement="top"
+                                    title="Xem các bài viết của người dùng"><i style="color: #fff"
                                         class="fa fa-navicon"></i></button>
                                 <button type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
                                     data-placement="top" title="Xóa người dùng"><i class="fa-solid fa-trash"></i></button>
@@ -68,7 +69,7 @@
                         </td>
                     </tr>
                 <?php } ?>
-            <?php }else{?>
+            <?php } else { ?>
                 <?php foreach ($users as $user) { ?>
                     <tr>
                         <td><?= $user['first_name'] . ' ' . $user['last_name'] ?></td>
@@ -92,11 +93,14 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <button onclick="viewDetailPostsOfUser(<?=$user['id']?>)" type="button" class="btn btn-info" style="margin: 0 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xem các bài viết của người dùng"><i style="color: #fff"
+                                <button onclick="viewDetailPostsOfUser(<?= $user['id'] ?>)" type="button" class="btn btn-info"
+                                    style="margin: 0 4px;" data-toggle="tooltip" data-placement="top"
+                                    title="Xem các bài viết của người dùng"><i style="color: #fff"
                                         class="fa fa-navicon"></i></button>
-                                <button type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xóa người dùng"><i class="fa-solid fa-trash"></i></button>
+                                <?php if ($user['role'] != 1) { ?>
+                                    <button type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Xóa người dùng"><i class="fa-solid fa-trash"></i></button>
+                                <?php } ?>
                             </div>
                         </td>
                     </tr>
@@ -104,7 +108,8 @@
             <?php } ?>
         </tbody>
     </table>
-    <nav style="display: flex; justify-content: center; color: #000; margin-top: 32px"
+    <!-- Pagination -->
+    <!-- <nav style="display: flex; justify-content: center; color: #000; margin-top: 32px"
         aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
@@ -121,11 +126,11 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav> -->
 </div>
 <script>
     function viewDetailPostsOfUser(userId) {
-        window.location.href = '/manageUser?userId=' +userId
+        window.location.href = '/manageUser?userId=' + userId
     }
 </script>
 <?php $content = ob_get_clean(); ?>
