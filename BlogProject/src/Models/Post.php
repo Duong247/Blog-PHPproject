@@ -105,31 +105,34 @@ class Post
     
     public function getSearchResultByPostName($postNameSearch): array|bool|null
     {
+        $userId=$_SESSION['currentUser'];
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
         $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
                                                     FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
-                                                    WHERE postName LIKE '%$postNameSearch%' ORDER BY uploadTime DESC");
+                                                    WHERE postName LIKE '%$postNameSearch%' AND userId= $userId ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getSearchResultByStatus($statusSearchValue): array|bool|null
     {
+        $userId=$_SESSION['currentUser'];
         $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
         $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
                                                     FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
-                                                    WHERE status = $statusSearchValue ORDER BY uploadTime DESC");
+                                                    WHERE status = $statusSearchValue AND userId= $userId ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getSearchResultByBoth($postNameSearch,$statusSearchValue): array|bool|null
     {
+        $userId=$_SESSION['currentUser'];
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
         $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
         $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
                                                     FROM blog_schema.posts 
                                                         INNER JOIN blog_schema.users ON posts.userId = users.id
                                                         INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
-                                                    WHERE posts.status = '$statusSearchValue' AND postName LIKE '%$postNameSearch%'
+                                                    WHERE posts.status = '$statusSearchValue' AND postName LIKE '%$postNameSearch%' AND userId= $userId 
                                                     ORDER BY posts.uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
