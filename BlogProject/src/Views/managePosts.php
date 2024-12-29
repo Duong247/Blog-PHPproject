@@ -35,6 +35,8 @@
             </tr>
         </thead>
         <tbody>
+            <?php if (count($posts) == 0)
+                echo "<tr><td colspan='9' class='text-center'>Chưa đăng bài viết nào.</td></tr>" ?>
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img

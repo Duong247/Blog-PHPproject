@@ -6,13 +6,13 @@
         <form class="d-flex w-100 justify-content-between" action="/managePosts/search" method="GET">
             <select style="width: 185px; outline: none; font-size: 18px" name="status" class="statusFilter text-center" id="status">
                 <option value="" <?php if ($status === null)
-                    echo 'selected'; ?>>-- Chọn trạng thái --</option>
+                                        echo 'selected'; ?>>-- Chọn trạng thái --</option>
                 <option value="1" <?php if ($status === '1')
-                    echo 'selected'; ?>>Đã duyệt</option>
+                                        echo 'selected'; ?>>Đã duyệt</option>
                 <option value="0" <?php if ($status === '0')
-                    echo 'selected'; ?>>Chưa duyệt</option>
+                                        echo 'selected'; ?>>Chưa duyệt</option>
                 <option value="-1" <?php if ($status === '-1')
-                    echo 'selected'; ?>>Bị từ chối</option>
+                                        echo 'selected'; ?>>Bị từ chối</option>
             </select>
             <div style="width: 85%" class="d-flex justify-content-center">
                 <input style="border-radius: 0" type="text" class="form-control"
@@ -38,6 +38,8 @@
             </tr>
         </thead>
         <tbody>
+            <?php if (count($posts) == 0)
+                echo "<tr><td colspan='9' class='text-center'>Chưa đăng bài viết nào.</td></tr>" ?>
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img
@@ -58,9 +60,9 @@
                         <?php if ($post['status'] == 0) { ?>
                             <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
                         <?php } else if ($post['status'] == 1) { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
                         <?php } else { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
                         <?php } ?>
                     </td>
                     <td>
@@ -81,16 +83,16 @@
                                         <i class="fa-solid fa-ban"></i>
                                     </button>
                                 <?php } else if ($post['status'] == -1) { ?>
-                                        <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
-                                            data-placement="top" title="Xóa bài viết" onclick="deletePost(<?= $post['postId'] ?>)">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
+                                    <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Xóa bài viết" onclick="deletePost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 <?php } else { ?>
-                                        <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
-                                            data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
-                                            onclick="declinePost(<?= $post['postId'] ?>)">
-                                            <i class="fa-solid fa-ban"></i>
-                                        </button>
+                                    <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                        data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                        onclick="declinePost(<?= $post['postId'] ?>)">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
                                 <?php } ?>
                         </div>
                     </td>
