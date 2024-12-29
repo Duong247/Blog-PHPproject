@@ -8,13 +8,16 @@
 
     <hr>
 
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-            aria-describedby="basic-addon1">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Tìm kiếm</button>
+    <form action="manageCategories/search" method="POST" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên người dùng cần tìm kiếm..." aria-label=""
+                aria-describedby="basic-addon1" value="<?=isset($searchvalue)?$searchvalue:''?>">
+            <div class="input-group-prepend">
+                <button type="submit" class="btn btn-outline-secondary">Tìm kiếm</button>
+            </div> 
         </div>
-    </div>
+    </form>
+
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>
@@ -25,25 +28,54 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($categories as $category) { ?>
-                <tr>
-                    <th class="text-center" scope="col"><?=$category['categoryName']?></th>
-                    <th class="text-center" scope="col"><?=$category['postCount']?></th>
-                    <th>
-                        <div class="text-center justify-content-between">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    onclick="openEditModal(<?= $category['categoryId'] ?>, '<?= $category['categoryName'] ?>')"
-                                    >
-                                <i class="fa-solid fa-pencil"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
-                                    data-placement="top" title="Xóa" onclick="deleteCategory(<?= $category['categoryId'] ?>)">
-                                    <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </th>
-                </tr>
-            <?php } ?>
+            <?php if(isset($categoriesResults)){?> 
+                <?php if( count($categoriesResults)==0){?>
+                    <tr>
+                        <td colspan="3" class="text-center" >
+                            không có dữ liệu trùng khớp
+                        </td>
+                    </tr>
+                <?php }?>
+                <?php foreach ($categoriesResults as $category) { ?>
+                    <tr>
+                        <th class="text-center" scope="col"><?=$category['categoryName']?></th>
+                        <th class="text-center" scope="col"><?=$category['postCount']?></th>
+                        <th>
+                            <div class="text-center justify-content-between">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                        onclick="openEditModal(<?= $category['categoryId'] ?>, '<?= $category['categoryName'] ?>')"
+                                        >
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Xóa" onclick="deleteCategory(<?= $category['categoryId'] ?>)">
+                                        <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                <?php } ?>
+            <?php }else{?> 
+                <?php foreach ($categories as $category) { ?>
+                    <tr>
+                        <th class="text-center" scope="col"><?=$category['categoryName']?></th>
+                        <th class="text-center" scope="col"><?=$category['postCount']?></th>
+                        <th>
+                            <div class="text-center justify-content-between">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                        onclick="openEditModal(<?= $category['categoryId'] ?>, '<?= $category['categoryName'] ?>')"
+                                        >
+                                    <i class="fa-solid fa-pencil"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                        data-placement="top" title="Xóa" onclick="deleteCategory(<?= $category['categoryId'] ?>)">
+                                        <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                <?php } ?>
+            <?php }?> 
         </tbody>
     </table>
     <nav style="display: flex; justify-content: center; color: #000; margin-top: 32px"

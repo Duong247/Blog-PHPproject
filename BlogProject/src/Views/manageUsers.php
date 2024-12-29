@@ -7,7 +7,7 @@
     <form action="manageUser/search" method="POST" class="mb-3">
         <div class="input-group">
             <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên người dùng cần tìm kiếm..." aria-label=""
-                aria-describedby="basic-addon1">
+                aria-describedby="basic-addon1" value="<?=isset($searchvalue)?$searchvalue:''?>">
             <div class="input-group-prepend">
                 <button type="submit" class="btn btn-outline-secondary">Tìm kiếm</button>
             </div> 
@@ -27,7 +27,15 @@
             </tr>
         </thead>
         <tbody>
-            <?php if(isset($usersResults)){?>
+           
+            <?php if(isset($usersResults)){?>    
+                <?php if( count($usersResults)==0){?>
+                    <tr>
+                        <td colspan="6" class="text-center" >
+                            không có dữ liệu trùng khớp
+                        </td>
+                    </tr>
+                <?php }?>            
                 <?php foreach ($usersResults as $user) { ?>
                     <tr>
                         <td><?= $user['first_name'] . ' ' . $user['last_name'] ?></td>

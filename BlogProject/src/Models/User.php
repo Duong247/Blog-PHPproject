@@ -288,6 +288,7 @@ class User
                                                     users.id, users.first_name, users.last_name, users.email, users.created_at, role;");
         $stmt->execute();
         $result = $stmt->get_result();
+        $result = $result->fetch_all(MYSQLI_ASSOC);
         return $result;
     }
 }

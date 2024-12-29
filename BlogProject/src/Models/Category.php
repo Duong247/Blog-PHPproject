@@ -23,24 +23,26 @@ class Category
         }
     }
 
+
     public function getAllCategory()
     {
         $result = $this->connection->query(" SELECT categories.categoryId,categoryName, COUNT(posts.postId) AS postCount
                                                     FROM categories LEFT JOIN posts ON categories.categoryId = posts.categoryId
                                                     GROUP BY categories.categoryId, categoryName;");
+        $this->connection->close();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function createCategory($categoryName){
         $categoryName = $this->connection->real_escape_string($categoryName);
         $this->connection->query("INSERT INTO categories (categoryName) VALUES ('$categoryName')");
-
+        $this->connection->close();
     }
 
     public function updateCategory($categoryId,$categoryName){
         $categoryId = $this->connection->real_escape_string($categoryId);
         $this->connection->query(" UPDATE categories SET categoryName = '$categoryName' WHERE categoryId = $categoryId;");
-
+        $this->connection->close();
     }
 
     public function deleteCategory($categoryId){
@@ -53,12 +55,28 @@ class Category
                                             );");
         $this->connection->query(" DELETE FROM posts WHERE categoryId = $categoryId");
         $this->connection->query(" DELETE FROM categories Where categoryId=$categoryId");
-
+        $this->connection->close();
     }
     
     public function getCategoryById($categoryId){
         $categoryId = $this->connection->real_escape_string($categoryId);
         $result = $this->connection->query("SELECT * FROM categories WHERE categoryId = $categoryId");
+        $this->connection->close();
         return $result->fetch_assoc();
     }
+
+    public function searchCategories($searchvalue){
+        $searchvalue= $this->connection->real_escape_string($searchvalue);
+        $stmt = $this->connection->prepare(" SELECT categories.categoryId,categoryName, COUNT(posts.postId) AS postCount
+                                                    FROM categories LEFT JOIN posts ON categories.categoryId = posts.categoryId
+                                                    WHERE categoryName LIKE '%$searchvalue%'
+                                                    GROUP BY categories.categoryId, categoryName;
+                                                    ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $result = $result->fetch_all(MYSQLI_ASSOC);
+        return $result;
+    }
 }
+
+
