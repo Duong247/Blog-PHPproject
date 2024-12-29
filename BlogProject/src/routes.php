@@ -54,6 +54,7 @@ $router->addRoute('/\/create/', [new PostController(), 'create']); // ok
 $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']); // ok
 $router->addRoute('/\/post\/update\/(\d+)/', [new PostController(), 'showPostInfo']); // ok
 $router->addRoute('/\/update\/(\d+)/', [new PostController(), 'update']); // ok
+$router->addRoute('/\/post\/search/', [new PostController(), 'getSearchResult']); // ok
 
 
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']); // ok

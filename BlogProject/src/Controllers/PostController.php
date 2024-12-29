@@ -98,11 +98,27 @@ class PostController extends Controller
         $this->render('postDetail', ['user' => $user, 'post' => $post, 'postsRecents' => $postsRecents, 'categories' => $categories, 'countComment' => $countComments, 'dataComments' => $dataComments]);
     }
 
-    public function getSearchResult($postNameSearch)
+    public function getSearchResult()
     {
-        $resultSearch = $this->postModel->getSearchResult($postNameSearch);
-        $categories = $this->categoryModel->getAllCategory();
-        $this->render('home', ['resultSearch' => $resultSearch, 'categories' => $categories]);
+
+        $postNameSearch = isset($_GET['searchValue']) && trim($_GET['searchValue']) !== '' ? trim($_GET['searchValue']) : null;
+        $status = isset($_GET['status']) && trim($_GET['status']) !== '' ? trim($_GET['status']) : null;
+
+        if($postNameSearch == null ){
+            if ($status == null){
+                $result=$this->postModel->getAllPosts();
+            }else{
+                $result=$this->postModel->getSearchResultByStatus($status);
+            }
+        }else{
+            if($status == null){
+                $result = $this->postModel->getSearchResultByPostName($postNameSearch);
+            }else{
+                $result=$this->postModel->getSearchResultByBoth($postNameSearch,$status);
+            }
+        }
+
+        $this->render('userPostList', ['resultSearch' => $result,'searchValue'=>$postNameSearch,'status'=>$status]);
     }
 
     public function create()

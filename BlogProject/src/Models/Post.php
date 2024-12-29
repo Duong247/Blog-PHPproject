@@ -103,12 +103,38 @@ class Post
         return $result->fetch_all(MYSQLI_ASSOC);
     }
     
-    public function getSearchResult($postNameSearch): array|bool|null
+    public function getSearchResultByPostName($postNameSearch): array|bool|null
     {
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
-        $result = $this->connection->query(" SELECT * FROM posts WHERE postName LIKE '%$postNameSearch%' ORDER BY uploadTime DESC");
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+                                                    FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
+                                                    WHERE postName LIKE '%$postNameSearch%' ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getSearchResultByStatus($statusSearchValue): array|bool|null
+    {
+        $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+                                                    FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
+                                                    WHERE status = $statusSearchValue ORDER BY uploadTime DESC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getSearchResultByBoth($postNameSearch,$statusSearchValue): array|bool|null
+    {
+        $postNameSearch = $this->connection->real_escape_string($postNameSearch);
+        $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status
+                                                    FROM blog_schema.posts 
+                                                        INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                        INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                    WHERE posts.status = '$statusSearchValue' AND postName LIKE '%$postNameSearch%'
+                                                    ORDER BY posts.uploadTime DESC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
 
     public function getPostById($postId): array|bool|null
     {
@@ -311,4 +337,5 @@ class Post
     {
         $this->connection->query("UPDATE posts SET status = -1 WHERE postId = $postId");
     }
+
 }
