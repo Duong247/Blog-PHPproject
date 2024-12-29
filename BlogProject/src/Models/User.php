@@ -277,4 +277,17 @@ class User
         $result = $stmt->get_result();
         return $result;
     }
+
+    public function searchUser($searchvalue){
+        $searchvalue= $this->mysqli->real_escape_string($searchvalue);
+        $stmt = $this->mysqli->prepare(" SELECT users.id, users.first_name, users.last_name, users.email, users.created_at, role, COALESCE(COUNT(posts.postId), 0) AS quantityPosts
+                                                FROM blog_schema.posts RIGHT JOIN  blog_schema.users ON posts.userId = users.id
+                                                WHERE 
+                                                    email LIKE '%$searchvalue%' OR first_name LIKE '%$searchvalue%' OR last_name LIKE '%$searchvalue%'
+                                                GROUP BY 
+                                                    users.id, users.first_name, users.last_name, users.email, users.created_at, role;");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result;
+    }
 }

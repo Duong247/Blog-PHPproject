@@ -102,7 +102,7 @@ class Post
                                                     ");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
+    
     public function getSearchResult($postNameSearch): array|bool|null
     {
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);

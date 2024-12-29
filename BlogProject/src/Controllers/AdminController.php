@@ -139,4 +139,16 @@ class AdminController extends Controller
         $this->postModel->deletePost($postId);
         header('Location: /manageUser?userId=' . $userId);
     }
+    
+    public function getResultSearchOfUser(){
+        if (isset($_POST['searchValue']) && trim($_POST['searchValue']) !== '') {
+            $searchValue = $_POST['searchValue'];
+            $usersResults = null;
+            $usersResults = $this->userModel->searchUser($searchValue);
+
+            return $this->render('manageUsers', ['usersResults' => $usersResults]);
+        }else{
+            header("Location:/manageUsers");
+        }
+    }
 }

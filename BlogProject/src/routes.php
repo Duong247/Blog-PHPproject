@@ -69,6 +69,7 @@ $router->addRoute('/\/user\/form-update-profile/', [new UserController(), 'formU
 $router->addRoute('/\/user\/process-update-profile/', [new UserController(), 'updateProfile']);
 $router->addRoute('/\/user\/form-change-pass/', [new UserController(), 'formChangePass']);
 $router->addRoute('/\/user\/process-change-pass/', [new UserController(), 'changePass']);
+
 $router->addRoute('/\/logout/', [new UserController(), 'logout']);
 
 //post details
@@ -105,6 +106,7 @@ $router->addRoute('/\/manageUser\/previewPost\?postId=(\d+)\&userId=(\d+)/', [ne
 $router->addRoute('/\/manageUser\/acceptPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'acceptPostOfUser']);
 $router->addRoute('/\/manageUser\/declinePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'declinePostOfUser']);
 $router->addRoute('/\/manageUser\/deletePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'deletePostOfUser']);
+$router->addRoute('/\/manageUser\/search/', [new AdminController(), 'getResultSearchOfUser']);
 
 // categories
 $router->addRoute('/\/manageCategories/', [new CategoriesController(), 'index']);
