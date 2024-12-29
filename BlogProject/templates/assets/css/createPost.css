@@ -223,6 +223,8 @@ html {
     object-fit: cover;
 }
 
+
+
 .dropdown-toggle::after {
     display: none;
 }
@@ -236,6 +238,9 @@ html {
     width:100%;
 }
 
+.dropdown-toggle::after{
+    display:none !important;
+}
 
 @media (min-width:1024px) {
     .site-container {

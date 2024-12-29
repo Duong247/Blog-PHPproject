@@ -53,14 +53,14 @@
                         }
                         if (isset($_SESSION['user'])) { ?>
                         <li class="nav-item">
-                            <div class="btn-group">
+                            <div class="btn-group btn-avatar">
                                 <a href="#" class="btn dropdown-toggle" aria-expanded="false">
                                     <img class="image-avatar" src="<?= isset($_SESSION['user']['photo']) && $_SESSION['user']['photo']
                                                         ? '/assets/images/photo/' . $_SESSION['user']['photo']
                                                         : '/templates/assets/images/noPhoto.png' ?>" alt="User Avatar">
 
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
+                                <ul class="dropdown-menu dropdown-menu-end" style="margin-top: 4px;">
                                     <li><a href="/userPostList" class="dropdown-item">Bài viết của tôi</a></li>
                                     <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
                                     <li><a href="/user/profile" class="dropdown-item">Trang cá nhân</a></li>

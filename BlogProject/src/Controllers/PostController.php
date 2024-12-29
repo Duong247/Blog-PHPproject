@@ -132,8 +132,6 @@ class PostController extends Controller
         // Display the form to create a new post
 
         $this->render('createPost', ['post' => [], 'categories' => $categories]);
-        // header('Location: /');  
-        // header('Location: /userPostList');
     }
 
 

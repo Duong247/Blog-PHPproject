@@ -40,8 +40,9 @@
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img
-                            src="https://m.media-amazon.com/images/M/MV5BNjIyYjg4YWUtNTM2OS00YTc3LWE5NTEtZTdmMDdiMzE1OGJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
-                            class="img-thumbnail" alt="..." style="width: 80px;"></td>
+                            src="/assets/images/postImage/<?=$post['photo']?>"
+                            class="img-thumbnail" alt="..." style="width: 80px;"
+                             ></td>
                     <td><?= $post['postName'] ?></td>
                     <td><?= $post['description'] ?></td>
                     <td class="text-center"><?= $post['categoryName'] ?></td>
