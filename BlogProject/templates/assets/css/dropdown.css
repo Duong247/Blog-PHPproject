@@ -74,6 +74,9 @@
     background-color: #f8f9fa;
 }
 
+.dropdown-item:active{
+    background-color:#ff7f50!important;
+}
 /* Định dạng cho button logout */
 form button {
     width: 100%;
