@@ -94,6 +94,7 @@ $router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts
 //Admin
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
 $router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']);
+$router->addRoute('/\/manageUserPosts\/search/', [new AdminController(), 'searchPostsOfUserAdmin']);
 $router->addRoute('/\/managePosts\/previewPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'previewPost']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
@@ -110,9 +111,3 @@ $router->addRoute('/\/manageCategories/', [new CategoriesController(), 'index'])
 $router->addRoute('/\/manageCategories\/create/', [new CategoriesController(), 'create']);
 $router->addRoute('/\/manageCategories\/delete\/(\d+)/', [new CategoriesController(), 'delete']);
 $router->addRoute('/\/manageCategories\/update\/(\d+)/', [new CategoriesController(), 'update']);
-
-
-
-
-
-

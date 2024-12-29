@@ -102,6 +102,26 @@ class AdminController extends Controller
         $this->render('previewPostOfUser', ['post' => $post, 'user' => $user, 'postsRecents' => $postsRecents, 'categories' => $categories, 'countComment' => $countComments]);
     }
 
+    public function searchPostsOfUserAdmin()
+    {
+        $searchValue = isset($_GET['searchValue']) && trim($_GET['searchValue']) !== '' ? trim($_GET['searchValue']) : null;
+        $status = isset($_GET['status']) && trim($_GET['status']) !== '' ? trim($_GET['status']) : null;
+        $userId = $_GET['userId'];
+        if ($searchValue === null && $status === null) {
+            header('Location: /manageUser?userId=' . $userId);
+            exit();
+        }
+
+        $posts = $this->postModel->searchPostsOfUser($userId, $searchValue, $status);
+        $user = $this->userModel->getUserById($userId);
+        return $this->render('manageSearchPostOfUser', [
+            'user' => $user,
+            'posts' => $posts,
+            'status' => $status,
+            'searchValue' => $searchValue
+        ]);
+    }
+
     public function acceptPostOfUser($postId, $userId)
     {
         $this->postModel->acceptPost($postId);

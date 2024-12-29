@@ -163,7 +163,8 @@ class Post
         $this->connection->query("DELETE FROM posts WHERE postId = $postId");
     }
 
-    public function getAllManagedPosts(){
+    public function getAllManagedPosts()
+    {
         $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status, users.id
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
@@ -262,6 +263,40 @@ class Post
         } else {
             return [];
         }
+    }
+    public function searchPostsOfUser($userId, $searchValue, $status)
+    {
+        $userId = $this->connection->real_escape_string($userId);
+        $searchValue =
+            $searchValue !== null ? $this->connection->real_escape_string($searchValue) : '';
+        $status =
+            $status !== null ? $this->connection->real_escape_string($status) : '';
+
+        $conditions = [];
+
+        if ($searchValue !== '') {
+            $conditions[] = "posts.postName LIKE '%$searchValue%'";
+        }
+
+        if ($status !== '') {
+            $conditions[] = "posts.status = $status";
+        }
+        $query = "SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId";
+        if (!empty($conditions)) {
+            $query .= " AND " . implode(" AND ", $conditions);
+        }
+
+        $result = $this->connection->query($query);
+
+        if ($result->num_rows > 0) {
+            $posts = [];
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
+            return $posts;
+        } else {
+            return [];
+        };
     }
 
 

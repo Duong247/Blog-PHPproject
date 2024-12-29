@@ -11,11 +11,20 @@
     <hr>
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-            aria-describedby="basic-addon1">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Tìm kiếm</button>
-        </div>
+        <form action="/manageUserPosts/search" method="GET">
+            <input type="hidden" name="userId" value="<?= $user['id'] ?>">
+            <select name="status" class="statusFilter" id="status">
+                <option value="">-- Chọn trạng thái --</option>
+                <option value="1">Đã duyệt</option>
+                <option value="0">Chưa duyệt</option>
+                <option value="-1">Từ chối</option>
+            </select>
+            <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
+                name="searchValue" aria-describedby="basic-addon1">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+            </div>
+        </form>
     </div>
 
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
@@ -54,9 +63,9 @@
                         <?php if ($post['status'] == 0) { ?>
                             <span style="padding: 8px; font-size: 16px" class="badge badge-secondary">Chưa duyệt</span>
                         <?php } else if ($post['status'] == 1) { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-success">Đã duyệt</span>
                         <?php } else { ?>
-                                <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
+                            <span style="padding: 8px; font-size: 16px" class="badge badge-danger">Bị từ chối</span>
                         <?php } ?>
                     </td>
                     <td>
@@ -78,17 +87,17 @@
                                     <i class="fa-solid fa-ban"></i>
                                 </button>
                             <?php } else if ($post['status'] == -1) { ?>
-                                    <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
-                                        data-placement="top" title="Xóa bài viết"
-                                        onclick="deletePost(<?= $post['postId'] ?>, <?= $user['id'] ?>)">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                <button type="button" class="btn btn-danger" style="margin: 4px;" data-toggle="tooltip"
+                                    data-placement="top" title="Xóa bài viết"
+                                    onclick="deletePost(<?= $post['postId'] ?>, <?= $user['id'] ?>)">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             <?php } else { ?>
-                                    <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
-                                        data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
-                                        onclick="declinePost(<?= $post['postId'] ?>, <?= $user['id'] ?>)">
-                                        <i class="fa-solid fa-ban"></i>
-                                    </button>
+                                <button type="button" class="btn btn-warning" style="color: #FFF; margin: 4px;"
+                                    data-toggle="tooltip" data-placement="top" title="Từ chối bài viết"
+                                    onclick="declinePost(<?= $post['postId'] ?>, <?= $user['id'] ?>)">
+                                    <i class="fa-solid fa-ban"></i>
+                                </button>
                             <?php } ?>
                         </div>
                     </td>
