@@ -21,23 +21,23 @@
                 <div class="row">
                   <div class="col_50 form_input">
                     <label for="postName">Tiêu đề</label>
-                    <input type="text" class="postName" id="postName" name="postName"
+                    <input required type="text" class="postName" id="postName" name="postName"
                       value="<?= $post != null ? $post['postName'] : '' ?>">
                   </div>
                   <div class="col_25 form_input">
                     <!-- <label for="currentUser">currentUser</label> -->
-                    <input type="text" hidden class="currentUser" id="currentUser" name="currentUser">
+                    <input  type="text" hidden class="currentUser" id="currentUser" name="currentUser">
                   </div>
                 </div>
                 <div class="form_input">
                   <label for="description">Mô tả</label>
-                  <textarea id="description" name="description" cols="30" rows="5"
+                  <textarea required id="description" name="description" cols="30" rows="5"
                     class="description"><?= $post != null ? $post['description'] : '' ?></textarea>
                 </div>
                 <div class="row">
                   <div class="form_input">
                     <label for="categoryId">Thể loại</label>
-                    <select id="category" name="categoryId" class="form-select">
+                    <select required id="category" name="categoryId" class="form-select">
                       <!-- <option value="">Giải phẫu</option> -->
                       <?php foreach ($categories as $category) { ?>
                         <option <?= $post != null && $category['categoryId'] == $post['categoryId'] ? $post['postName'] : '' ?>
@@ -49,14 +49,14 @@
                   <div class="form_input">
                     <label for="upload_file">Ảnh tải lên</label>
                     <div class="upload_file">
-                      <input type="file" class="fileToUpload" id="image" name="fileToUpload" accept="image/*"
+                      <input required type="file" class="fileToUpload" id="image" name="fileToUpload" accept="image/*"
                         onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])">
                     </div>
                   </div>
 
                   <div class="form-group">
                     <div class="col-lg-offset-2 col-sm-10">
-                      <input type="hidden" name="displayPhoto" value="<?= $post != null ? $post['photo'] : '' ?>" />
+                      <input  type="hidden" name="displayPhoto" value="<?= $post != null ? $post['photo'] : '' ?>" />
                       <img id="Photo"
                         src="<?= $post == null || !isset($post['photo']) ? '' : '/assets/images/postImage/' . $post['photo'] ?>"
                         class="img img-bordered" style="width:200px" />
@@ -67,7 +67,7 @@
                 <div class="form_input">
                   <label for="textarea_containner">Nội dung</label>
                   <div id="textarea_containner">
-                    <textarea class="textarea" id="body_text" name="content">
+                    <textarea required class="textarea" id="body_text" name="content">
                     <?= $post != null ? $post['content'] : '' ?>
                   </textarea>
                   </div>

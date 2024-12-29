@@ -223,12 +223,6 @@ html {
     object-fit: cover;
 }
 
-
-
-.dropdown-toggle::after {
-    display: none;
-}
-
 .thumnail-post{
     height: 300px;
     object-fit: cover;

@@ -100,13 +100,17 @@ class PostController extends Controller
 
     public function getSearchResult()
     {
+        session_start();
+        if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+            header('Location: /login/index');
+        }
 
         $postNameSearch = isset($_GET['searchValue']) && trim($_GET['searchValue']) !== '' ? trim($_GET['searchValue']) : null;
         $status = isset($_GET['status']) && trim($_GET['status']) !== '' ? trim($_GET['status']) : null;
 
         if($postNameSearch == null ){
             if ($status == null){
-                $result=$this->postModel->getAllPosts();
+                header("Location: /userPostList");
             }else{
                 $result=$this->postModel->getSearchResultByStatus($status);
             }
