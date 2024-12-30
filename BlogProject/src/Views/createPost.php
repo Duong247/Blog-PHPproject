@@ -49,7 +49,7 @@
                   <div class="form_input">
                     <label for="upload_file">Ảnh tải lên</label>
                     <div class="upload_file">
-                      <input <?= $post != null ? '' : 'require' ?> type="file" class="fileToUpload" id="image" name="fileToUpload" accept="image/*"
+                      <input <?= $post != null ? '' : 'required' ?> type="file" class="fileToUpload" id="image" name="fileToUpload" accept="image/*"
                         onchange="document.getElementById('Photo').src = window.URL.createObjectURL(this.files[0])">
                     </div>
                   </div>
