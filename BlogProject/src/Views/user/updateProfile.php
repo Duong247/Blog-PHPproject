@@ -1,28 +1,35 @@
 <?php ob_start(); ?>
 <style>
     body {
-        background-color: #f4f4f4;
+        background-color: #fff;
         font-family: Arial, sans-serif;
         color: #333;
     }
 
+    label{
+        font-weight: bold;
+    }
+
     .reset-container {
         max-width: 400px;
+        padding: 24px 28px;
         margin: 50px auto;
         background: #fff;
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         padding: 20px;
     }
 
     .reset-header {
         text-align: center;
         margin-bottom: 20px;
+        padding: 8px 0;
     }
 
     .reset-header h1 {
         font-size: 24px;
-        color: #FF7F50;
+        color: #F48840;
+        font-weight: bold;
     }
 
     .form-control {
@@ -33,12 +40,17 @@
     }
 
     .form-control:focus {
-        border-color: #FF7F50;
+        border-color: #F48840;
         box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
     }
 
+    .avatar{
+        text-align: center;
+        padding: 12px;
+    }
+
     .btn-primary {
-        background-color: #FF7F50;
+        background-color: #F48840;
         border: none;
         color: #fff;
     }
@@ -55,7 +67,7 @@
     }
 
     .footer a {
-        color: #FF7F50;
+        color: #F48840;
         text-decoration: none;
     }
 
@@ -76,18 +88,6 @@
     </div>
 
     <form action="/user/process-update-profile" method="POST" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="lastname" class="form-label">Họ đệm</label>
-            <input type="lastname" class="form-control" id="lastname" name="lastname"
-                value="<?php echo isset($_SESSION['form_data']['lastname']) ? $_SESSION['form_data']['lastname'] : $user['last_name']; ?>"
-                placeholder="Nhập họ đệm của bạn" required>
-        </div>
-        <div class="mb-3">
-            <label for="firstname" class="form-label">Tên</label>
-            <input type="firstname" class="form-control" id="firstname" name="firstname"
-                value="<?php echo isset($_SESSION['form_data']['firstname']) ? $_SESSION['form_data']['firstname'] : $user['first_name']; ?>"
-                placeholder="Nhập tên của bạn" required>
-        </div>
         <!-- Hiển thị ảnh hiện tại và chọn ảnh mới -->
         <div class="mb-3">
             <label for="profile_picture" class="form-label">Ảnh đại diện</label>
@@ -104,13 +104,26 @@
                 value="<?php echo htmlspecialchars($user['photo'] ?? '/templates/assets/images/noPhoto.png'); ?>">
         </div>
 
+        <div class="mb-3">
+            <label for="firstname" class="form-label">Họ đệm</label>
+            <input type="firstname" class="form-control" id="firstname" name="firstname"
+                value="<?php echo isset($_SESSION['form_data']['firstname']) ? $_SESSION['form_data']['firstname'] : $user['first_name']; ?>"
+                placeholder="Nhập họ đệm của bạn" required>
+        </div>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Tên</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname"
+                value="<?php echo isset($_SESSION['form_data']['lastname']) ? $_SESSION['form_data']['lastname'] : $user['last_name']; ?>"
+                placeholder="Nhập tên của bạn" required>
+        </div>
+
         <?php if (isset($_SESSION['error'])): ?>
             <div class="error-message">
                 <?php echo $_SESSION['error'];
                 unset($_SESSION['error']); ?>
             </div>
         <?php endif; ?>
-        <div class="form-group d-flex justify-content-start gap-2">
+        <div style="padding-top: 24px" class="form-group d-flex justify-content-end gap-2">
             <button type="submit" class="btn btn-primary" style="width: 30%;">
                 <i class="fa fa-floppy-o"></i> Chỉnh sửa
             </button>

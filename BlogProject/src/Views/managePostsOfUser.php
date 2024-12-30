@@ -11,11 +11,23 @@
     <hr>
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label=""
-            aria-describedby="basic-addon1">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button">Tìm kiếm</button>
-        </div>
+        <form class="d-flex w-100 justify-content-between" action="/manageUserPosts/search" method="GET">
+            <input type="hidden" name="userId" value="<?= $user['id'] ?>">
+            <select style="width: 185px; outline: none; font-size: 16px; color:rgb(74, 76, 78); border: solid 1px #6C757D" name="status" class="statusFilter text-center" id="status">
+                <option value="">-- Chọn trạng thái --</option>
+                <option value="1">Đã duyệt</option>
+                <option value="0">Chưa duyệt</option>
+                <option value="-1">Bị từ chối</option>
+            </select>
+            <div style="width: 85%" class="d-flex justify-content-center">
+                <input style="border-radius: 0" type="text" class="form-control"
+                    placeholder="Nhập tên bài viết cần tìm kiếm..." aria-label="" name="searchValue"
+                    aria-describedby="basic-addon1">
+                <div class="input-group-prepend">
+                    <button style="border-radius: 0" class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
@@ -37,7 +49,7 @@
             <?php foreach ($posts as $post) { ?>
                 <tr>
                     <td class="text-center"><img
-                            src="https://m.media-amazon.com/images/M/MV5BNjIyYjg4YWUtNTM2OS00YTc3LWE5NTEtZTdmMDdiMzE1OGJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+                            src="/assets/images/postImage/<?=$post['photo']?>"
                             class="img-thumbnail" alt="..." style="width: 80px;"></td>
                     <td><?= $post['postName'] ?></td>
                     <td><?= $post['description'] ?></td>

@@ -277,4 +277,39 @@ class User
         $result = $stmt->get_result();
         return $result;
     }
+
+    public function searchUser($searchvalue){
+        $searchvalue= $this->mysqli->real_escape_string($searchvalue);
+        $stmt = $this->mysqli->prepare(" SELECT users.id, users.first_name, users.last_name, users.email, users.created_at, role, COALESCE(COUNT(posts.postId), 0) AS quantityPosts
+                                                FROM blog_schema.posts RIGHT JOIN  blog_schema.users ON posts.userId = users.id
+                                                WHERE 
+                                                    email LIKE '%$searchvalue%' OR first_name LIKE '%$searchvalue%' OR last_name LIKE '%$searchvalue%'
+                                                GROUP BY 
+                                                    users.id, users.first_name, users.last_name, users.email, users.created_at, role;");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $result = $result->fetch_all(MYSQLI_ASSOC);
+        return $result;
+    }
+
+    public function deleteUser($userId){
+        $userId = $this->mysqli->real_escape_string(string: $userId);
+        $this->mysqli->query("DELETE FROM comments
+                                     WHERE userId = $userId  AND commentId IS NOT NULL"); //delete all comments of user
+        $this->mysqli->query("   DELETE FROM comments
+                                        WHERE postId IN (SELECT postId
+                                            FROM posts
+                                            WHERE userId = $userId)"); //delete all comments of post of user
+        $this->mysqli->query("DELETE FROM posts
+                                     WHERE userId = $userId AND postId IS NOT NULL");  //delete all post of user       
+        $this->mysqli->query("  DELETE FROM users WHERE id = $userId");  //delete user 
+        $this->mysqli->query("SET SQL_SAFE_UPDATES = 0"); 
+        $this->mysqli->query("DELETE  FROM blog_schema.comments
+                                    WHERE subCommentId NOT IN (
+                                        SELECT commentId
+                                        FROM (SELECT commentId FROM blog_schema.comments) AS valid_comments
+                                    )
+                                    AND commentId IS NOT NULL");  //Delete subcomments when their parent comment is deleted 
+        $this->mysqli->query("SET SQL_SAFE_UPDATES = 1");                                               
+    }
 }

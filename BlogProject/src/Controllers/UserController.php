@@ -274,7 +274,6 @@ class UserController extends Controller
     public function updateProfile()
     {
         // Khởi tạo session (nếu chưa có)
-        session_start();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Lấy thông tin từ form
             $firstName = $_POST['firstname'];
@@ -395,22 +394,20 @@ class UserController extends Controller
     public function logout()
     {
         // Chỉ xử lý khi yêu cầu là POST
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Bắt đầu session một cách an toàn
-            if (session_status() === PHP_SESSION_NONE) {
-                session_start();
-            }
-            // Xóa toàn bộ session thay vì chỉ unset một phần tử
-            $_SESSION = [];
-            session_destroy();
-            // Chuyển hướng về trang chủ
-            header("Location: /");
-            exit();
-        } else {
-            // Nếu không phải phương thức POST, trả về lỗi 405 Method Not Allowed
-            http_response_code(405);
-            echo "Method Not Allowed";
-            exit();
+        // Bắt đầu session một cách an toàn
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
+        // Xóa toàn bộ session thay vì chỉ unset một phần tử
+        $_SESSION = [];
+        session_destroy();
+        // Chuyển hướng về trang chủ
+        header("Location: /");
+        exit();
     }
+
+    public function accessFailed(){
+        $this->render('notPermittedPage', []);
+    }
+
 }

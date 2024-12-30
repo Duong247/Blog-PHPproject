@@ -223,19 +223,21 @@ html {
     object-fit: cover;
 }
 
-.dropdown-toggle::after {
-    display: none;
-}
-
 .thumnail-post{
     height: 300px;
     object-fit: cover;
 }
 
 .content img{
-    width:100%;
+    width:80%;
+    display:block;
+    margin:auto;
+
 }
 
+.dropdown-toggle::after{
+    display:none !important;
+}
 
 @media (min-width:1024px) {
     .site-container {

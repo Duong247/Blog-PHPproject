@@ -56,6 +56,7 @@
 
 /* Định dạng cho từng mục trong dropdown */
 .dropdown-item {
+    padding:10px 15px !important;
     display: block;
     width: 100%;
     padding: 10px 20px;
@@ -73,11 +74,14 @@
     background-color: #f8f9fa;
 }
 
+.dropdown-item:active{
+    background-color:#ff7f50!important;
+}
 /* Định dạng cho button logout */
 form button {
     width: 100%;
     padding: 10px 20px;
-    background-color: #dc3545;
+
     color: white;
     border: none;
     font-size: 1rem;

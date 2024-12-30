@@ -102,13 +102,42 @@ class Post
                                                     ");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
-    public function getSearchResult($postNameSearch): array|bool|null
+    
+    public function getSearchResultByPostName($postNameSearch): array|bool|null
     {
+        $userId=$_SESSION['currentUser'];
         $postNameSearch = $this->connection->real_escape_string($postNameSearch);
-        $result = $this->connection->query(" SELECT * FROM posts WHERE postName LIKE '%$postNameSearch%' ORDER BY uploadTime DESC");
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
+                                                    FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
+                                                    WHERE postName LIKE '%$postNameSearch%' AND userId= $userId ORDER BY uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function getSearchResultByStatus($statusSearchValue): array|bool|null
+    {
+        $userId=$_SESSION['currentUser'];
+        $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
+        $result = $this->connection->query(" SELECT posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
+                                                    FROM blog_schema.posts  join  blog_schema.categories on posts.categoryId = categories.categoryId 
+                                                    WHERE status = $statusSearchValue AND userId= $userId ORDER BY uploadTime DESC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getSearchResultByBoth($postNameSearch,$statusSearchValue): array|bool|null
+    {
+        $userId=$_SESSION['currentUser'];
+        $postNameSearch = $this->connection->real_escape_string($postNameSearch);
+        $statusSearchValue = $this->connection->real_escape_string($statusSearchValue);
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.uploadTime,status, userId
+                                                    FROM blog_schema.posts 
+                                                        INNER JOIN blog_schema.users ON posts.userId = users.id
+                                                        INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
+                                                    WHERE posts.status = '$statusSearchValue' AND postName LIKE '%$postNameSearch%' AND userId= $userId 
+                                                    ORDER BY posts.uploadTime DESC");
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+
 
     public function getPostById($postId): array|bool|null
     {
@@ -129,6 +158,7 @@ class Post
         $photo = $this->connection->real_escape_string($photo);
         $content = $this->connection->real_escape_string($content);
         $userId = $this->connection->real_escape_string($userId);
+        
 
         $this->connection->query("INSERT INTO posts
                                         (`postName`, `description`, `categoryId`, `photo`, `content`,  `userId` ) 
@@ -163,7 +193,8 @@ class Post
         $this->connection->query("DELETE FROM posts WHERE postId = $postId");
     }
 
-    public function getAllManagedPosts(){
+    public function getAllManagedPosts()
+    {
         $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime,  users.first_name, users.last_name, posts.status, users.id
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
@@ -239,7 +270,7 @@ class Post
             $conditions[] = "posts.status = $status";
         }
 
-        $query = "SELECT posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, posts.status
+        $query = "SELECT posts.postId, posts.postName, posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, posts.status, users.id
               FROM blog_schema.posts 
               INNER JOIN blog_schema.users ON posts.userId = users.id
               INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -263,6 +294,40 @@ class Post
             return [];
         }
     }
+    public function searchPostsOfUser($userId, $searchValue, $status)
+    {
+        $userId = $this->connection->real_escape_string($userId);
+        $searchValue =
+            $searchValue !== null ? $this->connection->real_escape_string($searchValue) : '';
+        $status =
+            $status !== null ? $this->connection->real_escape_string($status) : '';
+
+        $conditions = [];
+
+        if ($searchValue !== '') {
+            $conditions[] = "posts.postName LIKE '%$searchValue%'";
+        }
+
+        if ($status !== '') {
+            $conditions[] = "posts.status = $status";
+        }
+        $query = "SELECT * FROM blog_schema.posts join blog_schema.categories on posts.categoryId = categories.categoryId where userId = $userId";
+        if (!empty($conditions)) {
+            $query .= " AND " . implode(" AND ", $conditions);
+        }
+
+        $result = $this->connection->query($query);
+
+        if ($result->num_rows > 0) {
+            $posts = [];
+            while ($row = $result->fetch_assoc()) {
+                $posts[] = $row;
+            }
+            return $posts;
+        } else {
+            return [];
+        };
+    }
 
 
 
@@ -276,4 +341,5 @@ class Post
     {
         $this->connection->query("UPDATE posts SET status = -1 WHERE postId = $postId");
     }
+
 }

@@ -13,43 +13,12 @@ use App\Controllers\LoginController;
 
 // Usage:
 $router = new Router();
-
-// Add routes
-$router->addRoute('/\//', [new UserController(), 'index']);
-// $router->addRoute('/\/user/', [new UserController(), 'userList']);
-// $router->addRoute('/\/user\/index/', [new UserController(), 'userList']);
-//$router->addRoute('/\/user/', [new UserController(), 'index']);
-$router->addRoute('/\/user\/show\/(\d+)/', [new UserController(), 'show']);
-$router->addRoute('/\/user\/create/', [new UserController(), 'create']);
-$router->addRoute('/\/user\/update\/(\d+)/', [new UserController(), 'update']);
-$router->addRoute('/\/user\/delete\/(\d+)/', [new UserController(), 'delete']);
-$router->addRoute('/\/user\/signin/', [new UserController(), 'signin']);
-$router->addRoute('/\/auth\/validate/', [new AuthenticationController(), 'authenticate']);
-$router->addRoute('/\/user\/logout/', [new UserController(), 'logout']);
-
-
-
-// $router->addRoute('/\/user/', [new PostController(), 'userList']);
-$router->addRoute('/\/posts\/post-list/', [new PostController(), 'postList']);
-//$router->addRoute('/\/user/', [new PostController(), 'index']);
-$router->addRoute('/\/post\/show\/(\d+)/', [new PostController(), 'show']);
-$router->addRoute('/\/post\/create/', [new PostController(), 'create']);
-$router->addRoute('/\/post\/update\/(\d+)/', [new PostController(), 'update']);
-$router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
-// $router->addRoute('/\/post\/signin/', [new PostController(), 'signin']);
-// $router->addRoute('/\/auth\/validate/', [new AuthenticationController(), 'authenticate']);
-// $router->addRoute('/\/post\/logout/', [new PostController(), 'logout']);
-
-
-
-// $router->addRoute('/\/home/', [new PostController(), 'home']);
-
 // ITC route
 
 //Home
+$router->addRoute('/\//', [new PostController(), 'index']);
 $router->addRoute('/\/home/', [new PostController(), 'getRecentPost']);
 $router->addRoute('/\/blogs/', [new PostController(), 'postList']);
-$router->addRoute('/\//', [new PostController(), 'index']);
 $router->addRoute('/\/register\/index/', [new RegisterController(), 'showRegistrationForm']);  // Hiển thị form đăng ký
 $router->addRoute('/\/register/', [new RegisterController(), 'register']);
 
@@ -80,11 +49,12 @@ $router->addRoute('/\/deleteComment\?postId=(\d+)\&commentId=(\d+)/', [new Comme
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
 $router->addRoute('/\/userPostList/', [new PostController(), 'getPostByUserId']);
 
-$router->addRoute('/\/createPost/', [new PostController(), 'create']);
+$router->addRoute('/\/createPost/', [new PostController(), 'showCreatePost']);
 $router->addRoute('/\/create/', [new PostController(), 'create']);
 $router->addRoute('/\/post\/delete\/(\d+)/', [new PostController(), 'delete']);
 $router->addRoute('/\/post\/update\/(\d+)/', [new PostController(), 'showPostInfo']);
 $router->addRoute('/\/update\/(\d+)/', [new PostController(), 'update']);
+$router->addRoute('/\/post\/search/', [new PostController(), 'getSearchResult']);
 
 
 $router->addRoute('/\/blogs\/(\d+)/', [new PostController(), 'getPostByCategory']);
@@ -94,6 +64,7 @@ $router->addRoute('/\/blogs\/search-posts/', [new PostController(), 'searchPosts
 //Admin
 $router->addRoute('/\/managePosts/', [new AdminController(), 'managePosts']);
 $router->addRoute('/\/managePosts\/search/', [new AdminController(), 'searchPostsAdmin']);
+$router->addRoute('/\/manageUserPosts\/search/', [new AdminController(), 'searchPostsOfUserAdmin']);
 $router->addRoute('/\/managePosts\/previewPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'previewPost']);
 $router->addRoute('/\/acceptPost\?postId=(\d+)/', [new AdminController(), 'acceptPost']);
 $router->addRoute('/\/declinePost\?postId=(\d+)/', [new AdminController(), 'declinePost']);
@@ -104,15 +75,20 @@ $router->addRoute('/\/manageUser\/previewPost\?postId=(\d+)\&userId=(\d+)/', [ne
 $router->addRoute('/\/manageUser\/acceptPost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'acceptPostOfUser']);
 $router->addRoute('/\/manageUser\/declinePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'declinePostOfUser']);
 $router->addRoute('/\/manageUser\/deletePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'deletePostOfUser']);
+$router->addRoute('/\/manageUser\/search/', [new AdminController(), 'getResultSearchOfUser']);
+$router->addRoute('/\/manageCategories\/search/', [new AdminController(), 'getResultSearchOfCategories']);
+$router->addRoute('/\/manageUsers\/delete\/(\d+)/', [new AdminController(), 'deleteUser']);
+
+
 
 // categories
 $router->addRoute('/\/manageCategories/', [new CategoriesController(), 'index']);
 $router->addRoute('/\/manageCategories\/create/', [new CategoriesController(), 'create']);
 $router->addRoute('/\/manageCategories\/delete\/(\d+)/', [new CategoriesController(), 'delete']);
 $router->addRoute('/\/manageCategories\/update\/(\d+)/', [new CategoriesController(), 'update']);
+$router->addRoute('/\/manageCategories\/search/', [new AdminController(), 'getResultSearchOfCategories']);
 
 
-
-
-
+// access failed
+$router->addRoute('/\/accessFailed/', [new UserController(), 'accessFailed']);
 

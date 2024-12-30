@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../templates/assets/images/ITC-icons.webp">
     <link
         href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap"
         rel="stylesheet">
@@ -46,44 +47,36 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="about.html">About Us</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="blog.html">Blog Entries</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="post-details.html">Post Details</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact Us</a>
-                        </li>
+                                               
                         <?php
                         if (session_status() === PHP_SESSION_NONE) {
                             session_start();
                         }
                         if (isset($_SESSION['user'])) { ?>
                         <li class="nav-item">
-                            <div class="btn-group">
+                            <div class="btn-group btn-avatar">
                                 <a href="#" class="btn dropdown-toggle" aria-expanded="false">
                                     <img class="image-avatar" src="<?= isset($_SESSION['user']['photo']) && $_SESSION['user']['photo']
                                                         ? '/assets/images/photo/' . $_SESSION['user']['photo']
                                                         : '/templates/assets/images/noPhoto.png' ?>" alt="User Avatar">
 
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a href="/userPostList" class="dropdown-item">Quản lý bài viết</a></li>
+                                <ul class="dropdown-menu dropdown-menu-end" style="margin-top: 4px;">
+                                    <li><a href="/userPostList" class="dropdown-item">Bài viết của tôi</a></li>
                                     <li><a href="/createPost" class="dropdown-item">Tạo bài viết</a></li>
-                                    <li><a href="user/profile" class="dropdown-item">Trang cá nhân</a></li>
+                                    <li><a href="/user/profile" class="dropdown-item">Trang cá nhân</a></li>
                                     <li>
-                                        <form method="POST" action="/logout">
-                                            <button type="submit">Logout</button>
-                                        </form>
+                                        <ul class=" dropdown-menu-end" <?=$_SESSION['user']['role']==0?'hidden':''?>>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a href="/managePosts" class="dropdown-item">Quản lý bài viết</a></li>
+                                            <li><a href="/manageCategories" class="dropdown-item">Quản lý thể loại</a></li>
+                                            <li><a href="/manageUsers" class="dropdown-item">Quản lý tài khoản</a></li>
+                                        </ul>
+
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a href="/logout" class="dropdown-item">Đăng xuất</a>
                                     </li>
                                 </ul>
                             </div>
