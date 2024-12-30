@@ -271,6 +271,19 @@ class AdminController extends Controller
             header("Location:/manageCategories");
         }
     }
+    public function deleteUser($userId){
+
+            session_start();
+            if(!isset($_SESSION['currentUser']) || $_SESSION['currentUser'] === null){
+                header('Location: /login/index');
+            }
+            if(isset($_SESSION['user']) && $_SESSION['user']['role'] === 0){
+                header('Location: /accessFailed');
+            }
+            $this->userModel->deleteUser($userId);
+            header('Location: /manageUsers');
+
+    }
 
 
 

@@ -77,6 +77,8 @@ $router->addRoute('/\/manageUser\/declinePost\?postId=(\d+)\&userId=(\d+)/', [ne
 $router->addRoute('/\/manageUser\/deletePost\?postId=(\d+)\&userId=(\d+)/', [new AdminController(), 'deletePostOfUser']);
 $router->addRoute('/\/manageUser\/search/', [new AdminController(), 'getResultSearchOfUser']);
 $router->addRoute('/\/manageCategories\/search/', [new AdminController(), 'getResultSearchOfCategories']);
+$router->addRoute('/\/manageUsers\/delete\/(\d+)/', [new AdminController(), 'deleteUser']);
+
 
 
 // categories

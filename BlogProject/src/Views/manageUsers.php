@@ -98,7 +98,7 @@
                                     title="Xem các bài viết của người dùng"><i style="color: #fff"
                                         class="fa fa-navicon"></i></button>
                                 <?php if ($user['role'] != 1) { ?>
-                                    <button type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
+                                    <button onclick="deleteUser(<?=$user['id']?>)" type="button" class="btn btn-danger" style="margin: 0 4px;" data-toggle="tooltip"
                                         data-placement="top" title="Xóa người dùng"><i class="fa-solid fa-trash"></i></button>
                                 <?php } ?>
                             </div>
@@ -132,6 +132,12 @@
     function viewDetailPostsOfUser(userId) {
         window.location.href = '/manageUser?userId=' + userId
     }
+
+    function deleteUser(userId) {
+            if (confirm('Xóa tài khoản này sẽ xóa các bài viết của người dùng, bạn có chắc muốn xóa tài khoản này?')) {
+                window.location.href = 'manageUsers/delete/' + userId;
+            }
+        }
 </script>
 <?php $content = ob_get_clean(); ?>
 <?php

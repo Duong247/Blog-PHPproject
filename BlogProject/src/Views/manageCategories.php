@@ -20,6 +20,8 @@
         </div>
     </form>
 
+    </form>
+
     <table style="background-color: #f5f5f5" class="table mt-3 table-bordered">
         <thead class="table-primary">
             <tr>

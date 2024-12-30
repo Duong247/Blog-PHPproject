@@ -135,7 +135,7 @@
                                 </h4>
                                 <p><?= $subComment['commentContent'] ?></p>
                                 <?php
-                                if ($currentUserId == $post['userId'] || $currentUserId == $subComment['userId'] || $user['role'] == 1) {
+                                if ($user['id'] == $post['userId'] || $user['id'] == $subComment['userId'] || $user['role'] == 1) {
                                   ?>
                                   <button class="btn delete-btn"
                                     onclick="deleteComment(<?= $post['postId'] ?>,<?= $subComment['commentId'] ?>)">

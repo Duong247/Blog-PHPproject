@@ -291,4 +291,25 @@ class User
         $result = $result->fetch_all(MYSQLI_ASSOC);
         return $result;
     }
+
+    public function deleteUser($userId){
+        $userId = $this->mysqli->real_escape_string(string: $userId);
+        $this->mysqli->query("DELETE FROM comments
+                                     WHERE userId = $userId  AND commentId IS NOT NULL"); //delete all comments of user
+        $this->mysqli->query("   DELETE FROM comments
+                                        WHERE postId IN (SELECT postId
+                                            FROM posts
+                                            WHERE userId = $userId)"); //delete all comments of post of user
+        $this->mysqli->query("DELETE FROM posts
+                                     WHERE userId = $userId AND postId IS NOT NULL");  //delete all post of user       
+        $this->mysqli->query("  DELETE FROM users WHERE id = $userId");  //delete user 
+        $this->mysqli->query("SET SQL_SAFE_UPDATES = 0"); 
+        $this->mysqli->query("DELETE  FROM blog_schema.comments
+                                    WHERE subCommentId NOT IN (
+                                        SELECT commentId
+                                        FROM (SELECT commentId FROM blog_schema.comments) AS valid_comments
+                                    )
+                                    AND commentId IS NOT NULL");  //Delete subcomments when their parent comment is deleted 
+        $this->mysqli->query("SET SQL_SAFE_UPDATES = 1");                                               
+    }
 }
