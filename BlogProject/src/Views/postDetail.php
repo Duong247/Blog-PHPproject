@@ -68,7 +68,7 @@
                             <!-- https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png -->
                             <div class="right-content">
                               <h4>
-                                <!-- <?= $comment['mainComment']['first_name'] . ' ' . $comment['mainComment']['last_name'] ?> -->
+                                <?= $comment['mainComment']['first_name'] . ' ' . $comment['mainComment']['last_name'] ?>
                                 <span>
                                   <?php
                                   $uploadTime = new DateTime($comment['mainComment']['commentTime']);
