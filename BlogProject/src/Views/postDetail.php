@@ -95,7 +95,7 @@
                               <p><?= $comment['mainComment']['commentContent'] ?></p>
                               <?php
                               if (isset($_SESSION['user'])) {
-                                if ($user['id'] == $post['userId'] || $user['id'] == $comment['mainComment']['userId'] || $user['role'] == 1) {
+                                if ($user && $user['id'] == $post['userId'] ||$user && $user['id'] == $comment['mainComment']['userId'] ||$user && $user['role'] == 1) {
                                   ?>
                                   <button class="btn delete-btn"
                                     onclick="deleteComment(<?= $post['postId'] ?>, <?= $comment['mainComment']['commentId'] ?>)">
@@ -110,7 +110,7 @@
                               <div class="author-thumb">
                                 <img
                                   class="ava-cmt"
-                                  src="/assets/images/photo/<?= $subComment['photo'] ?>"
+                                  src="<?=isset($subComment['photo'])?'/assets/images/photo/'.$subComment['photo']: 'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png'  ?>"
                                   alt="">
                               </div>
                               <div class="right-content">

@@ -4,7 +4,7 @@
 
     <hr>
 
-    <form action="manageUser/search" method="POST" class="mb-3">
+    <form action="/manageUser/search" method="POST" class="mb-3">
         <div class="input-group">
             <input type="text" name="searchValue" class="form-control" placeholder="Nhập tên người dùng cần tìm kiếm..."
                 aria-label="" aria-describedby="basic-addon1" value="<?= isset($searchvalue) ? $searchvalue : '' ?>">
