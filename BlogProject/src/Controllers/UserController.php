@@ -274,6 +274,7 @@ class UserController extends Controller
     public function updateProfile()
     {
         // Khởi tạo session (nếu chưa có)
+        session_start();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Lấy thông tin từ form
             $firstName = $_POST['firstname'];
@@ -287,7 +288,7 @@ class UserController extends Controller
                 $fileName = $_FILES['photo']['name'];
                 $fileSize = $_FILES['photo']['size'];
                 $fileType = $_FILES['photo']['type'];
-
+                
                 // Đặt đường dẫn và tên file mới
                 $uploadDir = 'assets/images/photo/';
                 if (!is_dir($uploadDir)) {
