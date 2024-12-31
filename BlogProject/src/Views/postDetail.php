@@ -58,14 +58,17 @@
                       <li style="width: 100%;">
                         <ul>
                           <li style="width: 100%; position: relative" id="cmt<?= $comment['mainComment']['commentId'] ?>">
-                            <div class="author-thumb">
-                              <img
-                                src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
-                                alt="">
+                            <div class="author-thumb ">
+                              
+                                <img 
+                                  class="ava-cmt"
+                                  src="<?=isset($comment['mainComment']['first_name'])?'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png':'/assets/images/photo/'.$comment['mainComment']['photo']?>" 
+                                  alt="">
                             </div>
+                            <!-- https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png -->
                             <div class="right-content">
                               <h4>
-                                <?= $comment['mainComment']['first_name'] . ' ' . $comment['mainComment']['last_name'] ?>
+                                <!-- <?= $comment['mainComment']['first_name'] . ' ' . $comment['mainComment']['last_name'] ?> -->
                                 <span>
                                   <?php
                                   $uploadTime = new DateTime($comment['mainComment']['commentTime']);
@@ -106,7 +109,8 @@
                             <li style="position: relative" id="cmt<?= $subComment['commentId'] ?>" class="replied">
                               <div class="author-thumb">
                                 <img
-                                  src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png"
+                                  class="ava-cmt"
+                                  src="/assets/images/photo/<?= $subComment['photo'] ?>"
                                   alt="">
                               </div>
                               <div class="right-content">
