@@ -35,7 +35,7 @@
                       <div class="col-6">
                         <ul class="post-tags">
                           <li><i class="fa fa-tags"></i></li>
-                          <li><a href="#"><?= $post['categoryName'] ?></a></li>
+                          <li><a href="/blogs/<?= $post['categoryId'] ?>"><?= $post['categoryName'] ?></a></li>
                         </ul>
                       </div>
                     </div>

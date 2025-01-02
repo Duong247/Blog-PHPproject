@@ -25,7 +25,7 @@ class Post
 
     public function getAllPosts()
     {
-        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+        $result = $this->connection->query("SELECT  posts.postId, posts.postName,posts.description, categories.categoryId, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
                                                             INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -40,14 +40,15 @@ class Post
                                                             posts.content,
                                                             posts.uploadTime,
                                                             users.first_name,
-                                                            users.last_name
+                                                            users.last_name,
+                                                            categories.categoryId
                                                         ORDER BY posts.uploadTime DESC");
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     public function getRecentPosts()
     {
-        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryId, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
                                                             INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -62,7 +63,8 @@ class Post
                                                             posts.content,
                                                             posts.uploadTime,
                                                             users.first_name,
-                                                            users.last_name
+                                                            users.last_name,
+                                                            categories.categoryId
                                                         ORDER BY posts.uploadTime DESC
                                                         LIMIT 3
 
@@ -82,7 +84,7 @@ class Post
     public function getPostsByCategory($categoryId): array|bool|null
     {
         $categoryId = $this->connection->real_escape_string($categoryId);
-        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+        $result = $this->connection->query(" SELECT  posts.postId, posts.postName,posts.description, categories.categoryId, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
                                                             INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -97,7 +99,8 @@ class Post
                                                             posts.content,
                                                             posts.uploadTime,
                                                             users.first_name,
-                                                            users.last_name
+                                                            users.last_name,
+                                                            categories.categoryId
                                                         ORDER BY posts.uploadTime DESC
                                                     ");
         return $result->fetch_all(MYSQLI_ASSOC);
@@ -219,7 +222,7 @@ class Post
         $searchTerm = $this->connection->real_escape_string($searchTerm);
 
         // Truy vấn tìm kiếm
-        $query = "SELECT  posts.postId, posts.postName,posts.description, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
+        $query = "SELECT  posts.postId, posts.postName,posts.description, categories.categoryId, categories.categoryName, posts.photo, posts.content, posts.uploadTime, users.first_name, users.last_name, COUNT(comments.commentId) AS commentCount
                                                         FROM blog_schema.posts 
                                                             INNER JOIN blog_schema.users ON posts.userId = users.id
                                                             INNER JOIN blog_schema.categories ON categories.categoryId = posts.categoryId
@@ -234,7 +237,8 @@ class Post
                                                             posts.content,
                                                             posts.uploadTime,
                                                             users.first_name,
-                                                            users.last_name
+                                                            users.last_name,
+                                                            categories.categoryId
                                                         ORDER BY posts.uploadTime DESC";
 
         // Thực hiện truy vấn

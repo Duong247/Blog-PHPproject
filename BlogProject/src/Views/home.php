@@ -40,7 +40,7 @@
                           <div class="col-6">
                             <ul class="post-tags">
                               <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#"><?= $post['categoryName'] ?></a></li>
+                              <li><a href="/blogs/<?=$post['categoryId']?>"><?= $post['categoryName'] ?></a></li>
                             </ul>
                           </div>
                         </div>
@@ -65,9 +65,17 @@
       <div class="col-lg-4">
         <div class="sidebar">
           <div class="row">
+          <div style="padding: 0" class="col-lg-12">
+              <div class="sidebar-item search">
+                <form id="search_form" method="GET" action="/blogs/search-posts">
+                  <input type="text" name="searchValue" class="searchText" placeholder="Nhập để tìm kiếm..."
+                    autocomplete="on">
+                </form>
+              </div>
+            </div>
             <!-- start recent post -->
             <div class="col-lg-12">
-              <div style="margin-top: 0" class="sidebar-item recent-posts">
+              <div class="sidebar-item recent-posts">
                 <div class="sidebar-heading">
                   <h2>Bài viết gần đây</h2>
                 </div>

@@ -40,7 +40,7 @@
                                                     <div class="col-lg-12">
                                                         <ul class="post-tags" style="padding: 0;">
                                                             <li><i class="fa fa-tags"></i></li>
-                                                            <li><a href="#"><?= $post['categoryName'] ?></a></li>
+                                                            <li><a href="/blogs/<?= $post['categoryId'] ?>"><?= $post['categoryName'] ?></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
