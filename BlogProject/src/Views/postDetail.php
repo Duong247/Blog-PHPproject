@@ -62,7 +62,7 @@
                               
                                 <img 
                                   class="ava-cmt"
-                                  src="<?=isset($comment['mainComment']['first_name'])?'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png':'/assets/images/photo/'.$comment['mainComment']['photo']?>" 
+                                  src="<?=!isset($comment['mainComment']['photo'])?'https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png':'/assets/images/photo/'.$comment['mainComment']['photo']?>" 
                                   alt="">
                             </div>
                             <!-- https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png -->
